@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        //  Skip auth endpoints
+        
         if (path.startsWith("/auth")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // If no token → continue (Spring will block later if needed)
+       
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -61,19 +61,19 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
-            //  2. Extract email (can be username too depending on your JwtUtil)
+            
             String email = jwtUtil.extractEmail(token);
 
-            //  3. Fetch user from DB (YOUR logic)
+            
             User user = userRepo.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            //  4. Get role from DB
+            
             String role = user.getRole().getName()
                     .toUpperCase()
                     .replace(" ", "_");
 
-            //  5. Set authentication ONLY if not already set
+            
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UsernamePasswordAuthenticationToken auth =
@@ -87,7 +87,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // 🔥 debugging help
+            e.printStackTrace(); 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
