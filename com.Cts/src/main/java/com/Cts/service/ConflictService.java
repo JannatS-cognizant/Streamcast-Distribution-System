@@ -1,0 +1,13 @@
+package com.Cts.service;
+
+import com.Cts.dto.request.ConflictDTO;
+
+import java.util.List;
+
+public interface ConflictService {
+
+    void detectConflicts(Long scheduleId);
+    List<ConflictDTO> getConflictBySchedule(Long scheduleId);
+    ConflictDTO getConflictById(Long id);
+    ConflictDTO resolveConflict(Long id);
+}

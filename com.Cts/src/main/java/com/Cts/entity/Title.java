@@ -1,0 +1,54 @@
+package com.Cts.entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "titles")
+public class Title {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@JsonIgnore
+	private int id;
+	@NotBlank(message = "Name should not be empty")
+
+	private String name;
+
+	@NotNull(message = "Release date is required")
+
+	private LocalDate releaseDate;
+
+	@NotBlank(message = "Genre should not be empty")
+
+	private String genre;
+
+	@NotBlank(message = "Language should not be empty")
+
+	private String language;
+
+	@NotBlank(message = "Status should not be empty")
+
+	private String status;
+
+	public Title(String name, LocalDate releaseDate, String genre, String language, String status) {
+		super();
+		this.name = name;
+		this.releaseDate = releaseDate;
+		this.genre = genre;
+		this.language = language;
+		this.status = status;
+	}
+}
