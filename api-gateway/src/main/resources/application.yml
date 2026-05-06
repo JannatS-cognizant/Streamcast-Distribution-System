@@ -1,0 +1,39 @@
+server:
+  port: 9292
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: Clause-Service
+          uri: lb://CLAUSE-SERVICE
+          predicates:
+            - Path=/clauses/**
+
+        - id: Contract-Service
+          uri: lb://CONTRACT-SERVICE
+          predicates:
+            - Path=/contracts/**
+
+        - id: Manifest-Service
+          uri: lb://MANIFEST-SERVICE
+          predicates:
+            - Path=/manifests/**
+
+        - id: Partner-Service
+          uri: lb://PARTNER-SERVICE
+          predicates:
+            - Path=/partners/**
+
+        - id: Receipt-Service
+          uri: lb://RECEIPT-SERVICE
+          predicates:
+            - Path=/receipts/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
