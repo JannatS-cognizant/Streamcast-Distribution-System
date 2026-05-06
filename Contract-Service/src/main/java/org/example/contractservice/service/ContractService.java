@@ -45,4 +45,9 @@ public class ContractService {
         contractRepository.deleteById(id);
     }
 
+    public Contract getContractById(Long id) {
+        return contractRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contract not found with id: " + id));
+    }
+
 }
