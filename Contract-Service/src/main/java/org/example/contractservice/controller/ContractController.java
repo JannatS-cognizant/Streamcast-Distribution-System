@@ -61,4 +61,10 @@ public class ContractController {
         contractService.deleteById(id);
         return new APIResponse<>("Contract deleted successfully", "Success", true);
     }
+    //Get by Id
+    @GetMapping("/{id}")
+    public APIResponse<ContractResponseDTO> getContractById(@PathVariable Long id) {
+        Contract contract = contractService.getContractById(id);
+        return new APIResponse<>("Contract fetched successfully", ContractResponseMapper.toDTO(contract), true);
+    }
 }
