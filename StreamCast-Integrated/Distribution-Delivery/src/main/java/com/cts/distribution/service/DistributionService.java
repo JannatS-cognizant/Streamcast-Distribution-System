@@ -1,0 +1,171 @@
+package com.cts.distribution.service;
+
+import com.cts.distribution.dto.AttemptDTO;
+import com.cts.distribution.dto.ManifestDTO;
+import com.cts.distribution.dto.ReceiptDTO;
+import com.cts.distribution.entity.DeliveryAttempt;
+import com.cts.distribution.entity.Manifest;
+import com.cts.distribution.entity.Receipt;
+import com.cts.distribution.feign.TitleClient;
+import com.cts.distribution.feign.PartnerClient;
+import com.cts.distribution.feign.ContractClient;
+import com.cts.distribution.repository.AttemptRepository;
+import com.cts.distribution.repository.ManifestRepository;
+import com.cts.distribution.repository.ReceiptRepository;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class DistributionService {
+
+    private final ManifestRepository manifestRepository;
+    private final AttemptRepository attemptRepository;
+    private final ReceiptRepository receiptRepository;
+    private final TitleClient titleClient;
+    private final PartnerClient partnerClient;      // ← added
+    private final ContractClient contractClient;    // ← added
+
+    public DistributionService(ManifestRepository manifestRepository,
+                               AttemptRepository attemptRepository,
+                               ReceiptRepository receiptRepository,
+                               TitleClient titleClient,
+                               PartnerClient partnerClient,             // ← added
+                               ContractClient contractClient) {         // ← added
+        this.manifestRepository = manifestRepository;
+        this.attemptRepository = attemptRepository;
+        this.receiptRepository = receiptRepository;
+        this.titleClient = titleClient;
+        this.partnerClient = partnerClient;         // ← added
+        this.contractClient = contractClient;       // ← added
+    }
+
+    @CircuitBreaker(name = "titleCircuitBreaker", fallbackMethod = "titleFallback")
+    @Retry(name = "feignRetry", fallbackMethod = "titleFallback")
+    public boolean validateTitle(String titleId) {
+        try {
+            Long id = Long.parseLong(titleId);
+            Boolean exists = titleClient.isTitleExists(id);
+            return exists != null && exists;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean titleFallback(String titleId, Exception ex) {
+        return true;
+    }
+
+    // ✅ Validate partner in Partner-Service   ← added
+    @CircuitBreaker(name = "partnerCircuitBreaker", fallbackMethod = "partnerFallback")
+    @Retry(name = "feignRetry", fallbackMethod = "partnerFallback")
+    public boolean validatePartner(Long partnerId) {
+        Object partner = partnerClient.getPartnerById(partnerId);
+        return partner != null;
+    }
+
+    public boolean partnerFallback(Long partnerId, Exception ex) {
+        return true;
+    }
+
+    // ✅ Create Manifest
+    public Manifest createManifest(ManifestDTO dto) {
+
+ /*       if (!validateTitle(dto.getTitleId())) {
+            throw new RuntimeException("Title not found: " + dto.getTitleId());
+        }
+
+        // ← added partner validation
+        if (dto.getPartnerId() != null && !validatePartner(dto.getPartnerId())) {
+            throw new RuntimeException("Partner not found: " + dto.getPartnerId());
+        }
+ */
+
+        Manifest m = new Manifest();
+        m.setTitleId(dto.getTitleId());
+        m.setAssetIdsJSON(dto.getAssetIdsJSON());
+        m.setDestination(dto.getDestination());
+        m.setCreatedBy(dto.getCreatedBy());
+        m.setCreatedAt(LocalDateTime.now());
+        m.setStatus("CREATED");
+        m.setPartnerId(dto.getPartnerId());
+
+        return manifestRepository.save(m);
+    }
+
+    // ✅ Get All
+    public List<Manifest> getAll() {
+        return manifestRepository.findAll();
+    }
+
+    // ✅ Get By ID
+    public Manifest getById(Long id) {
+        return manifestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Manifest not found with id: " + id));
+    }
+
+    // ✅ Update Manifest
+    public Manifest updateManifest(Long id, ManifestDTO dto) {
+
+        Manifest existing = getById(id);
+
+        if (dto.getTitleId() != null)
+            existing.setTitleId(dto.getTitleId());
+
+        if (dto.getDestination() != null)
+            existing.setDestination(dto.getDestination());
+
+        if (dto.getStatus() != null)
+            existing.setStatus(dto.getStatus());
+
+        return manifestRepository.save(existing);
+    }
+
+    // ✅ Add Attempt
+    public void addAttempt(Long id, AttemptDTO dto) {
+
+        Manifest manifest = getById(id);
+
+        DeliveryAttempt attempt = new DeliveryAttempt();
+        attempt.setManifestId(id);
+        attempt.setAttemptedAt(LocalDateTime.now());
+        attempt.setResult(dto.getResult());
+        attempt.setDetails(dto.getDetails());
+
+        attemptRepository.save(attempt);
+
+        manifest.setStatus(dto.getResult());
+        manifestRepository.save(manifest);
+    }
+
+    // ✅ Add Receipt
+    public void addReceipt(Long id, ReceiptDTO dto) {
+
+        Manifest manifest = getById(id);
+
+        Receipt receipt = new Receipt();
+        receipt.setManifestId(id);
+        receipt.setReceivedAt(LocalDateTime.now());
+        receipt.setReceivedBy(dto.getReceivedBy());
+        receipt.setReceiptURI(dto.getReceiptURI());
+        receipt.setStatus("RECEIVED");
+
+        receiptRepository.save(receipt);
+
+        manifest.setStatus("COMPLETED");
+        manifestRepository.save(manifest);
+    }
+
+    // ✅ Get Manifests by Partner
+    public List<Manifest> getByPartner(Long partnerId) {
+        List<Manifest> manifests = manifestRepository.findByPartnerId(partnerId);
+        if (manifests.isEmpty()) {
+            throw new RuntimeException("No manifests found for partnerId: " + partnerId);
+        }
+        return manifests;
+    }
+}
