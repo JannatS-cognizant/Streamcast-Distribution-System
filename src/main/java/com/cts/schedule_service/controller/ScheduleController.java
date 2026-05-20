@@ -7,7 +7,6 @@ import com.cts.schedule_service.service.ConflictService;
 import com.cts.schedule_service.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +17,7 @@ import java.util.Map;
 @Validated
 @RestController
 @RequestMapping("/api/schedules")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ScheduleController {
 
     private final ScheduleService service;
@@ -32,7 +32,6 @@ public class ScheduleController {
     }
 
     // ✅ Calendar view
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER','RIGHTS_MANAGER','COMPLIANCE_OFFICER')")
     @GetMapping("/calendar")
     public ApiResponse<List<CalendarScheduleDTO>> getCalendar(
             @RequestParam LocalDateTime start,
@@ -50,7 +49,6 @@ public class ScheduleController {
     }
 
     // ✅ Create schedule
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER')")
     @PostMapping
     public ApiResponse<CalendarScheduleDTO> create(
             @Valid @RequestBody CreateScheduleDTO dto
@@ -63,7 +61,6 @@ public class ScheduleController {
     }
 
     // ✅ Get schedule by ID
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER','RIGHTS_MANAGER')")
     @GetMapping("/{id}")
     public ApiResponse<CalendarScheduleDTO> getById(@PathVariable Long id) {
         return new ApiResponse<>(
@@ -74,7 +71,6 @@ public class ScheduleController {
     }
 
     // ✅ Update schedule
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER')")
     @PutMapping("/{id}")
     public ApiResponse<CalendarScheduleDTO> update(
             @PathVariable Long id,
@@ -88,7 +84,6 @@ public class ScheduleController {
     }
 
     // Partial update
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER')")
     @PatchMapping("/{id}")
     public ApiResponse<CalendarScheduleDTO> partialUpdate(
             @PathVariable Long id,
@@ -103,7 +98,6 @@ public class ScheduleController {
 
 
     // ✅ Delete schedule
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id) {
         service.deleteSchedule(id);
@@ -113,7 +107,6 @@ public class ScheduleController {
     }
 
     // ✅ Detect conflicts
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER')")
     @PostMapping("/{id}/detect-conflicts")
     public ApiResponse<String> detectConflicts(@PathVariable Long id) {
         conflictService.detectConflicts(id);

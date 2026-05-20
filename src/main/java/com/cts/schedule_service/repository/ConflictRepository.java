@@ -9,4 +9,5 @@ public interface ConflictRepository extends JpaRepository<Conflict, Long> {
 
     // Fetch conflicts where the schedule participates as either side
     List<Conflict> findByScheduleId1OrScheduleId2(Long scheduleId1, Long scheduleId2);
+    boolean existsByScheduleId1AndScheduleId2(Long scheduleId1, Long scheduleId2);
 }

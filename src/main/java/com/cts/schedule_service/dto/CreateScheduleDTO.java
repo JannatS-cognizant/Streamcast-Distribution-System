@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class CreateScheduleDTO {
     @NotNull(message = "Title ID is required")
-    public Integer titleId;
+    public Long titleId;
     @NotNull(message = "Contract ID is required")
     public Long contractId;
     @NotBlank(message = "Platform cannot be empty")

@@ -16,7 +16,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
-    private Integer titleId;
+    private Long titleId;
     private Long contractId;
     private String platform;
     private LocalDateTime startDateTime;

@@ -1,5 +1,6 @@
 package com.cts.schedule_service.mapper.request;
 
+import com.cts.schedule_service.dto.CalendarScheduleDTO;
 import com.cts.schedule_service.dto.CreateScheduleDTO;
 import com.cts.schedule_service.entity.Schedule;
 

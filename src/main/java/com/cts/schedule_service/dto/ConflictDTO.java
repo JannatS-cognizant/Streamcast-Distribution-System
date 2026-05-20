@@ -1,5 +1,7 @@
 package com.cts.schedule_service.dto;
 
+import com.cts.schedule_service.entity.Schedule;
+
 import java.time.LocalDateTime;
 
 public class ConflictDTO {

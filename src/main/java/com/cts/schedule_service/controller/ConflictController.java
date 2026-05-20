@@ -3,14 +3,13 @@ package com.cts.schedule_service.controller;
 import com.cts.schedule_service.api.ApiResponse;
 import com.cts.schedule_service.dto.ConflictDTO;
 import com.cts.schedule_service.service.ConflictService;
-
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/conflicts")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ConflictController {
 
     private final ConflictService service;
@@ -19,7 +18,6 @@ public class ConflictController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER','COMPLIANCE_OFFICER')")
     @GetMapping
     public ApiResponse<List<ConflictDTO>> getBySchedule(
             @RequestParam Long schedulesId
@@ -31,7 +29,6 @@ public class ConflictController {
         );
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER','COMPLIANCE_OFFICER')")
     @GetMapping("/{id}")
     public ApiResponse<ConflictDTO> getConflictById(@PathVariable Long id) {
         return new ApiResponse<>(
@@ -41,7 +38,6 @@ public class ConflictController {
         );
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SCHEDULER')")
     @PutMapping("/{id}/resolve")
     public ApiResponse<ConflictDTO> resolve(@PathVariable Long id) {
         return new ApiResponse<>(

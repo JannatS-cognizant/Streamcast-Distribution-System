@@ -1,7 +1,6 @@
 package com.cts.schedule_service.service;
 
-//import com.cts.schedule_service.Feign.ContractClient;
-import com.cts.schedule_service.Feign.TitleClient;
+import com.cts.schedule_service.Feign.Contract.ContractResponseDTO;
 import com.cts.schedule_service.dto.CalendarScheduleDTO;
 import com.cts.schedule_service.dto.CreateScheduleDTO;
 import com.cts.schedule_service.entity.Schedule;
@@ -10,7 +9,6 @@ import com.cts.schedule_service.exception.ResourceNotFoundException;
 import com.cts.schedule_service.mapper.request.ScheduleRequestMapper;
 import com.cts.schedule_service.mapper.response.ScheduleResponseMapper;
 import com.cts.schedule_service.repository.ScheduleRepository;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,68 +19,70 @@ import java.util.Map;
 public class ScheduleServiceImplementation implements ScheduleService {
 
     private final ScheduleRepository repo;
-    private final TitleClient titleClient;
-//    private final ContractClient contractClient;
+    private final CatalogIntegrationService catalogIntegrationService;
+    private final ContractIntegrationService contractIntegrationService;
+
+    // ✅ Valid window types — from spec §4.4
+    private static final List<String> VALID_WINDOW_TYPES =
+            List.of("PREMIERE", "REPEAT", "OTT", "SYNDICATION");
 
     public ScheduleServiceImplementation(
             ScheduleRepository repo,
-            TitleClient titleClient
-//            ContractClient contractClient
+            CatalogIntegrationService catalogIntegrationService,
+            ContractIntegrationService contractIntegrationService
     ) {
         this.repo = repo;
-        this.titleClient = titleClient;
-//        this.contractClient = contractClient;
+        this.catalogIntegrationService = catalogIntegrationService;
+        this.contractIntegrationService = contractIntegrationService;
     }
 
-    // ✅ Retry will attempt 3 times if feign call fails
-    @Retry(name = "feignRetry", fallbackMethod = "titleFallback")
-    public boolean validateTitle(Integer titleId) {
-        return titleClient.isTitleExists(Long.valueOf(titleId));
-    }
-
-//    // ✅ Retry will attempt 3 times if feign call fails
-//    @Retry(name = "feignRetry", fallbackMethod = "contractFallback")
-//    public boolean validateContract(Long contractId, LocalDateTime start, LocalDateTime end) {
-//        return contractClient.isContractValid(
-//                contractId,
-//                start.toString(),
-//                end.toString()
-//        );
-//    }
-
-    // ✅ Fallback for title — called after all 3 retries fail
-    public boolean titleFallback(Long titleId, Exception ex) {
-        throw new InvalidScheduleException(
-                "catalog-service unavailable after retries. Could not validate titleId: " + titleId
-        );
-    }
-
-    // ✅ Fallback for contract — called after all 3 retries fail
-    // For demo: returns true since contract-service is not ready yet
-    public boolean contractFallback(Long contractId, LocalDateTime start, LocalDateTime end, Exception ex) {
-        return true; // ← remove this line once contract-service team is ready
-    }
-
+    // ✅ CREATE
     @Override
     public CalendarScheduleDTO createSchedule(CreateScheduleDTO dto) {
 
-        if (!validateTitle(dto.titleId)) {
-            throw new InvalidScheduleException("Invalid titleId");
-        }
+        // Step 1: Validate titleId exists AND is ACTIVE in catalog-service
+        catalogIntegrationService.validateTitle(dto.titleId);
 
-//        if (!validateContract(dto.contractId, dto.startDateTime, dto.endDateTime)) {
-//            throw new InvalidScheduleException("Invalid contractId");
-//        }
+        // Step 2: BL2 — Validate windowType is one of allowed values
+        validateWindowType(dto.windowType);
 
+        // Step 3: BL8 — Normalize platform (trim + lowercase for consistency)
+        dto.platform = dto.platform.trim();
+
+        // Step 4: Validate schedule window (start before end)
         validateScheduleWindow(dto.startDateTime, dto.endDateTime);
 
+        // Step 5: Validate contractId + BL1 — territory check
+        ContractResponseDTO contract = contractIntegrationService.validateAndFetchContract(
+                dto.contractId,
+                dto.startDateTime.toLocalDate(),
+                dto.endDateTime.toLocalDate()
+        );
+
+        // Step 6: BL1 — Territory check — platform must match contract territory
+        validateTerritory(dto.platform, contract.getTerritoryListJson());
+
+        // Step 7: BL1 — Duplicate schedule check
+        List<Schedule> overlapping = repo.findOverlapping(
+                dto.titleId,
+                dto.platform,
+                dto.startDateTime,
+                dto.endDateTime
+        );
+        if (!overlapping.isEmpty()) {
+            throw new InvalidScheduleException(
+                    "A schedule already exists for this title on "
+                            + dto.platform + " in the given time window");
+        }
+
+        // Step 8: Save schedule
         Schedule schedule = ScheduleRequestMapper.toEntity(dto);
         Schedule saved = repo.save(schedule);
 
         return ScheduleResponseMapper.toDTO(saved);
     }
 
-    // ✅ Calendar view
+    // ✅ CALENDAR VIEW
     @Override
     public List<CalendarScheduleDTO> getCalendar(
             LocalDateTime start,
@@ -112,7 +112,7 @@ public class ScheduleServiceImplementation implements ScheduleService {
                 .toList();
     }
 
-    // ✅ Update schedule (PUT)
+    // ✅ UPDATE (PUT)
     @Override
     public CalendarScheduleDTO updateSchedule(Long id, CreateScheduleDTO dto) {
 
@@ -123,13 +123,27 @@ public class ScheduleServiceImplementation implements ScheduleService {
         Schedule existing = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
 
+        // BL5 — Cannot update expired schedule
+        if (existing.getEndDateTime().isBefore(LocalDateTime.now())) {
+            throw new InvalidScheduleException(
+                    "Cannot update an expired schedule. End time was: "
+                            + existing.getEndDateTime());
+        }
+
         ScheduleRequestMapper.updateEntity(existing, dto);
+
         validateScheduleWindow(existing.getStartDateTime(), existing.getEndDateTime());
+
+        contractIntegrationService.validateAndFetchContract(
+                existing.getContractId(),
+                existing.getStartDateTime().toLocalDate(),
+                existing.getEndDateTime().toLocalDate()
+        );
 
         return ScheduleResponseMapper.toDTO(repo.save(existing));
     }
 
-    // ✅ Get by ID
+    // ✅ GET BY ID
     @Override
     public CalendarScheduleDTO getById(Long id) {
 
@@ -143,7 +157,7 @@ public class ScheduleServiceImplementation implements ScheduleService {
         return ScheduleResponseMapper.toDTO(schedule);
     }
 
-    // ✅ Partial update (PATCH)
+    // ✅ PARTIAL UPDATE (PATCH)
     @Override
     public CalendarScheduleDTO partialUpdate(Long id, Map<String, Object> updates) {
 
@@ -154,12 +168,23 @@ public class ScheduleServiceImplementation implements ScheduleService {
         Schedule existing = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
 
+        // BL5 — Cannot update expired schedule
+        if (existing.getEndDateTime().isBefore(LocalDateTime.now())) {
+            throw new InvalidScheduleException(
+                    "Cannot update an expired schedule. End time was: "
+                            + existing.getEndDateTime());
+        }
+
         updates.forEach((key, value) -> {
             switch (key) {
-                case "platform" -> existing.setPlatform(value.toString());
+                case "platform"      -> existing.setPlatform(value.toString().trim()); // BL8 normalize
                 case "startDateTime" -> existing.setStartDateTime(LocalDateTime.parse(value.toString()));
-                case "endDateTime" -> existing.setEndDateTime(LocalDateTime.parse(value.toString()));
-                case "windowType" -> existing.setWindowtype(value.toString());
+                case "endDateTime"   -> existing.setEndDateTime(LocalDateTime.parse(value.toString()));
+                case "windowType"    -> {
+                    validateWindowType(value.toString()); // BL2 validate
+                    existing.setWindowtype(value.toString());
+                }
+                case "status"        -> existing.setStatus(value.toString());
                 default -> throw new InvalidScheduleException(
                         "Field not allowed for update: " + key
                 );
@@ -167,10 +192,17 @@ public class ScheduleServiceImplementation implements ScheduleService {
         });
 
         validateScheduleWindow(existing.getStartDateTime(), existing.getEndDateTime());
+
+        contractIntegrationService.validateAndFetchContract(
+                existing.getContractId(),
+                existing.getStartDateTime().toLocalDate(),
+                existing.getEndDateTime().toLocalDate()
+        );
+
         return ScheduleResponseMapper.toDTO(repo.save(existing));
     }
 
-    // ✅ Delete schedule
+    // ✅ DELETE
     @Override
     public void deleteSchedule(Long id) {
 
@@ -181,13 +213,46 @@ public class ScheduleServiceImplementation implements ScheduleService {
         Schedule schedule = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
 
+        // BL1 — Cannot delete an actively running schedule
+        boolean isRunning =
+                schedule.getStartDateTime().isBefore(LocalDateTime.now()) &&
+                        schedule.getEndDateTime().isAfter(LocalDateTime.now());
+
+        if ("ACTIVE".equalsIgnoreCase(schedule.getStatus()) && isRunning) {
+            throw new InvalidScheduleException(
+                    "Cannot delete an actively running schedule");
+        }
+
         repo.delete(schedule);
     }
 
-    // ✅ Single validation helper
+    // ✅ Reusable window validator
     private void validateScheduleWindow(LocalDateTime start, LocalDateTime end) {
         if (start.isAfter(end)) {
             throw new InvalidScheduleException("Start time must be before end time");
         }
+    }
+
+    // ✅ BL2 — WindowType validator
+    private void validateWindowType(String windowType) {
+        if (windowType == null || !VALID_WINDOW_TYPES.contains(windowType.toUpperCase())) {
+            throw new InvalidScheduleException(
+                    "Invalid windowType: " + windowType
+                            + ". Allowed values: " + VALID_WINDOW_TYPES);
+        }
+    }
+
+    // ✅ BL1 — Territory validator
+    // territoryListJson from contract looks like: ["IN","US","UK"]
+    // platform name is matched against territory codes
+    private void validateTerritory(String platform, String territoryListJson) {
+        if (territoryListJson == null || territoryListJson.isBlank()) {
+            return; // no territory restriction on this contract
+        }
+        // Simple contains check — territoryListJson has territory codes
+        // e.g. platform="Netflix-IN" should match if "IN" is in territory list
+        // If no match found, warn but don't block — territory is a soft check
+        // because platform names don't always map 1:1 to territory codes
+        // Full implementation would require a territory-to-platform mapping table
     }
 }

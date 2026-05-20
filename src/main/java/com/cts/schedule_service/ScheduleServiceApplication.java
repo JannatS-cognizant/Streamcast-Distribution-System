@@ -8,11 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.cts.schedule_service.Feign")
 @EnableDiscoveryClient
 @SpringBootApplication
-public class    ScheduleServiceApplication {
+public class ScheduleServiceApplication {
 
-    public static void main(String[] args) {
-       SpringApplication.run(ScheduleServiceApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ScheduleServiceApplication.class, args);
+	}
 
 }
- 
