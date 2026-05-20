@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/API-Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Clause-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Compliance-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Content-Catalog-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Contract-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Distribution-Delivery/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Identity-Auth-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Partner-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/schedule-service/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/Service-Registry/pom.xml" />
+        <option value="$PROJECT_DIR$/StreamCast-Integrated/usage-service/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

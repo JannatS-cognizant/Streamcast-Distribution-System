@@ -1,0 +1,12 @@
+{
+  "/auth":         { "target": "http://localhost:8081", "secure": false, "changeOrigin": true, "logLevel": "debug" },
+  "/users":        { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/roles":        { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/manifests":    { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/contracts":    { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/clauses":      { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/partners":     { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/accessLogs":   { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/compliance":   { "target": "http://localhost:8082", "secure": false, "changeOrigin": true },
+  "/api":          { "target": "http://localhost:8082", "secure": false, "changeOrigin": true }
+}

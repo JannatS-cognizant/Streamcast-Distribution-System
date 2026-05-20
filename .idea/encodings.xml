@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/API-Gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Clause-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Compliance-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Content-Catalog-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Contract-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Distribution-Delivery/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Identity-Auth-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Partner-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/Service-Registry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/schedule-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StreamCast-Integrated/usage-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>
