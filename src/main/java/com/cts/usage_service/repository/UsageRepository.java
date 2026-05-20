@@ -11,8 +11,15 @@ import java.util.List;
 
 public interface UsageRepository extends JpaRepository<UsageRecord, Long> {
 
-    // ✅ DETAILS
+    // ✅ DETAILS by date range
     List<UsageRecord> findByDateBetween(LocalDate start, LocalDate end);
+
+    // ✅ BL4 — Get all records for a specific title
+    List<UsageRecord> findByTitleId(Long titleId);
+
+    // ✅ BL3 — Prevent duplicate entry for same title+platform+date
+    boolean existsByTitleIdAndPlatformAndDate(
+            Long titleId, String platform, LocalDate date);
 
     // ✅ SUMMARY
     @Query("""
@@ -55,7 +62,7 @@ public interface UsageRepository extends JpaRepository<UsageRecord, Long> {
             @Param("end") LocalDate end
     );
 
-    // ✅ BREAKDOWN BY TITLE (FIXED ✅)
+    // ✅ BREAKDOWN BY TITLE
     @Query("""
            SELECT new com.cts.usage_service.dto.UsageBreakdownDTO(
                u.titleId,

@@ -1,6 +1,8 @@
 package com.cts.usage_service.mapper;
 
+import com.cts.usage_service.dto.UsageSummaryDTO;
 import com.cts.usage_service.dto.UsageDetailsDTO;
+import com.cts.usage_service.dto.UsageBreakdownDTO;
 import com.cts.usage_service.entity.UsageRecord;
 
     public class UsageResponseMapper {

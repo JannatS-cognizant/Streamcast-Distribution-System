@@ -1,5 +1,6 @@
 package com.cts.usage_service.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
