@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Final Microservice/API-Gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Clause-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Content-Catalog-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Contract-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Distribution-Delivery/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Partner-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Service-Registry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/Streamcast-Backend/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/schedule-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Final Microservice/usage-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>StreamCast — Complete Beginner's Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2933;
+    line-height: 1.55;
+    font-size: 11pt;
+    margin: 0;
+  }
+  h1, h2, h3, h4 { color: #0b3a5b; line-height: 1.25; page-break-after: avoid; }
+  h1 { font-size: 26pt; border-bottom: 3px solid #0b3a5b; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 18pt; margin-top: 28px; border-bottom: 2px solid #d1d5db; padding-bottom: 4px; }
+  h3 { font-size: 14pt; margin-top: 20px; color: #1d4ed8; }
+  h4 { font-size: 12pt; margin-top: 16px; color: #334155; }
+  p, li { font-size: 11pt; }
+  ul, ol { margin: 6px 0 10px 22px; }
+  li { margin: 3px 0; }
+  code, pre {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9.5pt;
+  }
+  code {
+    background: #eef2ff;
+    color: #1e3a8a;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    border-left: 4px solid #2563eb;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: 9.5pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #0b3a5b; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .cover {
+    text-align: center;
+    padding: 60px 0;
+    page-break-after: always;
+  }
+  .cover h1 { border: none; font-size: 38pt; color: #0b3a5b; margin-bottom: 8px; }
+  .cover .sub { font-size: 14pt; color: #475569; margin-bottom: 30px; }
+  .cover .meta { font-size: 11pt; color: #64748b; margin-top: 60px; }
+  .callout {
+    background: #fef3c7;
+    border-left: 5px solid #f59e0b;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 4px;
+    page-break-inside: avoid;
+  }
+  .note {
+    background: #dbeafe;
+    border-left: 5px solid #2563eb;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 4px;
+    page-break-inside: avoid;
+  }
+  .success {
+    background: #dcfce7;
+    border-left: 5px solid #16a34a;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 4px;
+    page-break-inside: avoid;
+  }
+  .toc { background: #f1f5f9; padding: 16px 22px; border-radius: 6px; }
+  .toc ol { margin-left: 18px; }
+  .toc li { margin: 4px 0; }
+  .page-break { page-break-before: always; }
+  .badge {
+    display: inline-block;
+    background: #1d4ed8;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9pt;
+    margin-right: 4px;
+  }
+  .service-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    background: #f8fafc;
+    page-break-inside: avoid;
+  }
+  .service-card h3 { margin-top: 0; }
+  .small { font-size: 9pt; color: #64748b; }
+</style>
+</head>
+<body>
+
+<!-- ===================== COVER ===================== -->
+<div class="cover">
+  <h1>StreamCast</h1>
+  <div class="sub">A Complete Beginner's Guide<br>Backend Microservices + Angular Frontend</div>
+  <div class="meta">
+    Prepared for: Afrin Banua<br>
+    Project: StreamCast — Final Microservice<br>
+    Date: 19 May 2026
+  </div>
+</div>
+
+<!-- ===================== TABLE OF CONTENTS ===================== -->
+<h1>Table of Contents</h1>
+<div class="toc">
+<ol>
+  <li>What is StreamCast? — The Big Picture</li>
+  <li>Core Concepts You Must Know First
+    <ul>
+      <li>What is a Microservice?</li>
+      <li>Client–Server Model</li>
+      <li>REST API basics</li>
+      <li>JSON, HTTP methods, status codes</li>
+      <li>JWT (JSON Web Tokens) — how auth works</li>
+      <li>Databases &amp; ORM (JPA / Hibernate)</li>
+    </ul>
+  </li>
+  <li>The StreamCast Architecture Map</li>
+  <li>Backend Deep Dive
+    <ul>
+      <li>Java &amp; Spring Boot basics</li>
+      <li>Maven, pom.xml, dependencies</li>
+      <li>Service-Registry (Eureka)</li>
+      <li>API-Gateway</li>
+      <li>Streamcast-Backend (auth/users/roles)</li>
+      <li>Content-Catalog-Service</li>
+      <li>Contract-Service</li>
+      <li>Clause-Service</li>
+      <li>Partner-Service</li>
+      <li>Distribution-Delivery</li>
+      <li>Schedule-Service</li>
+      <li>Usage-Service</li>
+      <li>How Feign &amp; Resilience4j work</li>
+    </ul>
+  </li>
+  <li>Frontend Deep Dive
+    <ul>
+      <li>What is Angular?</li>
+      <li>TypeScript essentials</li>
+      <li>Components, Templates, Services</li>
+      <li>Routing &amp; Guards</li>
+      <li>HttpClient &amp; Interceptors</li>
+      <li>Signals (Angular 17 reactivity)</li>
+      <li>Tailwind CSS &amp; Angular Material</li>
+      <li>Folder-by-folder tour of streamcast-ui</li>
+    </ul>
+  </li>
+  <li>The User Journey End-to-End (Login → Title → Schedule)</li>
+  <li>How to Run It Locally</li>
+  <li>Common Troubleshooting</li>
+  <li>What to Learn Next — A Roadmap</li>
+</ol>
+</div>
+
+<!-- ===================== SECTION 1 ===================== -->
+<h1 class="page-break">1. What is StreamCast?</h1>
+<p>
+StreamCast is a <strong>digital content distribution platform</strong>. Think of it as the back-office software a streaming company (Netflix, Hotstar, Disney+) would use internally to:
+</p>
+<ul>
+  <li>Catalog every movie, episode, or audio track they own (<em>Titles</em>).</li>
+  <li>Track legal licensing agreements with content owners (<em>Contracts</em> and the <em>Clauses</em> inside them).</li>
+  <li>Manage the external companies they ship content to (<em>Partners</em> — e.g. an Indian broadcaster, a regional CDN).</li>
+  <li>Build delivery packages called <em>Manifests</em> and ship them to those partners (<em>Distribution-Delivery</em>).</li>
+  <li>Plan when each title is broadcast/streamed (<em>Schedule</em>) and warn when two schedules clash (<em>Conflict</em>).</li>
+  <li>Report on views and revenue (<em>Usage</em>).</li>
+</ul>
+<p>
+The project is built as a <strong>microservice system</strong> — instead of one giant program, the responsibilities above are split into <strong>10 separate Java/Spring Boot applications</strong>, plus <strong>1 Angular web frontend</strong>. Each piece runs on its own port, has its own database, and talks to the others over the network.
+</p>
+
+<div class="note">
+<strong>One sentence summary:</strong> StreamCast is a Spring-Boot microservices backend + Angular 17 frontend for managing content, licensing, scheduling, delivery, and analytics in a streaming/broadcasting business.
+</div>
+
+<!-- ===================== SECTION 2 ===================== -->
+<h1 class="page-break">2. Core Concepts You Must Know First</h1>
+<p>Before touching the code, make these mental models stick. Everything in StreamCast is built on top of them.</p>
+
+<h2>2.1 What is a Microservice?</h2>
+<p>
+A <strong>monolith</strong> is one big application where every feature lives in one codebase and runs as one process. A <strong>microservice architecture</strong> splits that one big thing into many small applications. Each:
+</p>
+<ul>
+  <li>Owns one business capability (e.g. just contracts, just scheduling).</li>
+  <li>Has its <strong>own database</strong> — no one else reads its tables directly.</li>
+  <li>Runs as its <strong>own process</strong>, often on its own port.</li>
+  <li>Talks to other services only via <strong>HTTP REST</strong> (or messaging).</li>
+</ul>
+<p><strong>Why?</strong> Independent deploys, fault isolation, technology freedom per service. <strong>Cost?</strong> Networking complexity, distributed-system pain (service discovery, retries, transactions).</p>
+
+<h2>2.2 The Client–Server Model</h2>
+<p>
+The <strong>client</strong> is the program the user sees (here: the Angular app in the browser). The <strong>server</strong> is the program that holds data and rules (here: the Spring Boot services). The client sends a <strong>request</strong>, the server sends back a <strong>response</strong>. They speak over <strong>HTTP</strong>.
+</p>
+
+<h2>2.3 REST API basics</h2>
+<p>
+REST = an architectural style for building HTTP APIs. The core idea: every "thing" is a <strong>resource</strong> with a URL, and you act on it with a <strong>verb</strong>:
+</p>
+<table>
+<tr><th>HTTP method</th><th>What it means</th><th>Example used in StreamCast</th></tr>
+<tr><td><code>GET</code></td><td>Read data</td><td><code>GET /api/titles</code> → list all titles</td></tr>
+<tr><td><code>POST</code></td><td>Create new</td><td><code>POST /contracts</code> → create a new contract</td></tr>
+<tr><td><code>PUT</code></td><td>Replace existing</td><td><code>PUT /api/titles/{id}</code> → update a title</td></tr>
+<tr><td><code>PATCH</code></td><td>Partial update</td><td><code>PATCH /api/schedules/{id}</code></td></tr>
+<tr><td><code>DELETE</code></td><td>Remove</td><td><code>DELETE /api/titles/{id}</code></td></tr>
+</table>
+
+<h2>2.4 JSON, HTTP status codes</h2>
+<p>Data is exchanged as <strong>JSON</strong> — a text format for objects and arrays.</p>
+<pre><code>{
+  "name": "Inception",
+  "genre": "Sci-Fi",
+  "releaseDate": "2010-07-16"
+}</code></pre>
+<p>Every HTTP response carries a status code:</p>
+<ul>
+  <li><strong>2xx — Success.</strong> 200 OK, 201 Created.</li>
+  <li><strong>3xx — Redirect.</strong></li>
+  <li><strong>4xx — You (client) did something wrong.</strong> 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.</li>
+  <li><strong>5xx — Server broke.</strong> 500 Internal Server Error, 503 Service Unavailable.</li>
+</ul>
+
+<h2>2.5 JWT — How StreamCast knows who you are</h2>
+<p>
+After you log in, the backend creates a <strong>JWT</strong> (a long signed string) that proves your identity. The browser stores it (in <code>localStorage</code>) and attaches it to <em>every</em> later request as:
+</p>
+<pre><code>Authorization: Bearer eyJhbGciOiJIUzI1NiIs....</code></pre>
+<p>
+A JWT has three parts separated by dots: <code>header.payload.signature</code>. The middle <em>payload</em> is base64-encoded JSON like:
+</p>
+<pre><code>{
+  "sub": "afrin@example.com",
+  "role": "ADMIN",
+  "exp": 1730000000
+}</code></pre>
+<p>The <strong>signature</strong> is computed with a secret key only the server knows, so nobody can forge or tamper with a token. In StreamCast the API-Gateway validates the JWT on every request before forwarding it to a downstream service.</p>
+
+<h2>2.6 Databases &amp; JPA / Hibernate</h2>
+<p>
+Every backend service stores its data in a <strong>MySQL</strong> database. Java code does not write raw SQL — it uses <strong>JPA (Java Persistence API)</strong>, implemented by Hibernate. You map a Java class to a table with annotations:
+</p>
+<pre><code>@Entity
+@Table(name = "titles")
+public class Title {
+    @Id @GeneratedValue
+    private Integer id;
+    private String name;
+    private LocalDate releaseDate;
+    // ...
+}</code></pre>
+<p>Then a <code>JpaRepository&lt;Title, Integer&gt;</code> gives you <code>findAll()</code>, <code>findById()</code>, <code>save()</code>, <code>deleteById()</code> for free — no SQL written.</p>
+
+<!-- ===================== SECTION 3 ===================== -->
+<h1 class="page-break">3. The StreamCast Architecture Map</h1>
+<p>Here is the bird's-eye view of every piece and how requests flow:</p>
+<pre><code>                       ┌────────────────────────────┐
+                       │  Angular UI (port 4200)    │
+                       │  streamcast-ui (browser)   │
+                       └─────────────┬──────────────┘
+                                     │  HTTPS / HTTP + JWT
+                                     ▼
+                       ┌────────────────────────────┐
+                       │  API-Gateway (port 8082)   │
+                       │  validates JWT, routes URL │
+                       └─────────────┬──────────────┘
+                                     │ uses Eureka to find service
+                                     ▼
+        ┌──────────────────────────────────────────────────────┐
+        │   Service-Registry (Eureka, port 8761)               │
+        │   knows every service's live address                 │
+        └──────────────────────────────────────────────────────┘
+
+  ┌─────────────┐ ┌───────────────┐ ┌──────────────┐ ┌──────────────┐
+  │ Streamcast  │ │ Content-      │ │ Contract     │ │ Clause       │
+  │ Backend     │ │ Catalog       │ │ Service      │ │ Service      │
+  │ 8081  auth  │ │ 1020  titles  │ │ 8088 deals   │ │ 8089 terms   │
+  └─────────────┘ └───────────────┘ └──────────────┘ └──────────────┘
+  ┌─────────────┐ ┌───────────────┐ ┌──────────────┐ ┌──────────────┐
+  │ Partner     │ │ Distribution  │ │ Schedule     │ │ Usage        │
+  │ 8087        │ │ Delivery 8083 │ │ 1040         │ │ 1030         │
+  └─────────────┘ └───────────────┘ └──────────────┘ └──────────────┘
+            (each service has its own MySQL database)
+</code></pre>
+
+<h2>Service summary table</h2>
+<table>
+<tr><th>Service</th><th>Port</th><th>Java</th><th>What it owns</th></tr>
+<tr><td>Service-Registry</td><td>8761</td><td>17</td><td>Eureka — discovery</td></tr>
+<tr><td>API-Gateway</td><td>8082</td><td>17</td><td>Single entry point, JWT validation</td></tr>
+<tr><td>Streamcast-Backend</td><td>8081</td><td>17</td><td>Auth, users, roles, email</td></tr>
+<tr><td>Content-Catalog-Service</td><td>1020</td><td>17</td><td>Titles, assets, metadata</td></tr>
+<tr><td>Contract-Service</td><td>8088</td><td>21</td><td>Licensing contracts</td></tr>
+<tr><td>Clause-Service</td><td>8089</td><td>21</td><td>Clauses inside contracts</td></tr>
+<tr><td>Partner-Service</td><td>8087</td><td>21</td><td>Distribution partners</td></tr>
+<tr><td>Distribution-Delivery</td><td>8083</td><td>17</td><td>Manifests, delivery attempts</td></tr>
+<tr><td>schedule-service</td><td>1040</td><td>17</td><td>Schedules + conflicts</td></tr>
+<tr><td>usage-service</td><td>1030</td><td>17</td><td>Views &amp; revenue reports</td></tr>
+<tr><td>streamcast-ui</td><td>4200</td><td>—</td><td>Angular 17 frontend</td></tr>
+</table>
+
+<!-- ===================== SECTION 4 BACKEND ===================== -->
+<h1 class="page-break">4. Backend Deep Dive</h1>
+
+<h2>4.1 Java &amp; Spring Boot in 5 minutes</h2>
+<p>
+<strong>Java</strong> is the language. Classes hold data + methods, types are checked at compile time, and you compile <code>.java</code> source into <code>.class</code> bytecode that runs on the JVM.
+</p>
+<p>
+<strong>Spring</strong> is a framework that does the boring plumbing for you: wiring objects together, listening on HTTP ports, talking to databases, doing security checks. <strong>Spring Boot</strong> is Spring + sensible defaults + an embedded Tomcat server — so a single <code>main()</code> method launches a full web app.
+</p>
+
+<h3>The 5 annotations you will see everywhere</h3>
+<table>
+<tr><th>Annotation</th><th>Meaning</th></tr>
+<tr><td><code>@SpringBootApplication</code></td><td>Marks the <code>main()</code> class. Tells Spring "scan this package and start the app."</td></tr>
+<tr><td><code>@RestController</code></td><td>"This class handles HTTP requests and returns JSON."</td></tr>
+<tr><td><code>@Service</code></td><td>"This class contains business logic."</td></tr>
+<tr><td><code>@Repository</code></td><td>"This class talks to the database." Usually extends <code>JpaRepository</code>.</td></tr>
+<tr><td><code>@Entity</code></td><td>"This class maps to a database table."</td></tr>
+</table>
+
+<h3>A complete tiny controller</h3>
+<pre><code>@RestController
+@RequestMapping("/contracts")
+public class ContractController {
+
+    private final ContractService service;
+    public ContractController(ContractService service) { this.service = service; }
+
+    @GetMapping
+    public List&lt;Contract&gt; list() {
+        return service.findAll();
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','RIGHTS_MANAGER')")
+    public Contract create(@RequestBody @Valid Contract c) {
+        return service.save(c);
+    }
+}</code></pre>
+<ul>
+  <li><code>@RequestMapping("/contracts")</code> — base URL for this controller.</li>
+  <li><code>@GetMapping</code> / <code>@PostMapping</code> — map HTTP verb + path.</li>
+  <li><code>@RequestBody</code> — read JSON from the request and convert to a Java object.</li>
+  <li><code>@PreAuthorize</code> — only logged-in users with these roles may call this method.</li>
+</ul>
+
+<h2>4.2 Maven &amp; pom.xml</h2>
+<p>
+<strong>Maven</strong> is the build tool. Every service has a <code>pom.xml</code> file declaring its dependencies. When you run <code>mvn spring-boot:run</code>, Maven downloads all the libraries from the internet and starts the app.
+</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Common dependencies in this project:</p>
+<ul>
+  <li><code>spring-boot-starter-web</code> — REST endpoints</li>
+  <li><code>spring-boot-starter-data-jpa</code> — database access</li>
+  <li><code>spring-boot-starter-security</code> — auth/role checks</li>
+  <li><code>spring-cloud-starter-netflix-eureka-client</code> — register with Eureka</li>
+  <li><code>spring-cloud-starter-openfeign</code> — call other services</li>
+  <li><code>resilience4j-spring-boot3</code> — circuit breakers, retries</li>
+  <li><code>mysql-connector-j</code> — MySQL driver</li>
+</ul>
+
+<h2>4.3 application.properties — the config file</h2>
+<p>Each service has one. Typical entries:</p>
+<pre><code>spring.application.name=contract-service
+server.port=8088
+
+spring.datasource.url=jdbc:mysql://localhost:3306/contract_database
+spring.datasource.username=root
+spring.datasource.password=ctssql2026
+spring.jpa.hibernate.ddl-auto=update
+
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka</code></pre>
+<p><code>ddl-auto=update</code> means Hibernate auto-creates and migrates tables on startup — fine for development, never for production.</p>
+
+<h2>4.4 The 10 services, one by one</h2>
+
+<div class="service-card">
+<h3>① Service-Registry — port 8761</h3>
+<p>Plain Eureka server. Every other service phones home here on startup so the gateway can find them by name (<code>lb://contract-service</code>) instead of hardcoded IPs.</p>
+<p>Open <code>http://localhost:8761</code> in your browser to see the live registry dashboard.</p>
+</div>
+
+<div class="service-card">
+<h3>② API-Gateway — port 8082</h3>
+<p>Built with <strong>Spring Cloud Gateway (WebFlux)</strong>. Two jobs:</p>
+<ol>
+  <li><strong>Routing.</strong> The gateway's config maps URL prefixes to services:
+    <ul>
+      <li><code>/auth/**</code>, <code>/users/**</code>, <code>/roles/**</code> → Streamcast-Backend</li>
+      <li><code>/api/titles/**</code>, <code>/api/assets/**</code>, <code>/api/metadata/**</code> → Content-Catalog</li>
+      <li><code>/contracts/**</code> → Contract-Service</li>
+      <li><code>/clauses/**</code> → Clause-Service</li>
+      <li><code>/partners/**</code> → Partner-Service</li>
+      <li><code>/manifests/**</code> → Distribution-Delivery</li>
+      <li><code>/api/schedules/**</code>, <code>/api/conflicts/**</code> → schedule-service</li>
+      <li><code>/api/usage/**</code> → usage-service</li>
+    </ul>
+  </li>
+  <li><strong>JWT filter.</strong> The <code>JwtAuthFilter</code> class reads the <code>Authorization</code> header, verifies the signature with the shared secret, extracts <code>email</code> + <code>role</code>, and forwards the request. If the token is missing/expired, the gateway sends 401 immediately. Login and register paths are public (no token needed).</li>
+</ol>
+</div>
+
+<div class="service-card">
+<h3>③ Streamcast-Backend — port 8081</h3>
+<p>The auth + identity service. Owns two entities: <code>User</code> and <code>Role</code>.</p>
+<p><strong>Endpoints:</strong></p>
+<ul>
+  <li><code>POST /auth/register</code> → creates a User and emails a verification link.</li>
+  <li><code>GET /auth/verify?token=...</code> → marks email as verified.</li>
+  <li><code>POST /auth/login</code> → returns a JWT.</li>
+  <li><code>POST /auth/forgot-password</code> / <code>/auth/reset-password</code> → password reset flow.</li>
+  <li><code>POST /auth/forgot-username</code> → emails the username.</li>
+  <li><code>/users</code>, <code>/users/{id}</code> — ADMIN-only CRUD over users.</li>
+  <li><code>/roles</code>, <code>/roles/{id}</code> — ADMIN-only CRUD over roles.</li>
+</ul>
+<p><strong>Roles supported:</strong> ADMIN, CONTENT_OWNER, RIGHTS_MANAGER, SCHEDULER, COMPLIANCE_OFFICER, DISTRIBUTION_OPERATOR, PARTNER_ADMIN. Every other service uses these role names in its <code>@PreAuthorize</code> rules.</p>
+</div>
+
+<div class="service-card">
+<h3>④ Content-Catalog-Service — port 1020</h3>
+<p>The library of every piece of content. Three entities, all in <code>content_catalog_database</code>:</p>
+<ul>
+  <li><strong>Title</strong> — id, name, releaseDate, genre, language, status.</li>
+  <li><strong>Asset</strong> — a file belonging to a Title (VIDEO, AUDIO, SUBTITLE…). Holds <code>fileURI</code>, <code>checksum</code>, <code>duration</code>.</li>
+  <li><strong>TitleMetadata</strong> — flexible <code>key/value</code> pairs (director, cast, plot…).</li>
+</ul>
+<p><strong>Key endpoints:</strong></p>
+<ul>
+  <li><code>POST /api/titles</code> — create a title (ADMIN, CONTENT_OWNER).</li>
+  <li><code>GET /api/titles</code> — list titles.</li>
+  <li><code>GET /api/titles/{id}/exists</code> — used by Distribution-Delivery to validate a title before shipping.</li>
+  <li><code>POST /api/assets/{titleId}</code> — attach an asset.</li>
+  <li><code>POST /api/titles/{titleId}/metadata</code> — add metadata.</li>
+</ul>
+<p>Swagger UI is exposed at <code>/swagger-ui/index.html</code>.</p>
+</div>
+
+<div class="service-card">
+<h3>⑤ Contract-Service — port 8088</h3>
+<p>One entity: <strong>Contract</strong>. Holds <code>titleId</code>, a JSON list of territories, start/end date, exclusivity flag, summary, and status.</p>
+<p><strong>Endpoints:</strong> standard CRUD on <code>/contracts</code>. All responses are wrapped in a generic envelope:</p>
+<pre><code>{
+  "message": "Contract created successfully",
+  "data": { ... },
+  "success": true
+}</code></pre>
+<p>Only ADMIN + RIGHTS_MANAGER can create or update; ADMIN can delete.</p>
+</div>
+
+<div class="service-card">
+<h3>⑥ Clause-Service — port 8089</h3>
+<p>One entity: <strong>Clause</strong>. Each clause belongs to a contract (<code>contractId</code> FK) and carries a free-form <code>detailsJSON</code> string. Used to store things like "broadcast restriction in Region X from 2025-01-01 to 2026-01-01".</p>
+<p><strong>Endpoints:</strong> <code>POST /clauses/post</code>, <code>GET /clauses/get</code>.</p>
+</div>
+
+<div class="service-card">
+<h3>⑦ Partner-Service — port 8087</h3>
+<p>One entity: <strong>Partner</strong>. Tracks the external broadcasters/platforms StreamCast delivers content to — their name, contact info, endpoint note, status, and the <code>titleId</code> they hold.</p>
+<p>Validation rules: 2–50 char name, 10-digit phone, status ACTIVE/INACTIVE.</p>
+</div>
+
+<div class="service-card">
+<h3>⑧ Distribution-Delivery — port 8083</h3>
+<p>The shipping department. Bundles a Title's Assets into a <strong>Manifest</strong> and tracks delivery to a Partner.</p>
+<p><strong>Entity:</strong> <em>Manifest</em> with titleId, assetIdsJSON (which assets are in the package), destination, createdBy, createdAt, status (PENDING/DELIVERED/FAILED), partnerId.</p>
+<p><strong>Endpoints:</strong></p>
+<ul>
+  <li><code>POST /manifests</code> — create.</li>
+  <li><code>GET /manifests</code>, <code>GET /manifests/{id}</code>, <code>GET /manifests/partner/{partnerId}</code>.</li>
+  <li><code>POST /manifests/{id}/attempts</code> — log a delivery attempt.</li>
+  <li><code>POST /manifests/{id}/receipt</code> — partner confirms receipt.</li>
+</ul>
+<p><strong>This service uses Feign + Resilience4j.</strong> Before creating a manifest it calls Content-Catalog (<code>/api/titles/{id}/exists</code>) and Partner-Service (to read partner details). If either is down, a <strong>circuit breaker</strong> kicks in — after 50 % failures inside a 5-request window it "trips" and refuses to call for 10 seconds, returning a fallback. Retries: 3 attempts, 2 s apart.</p>
+</div>
+
+<div class="service-card">
+<h3>⑨ Schedule-Service — port 1040</h3>
+<p>Two entities:</p>
+<ul>
+  <li><strong>Schedule</strong> — titleId, contractId, platform (NETFLIX, HULU, ZEE5...), startDateTime, endDateTime, windowtype (EXCLUSIVE / NON_EXCLUSIVE), status.</li>
+  <li><strong>Conflict</strong> — links two overlapping schedules; carries <code>resolved</code> flag + <code>detectedAt</code>.</li>
+</ul>
+<p><strong>Endpoints:</strong></p>
+<ul>
+  <li><code>POST /api/schedules</code> — create.</li>
+  <li><code>GET /api/schedules/calendar</code> — paginated calendar with filters (status, platform).</li>
+  <li><code>POST /api/schedules/{id}/detect-conflicts</code> — manually trigger overlap detection.</li>
+  <li><code>GET /api/conflicts?scheduleId=...</code> — view conflicts.</li>
+  <li><code>PUT /api/conflicts/{id}/resolve</code> — mark resolved.</li>
+</ul>
+</div>
+
+<div class="service-card">
+<h3>⑩ Usage-Service — port 1030</h3>
+<p>Read-only analytics. One entity: <strong>UsageRecord</strong> (titleId, platform, date, views, revenue).</p>
+<p><strong>Endpoints:</strong></p>
+<ul>
+  <li><code>GET /api/usage/summary?start=...&amp;end=...</code> — totals over a date range.</li>
+  <li><code>GET /api/usage/details?start=...&amp;end=...</code> — every row in the range.</li>
+  <li><code>GET /api/usage/breakdown?start=...&amp;end=...&amp;groupBy=platform</code> — pivot by field.</li>
+</ul>
+</div>
+
+<h2>4.5 How services call each other — OpenFeign</h2>
+<p>Distribution-Delivery does not hardcode <code>http://localhost:1020</code>. It declares a Feign interface and Spring builds a proxy:</p>
+<pre><code>@FeignClient(name = "content-catalog-service")
+public interface TitleClient {
+    @GetMapping("/api/titles/{id}/exists")
+    Boolean exists(@PathVariable Integer id);
+}</code></pre>
+<p>At call time Feign asks Eureka "where is content-catalog-service right now?" and gets back the live host:port. This decouples services and supports load-balancing across multiple instances.</p>
+
+<h2>4.6 Resilience4j — when a downstream is down</h2>
+<p>Wrap a Feign call in a circuit breaker:</p>
+<pre><code>@CircuitBreaker(name = "titleCircuitBreaker", fallbackMethod = "titleFallback")
+@Retry(name = "titleRetry")
+public boolean checkTitleExists(Integer id) {
+    return titleClient.exists(id);
+}
+
+public boolean titleFallback(Integer id, Throwable t) {
+    log.warn("title service unreachable, assuming title invalid");
+    return false;
+}</code></pre>
+<p>Three states: <strong>CLOSED</strong> (normal) → <strong>OPEN</strong> (too many failures, refuse for 10 s) → <strong>HALF_OPEN</strong> (try a few, decide where to go next).</p>
+
+<!-- ===================== SECTION 5 FRONTEND ===================== -->
+<h1 class="page-break">5. Frontend Deep Dive</h1>
+
+<h2>5.1 What is Angular?</h2>
+<p>
+Angular is a <strong>JavaScript framework for building single-page web applications (SPAs)</strong>. "Single page" means the browser only ever loads <code>index.html</code> once; after that, Angular swaps content in and out without a full page reload.
+</p>
+<p>Angular is written in <strong>TypeScript</strong> — JavaScript with types added on top — and is organised around four building blocks:</p>
+<ol>
+  <li><strong>Components</strong> — a chunk of UI (HTML + CSS + a TypeScript class). Like a Lego brick.</li>
+  <li><strong>Services</strong> — plain classes that hold logic / talk to APIs. Shared by many components.</li>
+  <li><strong>Routing</strong> — maps URLs (<code>/titles</code>) to components.</li>
+  <li><strong>Guards / Interceptors</strong> — middleware that runs before navigation or HTTP calls.</li>
+</ol>
+
+<h2>5.2 TypeScript essentials in 60 seconds</h2>
+<pre><code>// type annotation on a variable
+let count: number = 0;
+
+// interface — a shape contract
+interface Title {
+  id: number;
+  name: string;
+  releaseDate: string;
+  genre: string;
+}
+
+// class with constructor injection
+class TitlesService {
+  constructor(private http: HttpClient) {}
+  list(): Observable&lt;Title[]&gt; {
+    return this.http.get&lt;Title[]&gt;('/api/titles');
+  }
+}</code></pre>
+<p>Key ideas: explicit types, interfaces describe data shapes, <code>private http</code> in the constructor automatically saves the parameter as a field, and the compiler catches mistakes before the code runs.</p>
+
+<h2>5.3 A component, dissected</h2>
+<pre><code>@Component({
+  selector: 'app-titles',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  template: `
+    &lt;h2&gt;Titles&lt;/h2&gt;
+    &lt;button (click)="reload()"&gt;Refresh&lt;/button&gt;
+    &lt;ul&gt;
+      &lt;li *ngFor="let t of titles()"&gt;
+        &lt;a [routerLink]="['/titles', t.id]"&gt;{{ t.name }}&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  `,
+})
+export class TitlesComponent {
+  titles = signal&lt;Title[]&gt;([]);
+  constructor(private svc: TitlesService) { this.reload(); }
+  reload() {
+    this.svc.list().subscribe(rows =&gt; this.titles.set(rows));
+  }
+}</code></pre>
+<p>Things to notice:</p>
+<ul>
+  <li><code>standalone: true</code> — Angular 17 modern style; no NgModule needed.</li>
+  <li><code>selector: 'app-titles'</code> — this becomes the HTML tag <code>&lt;app-titles&gt;&lt;/app-titles&gt;</code>.</li>
+  <li><code>*ngFor="let t of titles()"</code> — loop a template; calling <code>titles()</code> reads the Signal.</li>
+  <li><code>(click)="reload()"</code> — event binding (parentheses = event, square brackets = property).</li>
+  <li><code>{{ t.name }}</code> — interpolation (display a value).</li>
+  <li>The constructor injects the service. Angular looks at the parameter type and supplies the right instance.</li>
+</ul>
+
+<h2>5.4 Routing</h2>
+<p>In <code>app.routes.ts</code>:</p>
+<pre><code>export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: '', component: ShellComponent, canActivate: [authGuard], children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'titles', component: TitlesComponent,
+        canActivate: [roleGuard(['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'])] },
+      { path: 'titles/:id', component: TitleDetailComponent },
+      { path: 'contracts', component: ContractsComponent,
+        canActivate: [roleGuard(['ADMIN','RIGHTS_MANAGER'])] },
+      // ... clauses, partners, manifests, schedules, conflicts, usage,
+      //     users (ADMIN only), roles (ADMIN only)
+  ]},
+  { path: 'forbidden', component: ForbiddenComponent },
+  { path: '**', redirectTo: 'dashboard' }
+];</code></pre>
+<ul>
+  <li><strong>authGuard</strong> blocks every authenticated route unless a JWT is present.</li>
+  <li><strong>roleGuard(['ADMIN', ...])</strong> reads the role claim and bounces unauthorized users to <code>/forbidden</code>.</li>
+</ul>
+
+<h2>5.5 HttpClient + Auth Interceptor</h2>
+<p>Every service uses Angular's <code>HttpClient</code>:</p>
+<pre><code>@Injectable({ providedIn: 'root' })
+export class ContractsService {
+  private base = `${environment.gateway}/contracts`;
+  constructor(private http: HttpClient) {}
+
+  list(): Observable&lt;Contract[]&gt; {
+    return this.http.get&lt;ApiResponse&lt;Contract[]&gt;&gt;(this.base)
+                    .pipe(map(r =&gt; r.data));
+  }
+}</code></pre>
+<p>The Auth Interceptor automatically attaches the JWT:</p>
+<pre><code>export const authInterceptor: HttpInterceptorFn = (req, next) =&gt; {
+  const token = localStorage.getItem('jwt');
+  const cloned = token ? req.clone({
+    setHeaders: { Authorization: `Bearer ${token}` }
+  }) : req;
+  return next(cloned);
+};</code></pre>
+<p>Registered in <code>app.config.ts</code> via <code>provideHttpClient(withInterceptors([authInterceptor]))</code>.</p>
+
+<h2>5.6 Signals — Angular 17's new reactivity</h2>
+<p>A Signal is a value you can read and watch. When you change it, every template using it re-renders automatically.</p>
+<pre><code>const count = signal(0);
+count();          // read → 0
+count.set(5);     // write → 5
+count.update(n =&gt; n + 1);
+
+const doubled = computed(() =&gt; count() * 2);
+effect(() =&gt; console.log('count is now', count()));</code></pre>
+<p>StreamCast uses Signals to store the current user, the titles list, schedule filters etc. They replace older patterns like <code>BehaviorSubject</code> and manual change detection.</p>
+
+<h2>5.7 Tailwind CSS &amp; Angular Material</h2>
+<p>Two complementary styling layers are used:</p>
+<ul>
+  <li><strong>Tailwind CSS</strong> — utility classes you compose inline:
+    <pre><code>&lt;div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"&gt;
+  &lt;h2 class="text-xl font-semibold text-slate-800"&gt;Titles&lt;/h2&gt;
+&lt;/div&gt;</code></pre>
+    Each class is one CSS property. No more naming things like <code>.title-card-header</code>.
+  </li>
+  <li><strong>Angular Material</strong> — pre-built UI components (<code>mat-button</code>, <code>mat-dialog</code>, <code>mat-table</code>, <code>mat-paginator</code>...) you import into a component and use directly. They handle keyboard / accessibility for you.</li>
+</ul>
+
+<h2>5.8 Folder-by-folder tour of <code>streamcast-ui</code></h2>
+<table>
+<tr><th>Path</th><th>What's there</th></tr>
+<tr><td><code>angular.json</code></td><td>Angular workspace config (build options, assets, styles).</td></tr>
+<tr><td><code>tailwind.config.js</code></td><td>Where Tailwind scans for class names &amp; theme tokens.</td></tr>
+<tr><td><code>package.json</code></td><td>npm dependencies and run scripts (<code>npm start</code> = <code>ng serve</code>).</td></tr>
+<tr><td><code>src/main.ts</code></td><td>Entry point: bootstraps <code>AppComponent</code> with <code>appConfig</code>.</td></tr>
+<tr><td><code>src/app/app.routes.ts</code></td><td>All route definitions + guards.</td></tr>
+<tr><td><code>src/app/app.config.ts</code></td><td>Global providers (router, HttpClient with interceptor, Material animations).</td></tr>
+<tr><td><code>src/app/core/auth/</code></td><td><code>AuthService</code>, <code>authGuard</code>, <code>roleGuard</code>, JWT decode utility.</td></tr>
+<tr><td><code>src/app/core/http/auth.interceptor.ts</code></td><td>Attaches Bearer token to every outgoing HTTP request.</td></tr>
+<tr><td><code>src/app/core/models/</code></td><td>TypeScript interfaces — <code>Title</code>, <code>Contract</code>, <code>Schedule</code>, <code>ApiResponse&lt;T&gt;</code>, etc.</td></tr>
+<tr><td><code>src/app/features/auth/login.component.ts</code></td><td>Login form, calls <code>POST /auth/login</code>, stores JWT.</td></tr>
+<tr><td><code>src/app/features/dashboard/</code></td><td>Landing page after login.</td></tr>
+<tr><td><code>src/app/features/catalog/</code></td><td>Titles + Assets management UI.</td></tr>
+<tr><td><code>src/app/features/contracts/</code></td><td>Contract CRUD pages + service.</td></tr>
+<tr><td><code>src/app/features/clauses/</code></td><td>Clause CRUD.</td></tr>
+<tr><td><code>src/app/features/partners/</code></td><td>Partner CRUD.</td></tr>
+<tr><td><code>src/app/features/manifests/</code></td><td>Manifest creation + delivery tracking.</td></tr>
+<tr><td><code>src/app/features/schedules/</code></td><td>Calendar view, create / update / delete schedules.</td></tr>
+<tr><td><code>src/app/features/conflicts/</code></td><td>List + resolve schedule conflicts.</td></tr>
+<tr><td><code>src/app/features/usage/</code></td><td>Reports / charts of views &amp; revenue.</td></tr>
+<tr><td><code>src/app/features/admin/</code></td><td>Users + Roles screens (ADMIN-only).</td></tr>
+<tr><td><code>src/app/features/misc/forbidden.component.ts</code></td><td>403 page.</td></tr>
+<tr><td><code>src/app/layout/shell.component.ts</code></td><td>The frame around every authenticated page — top bar, side nav, router outlet.</td></tr>
+</table>
+
+<!-- ===================== SECTION 6 ===================== -->
+<h1 class="page-break">6. The User Journey — End to End</h1>
+<p>Let's follow one click: <strong>"User logs in, opens Titles page, clicks a title, schedules it."</strong></p>
+
+<h3>① Login</h3>
+<ol>
+  <li>Browser loads <code>http://localhost:4200/login</code>.</li>
+  <li>User types email + password and submits the form.</li>
+  <li><code>LoginComponent</code> calls <code>AuthService.login()</code>.</li>
+  <li>That hits <code>POST http://localhost:8082/auth/login</code> (the gateway).</li>
+  <li>Gateway sees this path is in the "public" list, forwards to Streamcast-Backend on 8081.</li>
+  <li>Streamcast-Backend checks the password (BCrypt), builds a JWT containing <code>sub=email</code> + <code>role=ADMIN</code>, signs it with the secret, and returns it.</li>
+  <li>Angular stores it in <code>localStorage</code> and routes the user to <code>/dashboard</code>.</li>
+</ol>
+
+<h3>② Open the Titles page</h3>
+<ol>
+  <li>User clicks "Titles" in the side nav → router navigates to <code>/titles</code>.</li>
+  <li><code>authGuard</code> checks "is a JWT present?" — yes.</li>
+  <li><code>roleGuard(['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'])</code> reads the role claim — passes.</li>
+  <li><code>TitlesComponent</code> mounts. In its constructor it calls <code>TitlesService.list()</code>.</li>
+  <li><code>HttpClient</code> sends <code>GET /api/titles</code>; the auth interceptor adds <code>Authorization: Bearer ...</code>.</li>
+  <li>Gateway validates JWT, then forwards to Content-Catalog (1020).</li>
+  <li>Content-Catalog's <code>TitleController.list()</code> runs, JPA repository fetches rows, JSON returned.</li>
+  <li>The Signal is updated, Angular re-renders the list.</li>
+</ol>
+
+<h3>③ Open a title's details</h3>
+<ol>
+  <li>User clicks a row → router goes to <code>/titles/42</code>.</li>
+  <li><code>TitleDetailComponent</code> fires three parallel calls:
+    <ul>
+      <li><code>GET /api/titles/42</code></li>
+      <li><code>GET /api/titles/42/assets</code></li>
+      <li><code>GET /api/titles/42/metadata</code></li>
+    </ul>
+  </li>
+  <li>All three resolve, the page shows title info + asset list + metadata table.</li>
+</ol>
+
+<h3>④ Schedule this title</h3>
+<ol>
+  <li>User clicks "Add Schedule" → opens a Material dialog.</li>
+  <li>Fills startDateTime / endDateTime / platform / windowtype / contractId.</li>
+  <li><code>POST /api/schedules</code> is sent.</li>
+  <li>schedule-service validates the body, inserts a row in <code>schedules</code>, runs conflict detection (overlapping time ranges on same title or platform). If any are found, rows are written to <code>conflicts</code>.</li>
+  <li>Response goes back up; UI navigates to the calendar showing the new entry.</li>
+  <li>If conflicts exist, the <code>/conflicts</code> page lights up — user can resolve them via <code>PUT /api/conflicts/{id}/resolve</code>.</li>
+</ol>
+
+<!-- ===================== SECTION 7 ===================== -->
+<h1 class="page-break">7. How to Run It Locally</h1>
+
+<h3>Prerequisites</h3>
+<ul>
+  <li>JDK 21 (covers both Java 17 and 21 services).</li>
+  <li>Maven 3.9+.</li>
+  <li>MySQL 8.x running on <code>localhost:3306</code> with user <code>root</code> / password <code>ctssql2026</code>.</li>
+  <li>Node.js 18+ and npm.</li>
+  <li>An IDE — IntelliJ IDEA recommended.</li>
+</ul>
+
+<h3>Step-by-step</h3>
+<ol>
+  <li>Start MySQL. Create the databases (Hibernate <code>ddl-auto=update</code> will build tables but it does not create the databases themselves):
+    <pre><code>CREATE DATABASE streamcast_database;
+CREATE DATABASE content_catalog_database;
+CREATE DATABASE contract_database;
+CREATE DATABASE clause_database;
+CREATE DATABASE partner_database;
+CREATE DATABASE distribution_delivery_database;
+CREATE DATABASE schedule_database;
+CREATE DATABASE usage_database;</code></pre>
+  </li>
+  <li>Start Service-Registry first:
+    <pre><code>cd Service-Registry
+mvn spring-boot:run</code></pre>
+    Open <code>http://localhost:8761</code> — you should see the Eureka dashboard.
+  </li>
+  <li>Start each service (each in its own terminal):
+    <pre><code>cd Streamcast-Backend       && mvn spring-boot:run    # 8081
+cd Content-Catalog-Service  && mvn spring-boot:run    # 1020
+cd Contract-Service         && mvn spring-boot:run    # 8088
+cd Clause-Service           && mvn spring-boot:run    # 8089
+cd Partner-Service          && mvn spring-boot:run    # 8087
+cd Distribution-Delivery    && mvn spring-boot:run    # 8083
+cd schedule-service         && mvn spring-boot:run    # 1040
+cd usage-service            && mvn spring-boot:run    # 1030</code></pre>
+  </li>
+  <li>Start the API-Gateway last (it can boot before the services, but routes will fail until they register):
+    <pre><code>cd API-Gateway && mvn spring-boot:run     # 8082</code></pre>
+  </li>
+  <li>Start the frontend:
+    <pre><code>cd streamcast-ui
+npm install
+npm start                                  # serves on http://localhost:4200</code></pre>
+  </li>
+  <li>Register an ADMIN user via <code>POST http://localhost:8082/auth/register</code>, verify the email link from the SMTP logs, then log in via the UI.</li>
+</ol>
+
+<!-- ===================== SECTION 8 ===================== -->
+<h1 class="page-break">8. Common Troubleshooting</h1>
+
+<table>
+<tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+<tr><td>UI returns 401 on every call</td><td>JWT missing or expired</td><td>Log in again — token survives in <code>localStorage</code>, check DevTools → Application.</td></tr>
+<tr><td>UI returns 403</td><td>Your user's role can't reach that endpoint</td><td>Check <code>@PreAuthorize</code> in the controller; promote the role via <code>PUT /users/{id}</code>.</td></tr>
+<tr><td>Gateway returns 503</td><td>Downstream service not registered in Eureka yet</td><td>Wait 30 s after starting; check <code>http://localhost:8761</code>.</td></tr>
+<tr><td>"Connection refused" in service logs</td><td>MySQL not running, or wrong password</td><td>Start MySQL; verify <code>application.properties</code> credentials.</td></tr>
+<tr><td>CORS error in browser console</td><td>Calling a service directly instead of via gateway</td><td>Always call <code>http://localhost:8082/...</code>; gateway adds CORS headers.</td></tr>
+<tr><td>Hibernate "table doesn't exist"</td><td>Database wasn't created</td><td>Run the CREATE DATABASE statements above.</td></tr>
+<tr><td>Distribution-Delivery hangs / returns fallback</td><td>Circuit breaker tripped for Content-Catalog or Partner</td><td>Restart the downstream and wait 10 s for the breaker to half-open.</td></tr>
+<tr><td>Email never arrives during registration</td><td>SMTP creds in Streamcast-Backend</td><td>Check <code>spring.mail.*</code> properties — use an app-specific password for Gmail.</td></tr>
+</table>
+
+<!-- ===================== SECTION 9 ===================== -->
+<h1 class="page-break">9. What to Learn Next — A Roadmap</h1>
+
+<h3>If you are completely new to backend:</h3>
+<ol>
+  <li>Java basics — classes, methods, generics, lambdas.</li>
+  <li>Spring Boot — Baeldung "Spring Boot Tutorial", official guide "Building a RESTful Web Service".</li>
+  <li>JPA / Hibernate — entities, relationships, JPQL.</li>
+  <li>Spring Security — UserDetails, filters, role hierarchy, JWT.</li>
+  <li>Spring Cloud — Eureka, Gateway, OpenFeign, Resilience4j.</li>
+</ol>
+
+<h3>If you are completely new to frontend:</h3>
+<ol>
+  <li>HTML/CSS/JS fundamentals — MDN tutorials.</li>
+  <li>TypeScript Handbook (typescriptlang.org) — at least chapters 1–4.</li>
+  <li>Angular official tour: <em>angular.dev/tutorials/learn-angular</em>.</li>
+  <li>RxJS basics — Observables, <code>map</code>, <code>switchMap</code>, <code>tap</code>.</li>
+  <li>Angular 17 Signals — <em>angular.dev/guide/signals</em>.</li>
+  <li>Tailwind CSS — <em>tailwindcss.com/docs/utility-first</em>.</li>
+</ol>
+
+<h3>Bring it together — practical exercises on this codebase</h3>
+<ul>
+  <li>Add a new field to <code>Contract</code> (e.g. <code>currency</code>) — update entity, repository (free), DTO, controller, frontend service + form.</li>
+  <li>Add a new role <code>VIEWER</code> that can only do GET on titles. Update Streamcast-Backend role table + Spring Security configs in each service + the frontend role guard.</li>
+  <li>Add a new microservice <code>notification-service</code> that exposes <code>POST /notifications</code> and is called by Distribution-Delivery whenever a delivery succeeds.</li>
+  <li>Replace one of the Tailwind dashboards with Angular Material's <code>mat-table</code> + <code>mat-paginator</code>.</li>
+</ul>
+
+<div class="success">
+<strong>You're done!</strong> Read this once front-to-back, then keep it open as a reference while you poke around the code. The fastest way to learn is to pick one service, run it, hit it with Postman, and step through the controller in the debugger. After 2-3 services it all clicks.
+</div>
+
+<p class="small" style="margin-top:50px; text-align:center;">— End of Guide — StreamCast Microservices Walkthrough — May 2026 —</p>
+
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Angular Concepts Explained — Basics to Advanced</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937; line-height: 1.6; font-size: 11pt; margin: 0;
+  }
+  h1, h2, h3, h4 { color: #0b3a5b; line-height: 1.25; page-break-after: avoid; }
+  h1 { font-size: 26pt; border-bottom: 3px solid #0b3a5b; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 18pt; margin-top: 28px; border-bottom: 2px solid #d1d5db; padding-bottom: 4px; }
+  h3 { font-size: 14pt; margin-top: 22px; color: #1d4ed8; }
+  h4 { font-size: 12pt; margin-top: 16px; color: #334155; }
+  p, li { font-size: 11pt; }
+  ul, ol { margin: 6px 0 10px 22px; } li { margin: 3px 0; }
+  code, pre { font-family: "Consolas","Courier New",monospace; font-size: 9.5pt; }
+  code { background: #eef2ff; color: #1e3a8a; padding: 1px 5px; border-radius: 3px; }
+  pre {
+    background: #0f172a; color: #e2e8f0; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; page-break-inside: avoid; border-left: 4px solid #2563eb;
+    white-space: pre-wrap; word-break: break-word; font-size: 9pt; line-height: 1.45;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #0b3a5b; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .cover { text-align: center; padding: 60px 0 30px; page-break-after: always; }
+  .cover h1 { border: none; font-size: 32pt; color: #0b3a5b; margin-bottom: 8px; }
+  .cover .sub { font-size: 13pt; color: #475569; margin-bottom: 30px; }
+  .cover .meta { font-size: 11pt; color: #64748b; margin-top: 50px; }
+  .page-break { page-break-before: always; }
+  .analogy {
+    background: #fef9c3; border-left: 5px solid #ca8a04; padding: 8px 12px;
+    margin: 10px 0; border-radius: 4px; page-break-inside: avoid;
+  }
+  .analogy strong { color: #713f12; }
+  .note { background: #dbeafe; border-left: 5px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 4px; page-break-inside: avoid; }
+  .success { background: #dcfce7; border-left: 5px solid #16a34a; padding: 10px 14px; margin: 12px 0; border-radius: 4px; page-break-inside: avoid; }
+  .toc { background: #f1f5f9; padding: 14px 18px; border-radius: 6px; }
+  .toc ol { margin-left: 20px; column-count: 2; column-gap: 24px; } .toc li { margin: 3px 0; break-inside: avoid; }
+  .badge { display: inline-block; background: #1d4ed8; color: #fff; padding: 1px 7px; border-radius: 10px; font-size: 8.5pt; margin-right: 3px; }
+  .small { font-size: 9pt; color: #64748b; }
+  .concept-num {
+    display: inline-block; background: #1d4ed8; color: #fff;
+    width: 28px; height: 28px; line-height: 28px; text-align: center;
+    border-radius: 50%; font-size: 11pt; margin-right: 8px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>Angular Concepts Explained</h1>
+  <div class="sub">From Absolute Basics to the Advanced Concepts Used in StreamCast<br>With Simple Language, Real-World Analogies &amp; Project Examples</div>
+  <div class="meta">
+    For: Afrin Banua &nbsp;|&nbsp; Project: streamcast-ui &nbsp;|&nbsp; Date: 19 May 2026<br>
+    40 concepts &nbsp;|&nbsp; Foundation → Architecture → Forms → Communication → Modern Angular
+  </div>
+</div>
+
+<!-- TOC -->
+<h1>Table of Contents</h1>
+<div class="toc">
+<ol>
+  <li>What is Angular?</li>
+  <li>Single-Page Application (SPA)</li>
+  <li>TypeScript</li>
+  <li>Decorators</li>
+  <li>Components</li>
+  <li>Selector</li>
+  <li>Modules vs Standalone Components</li>
+  <li>Template</li>
+  <li>Data Binding — The 4 Types</li>
+  <li>Directives</li>
+  <li>Pipes</li>
+  <li>Services</li>
+  <li>Dependency Injection (DI)</li>
+  <li>Lifecycle Hooks</li>
+  <li>Routing</li>
+  <li>Route Parameters</li>
+  <li>Lazy Loading</li>
+  <li>Guards</li>
+  <li>HttpClient</li>
+  <li>Observables</li>
+  <li>RxJS Operators</li>
+  <li>Subjects (advanced Observables)</li>
+  <li>Forms — Reactive vs Template-driven</li>
+  <li>Validators</li>
+  <li>@Input — Parent → Child</li>
+  <li>@Output + EventEmitter — Child → Parent</li>
+  <li>Shared Service — Sibling Communication</li>
+  <li>ng-content (Content Projection)</li>
+  <li>ng-template &amp; ng-container</li>
+  <li>Signals (Angular 17 Reactivity)</li>
+  <li>computed() — Derived Signals</li>
+  <li>effect() — Side Effects on Signal Changes</li>
+  <li>Interceptors</li>
+  <li>Change Detection (CD)</li>
+  <li>The async pipe</li>
+  <li>Environment Configuration</li>
+  <li>AOT vs JIT</li>
+  <li>Tree-shaking</li>
+  <li>The inject() function</li>
+  <li>Provider Functions (provideX)</li>
+</ol>
+</div>
+
+<!-- ============================================================
+     PART 1 — FOUNDATION
+============================================================ -->
+<h1 class="page-break">Part 1 — Foundation</h1>
+
+<h2><span class="concept-num">1</span>What is Angular?</h2>
+<p><strong>Simple words:</strong> Angular is a complete toolkit for building web apps. You write components (small UI pieces), and Angular wires them together and shows them in the browser.</p>
+<div class="analogy"><strong>Analogy:</strong> Angular is like <strong>IKEA</strong>. They give you the parts (components), the screws (services), the manual (router), and the toolbox (CLI). You assemble a kitchen (app). Without IKEA, you'd cut wood yourself.</div>
+<p><strong>Why use it instead of plain HTML+JS?</strong></p>
+<ul>
+  <li><strong>Plain JS:</strong> you manually do <code>document.querySelector(...)</code>, <code>element.textContent = ...</code> for every change. Painful at scale.</li>
+  <li><strong>Angular:</strong> you describe <em>what</em> the UI should look like for any data, and Angular updates the DOM for you.</li>
+</ul>
+
+<h2><span class="concept-num">2</span>Single-Page Application (SPA)</h2>
+<p><strong>Simple words:</strong> Old websites loaded a fresh HTML page on every click. SPAs load <strong>one</strong> HTML page, then JavaScript swaps parts of the screen.</p>
+<div class="analogy"><strong>Analogy:</strong> Old sites = <strong>stage shows</strong> (curtain drops between scenes). SPAs = <strong>movies</strong> (cuts happen seamlessly, no reload).</div>
+<p><strong>In StreamCast:</strong> Look at <code>index.html</code> — there's only one. Click "Titles" → URL changes to <code>/titles</code>, content swaps, but the page never reloads.</p>
+<pre><code>&lt;!-- src/index.html — the ONLY html file --&gt;
+&lt;body&gt;
+  &lt;sc-root&gt;&lt;/sc-root&gt;   &lt;!-- Angular fills this in --&gt;
+&lt;/body&gt;</code></pre>
+
+<h2><span class="concept-num">3</span>TypeScript</h2>
+<p><strong>Simple words:</strong> JavaScript + types. You declare what shape your data has, and the compiler catches mistakes before you run the app.</p>
+<div class="analogy"><strong>Analogy:</strong> Plain JS is like writing on a <strong>blank paper</strong> — you can write anything, even nonsense. TypeScript is <strong>printed form fields</strong> — "name", "date", "amount" each have a fixed type, so you can't put "hello" in the amount box.</div>
+<pre><code>// core/models/user.ts
+export interface CurrentUser {
+  email: string;       // must be a string
+  role: Role;          // must be one of the 8 allowed roles
+  token: string;
+  expiresAt: number;   // must be a number
+}</code></pre>
+<p>If you try <code>user.expiresAt = "tomorrow"</code>, TypeScript instantly flags it red.</p>
+
+<h2><span class="concept-num">4</span>Decorators</h2>
+<p><strong>Simple words:</strong> A <code>@SomeName</code> annotation that adds metadata or extra behavior to a class.</p>
+<div class="analogy"><strong>Analogy:</strong> Decorators are like <strong>labels on shipping boxes</strong> — "FRAGILE", "THIS WAY UP". The box (class) is unchanged, but the label tells handlers (Angular) how to treat it.</div>
+<p><strong>Examples used:</strong></p>
+<ul>
+  <li><code>@Component</code> — "this class is a UI piece"</li>
+  <li><code>@Injectable</code> — "this class can be injected as a dependency"</li>
+  <li><code>@Input</code> — "this property receives data from parent"</li>
+  <li><code>@Output</code> — "this property emits events upward"</li>
+</ul>
+
+<h2><span class="concept-num">5</span>Components</h2>
+<p><strong>Simple words:</strong> A reusable UI piece — HTML + CSS + a TypeScript class that controls it.</p>
+<div class="analogy"><strong>Analogy:</strong> A component is a <strong>Lego brick</strong>. You build a castle (page) from many bricks. The same "tower" brick can be used in many castles.</div>
+<pre><code>@Component({
+  selector: 'sc-login',           // ← HTML tag name → &lt;sc-login&gt;
+  standalone: true,                // ← doesn't need a module
+  imports: [CommonModule, ReactiveFormsModule],
+  template: `&lt;form&gt;...&lt;/form&gt;`,   // ← what to render
+})
+export class LoginComponent {     // ← the brain
+  loading = signal(false);
+  submit() { ... }
+}</code></pre>
+<p><strong>Real-world parallel:</strong> Like the "Add to Cart" button on Amazon — it appears on the product page, the home page, the search page. Same component, same behavior, reused everywhere.</p>
+
+<h2><span class="concept-num">6</span>Selector</h2>
+<p><strong>Simple words:</strong> The custom HTML tag name your component answers to.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>person's name</strong> — call "Alice!" and Alice responds. Write <code>&lt;sc-login&gt;</code> and Angular puts the <code>LoginComponent</code> there.</div>
+<pre><code>&lt;!-- somewhere in a template --&gt;
+&lt;sc-login&gt;&lt;/sc-login&gt;</code></pre>
+<p>StreamCast uses prefix <code>sc-</code> (StreamCast) for all its components to avoid name clashes with Material or Angular ones.</p>
+
+<h2><span class="concept-num">7</span>Modules vs Standalone Components</h2>
+<p><strong>Old way (NgModule):</strong> You had to declare every component inside a module (<code>AppModule</code>). Like having to enroll every student in a department.</p>
+<p><strong>New way (standalone):</strong> Each component declares its own imports. Like a freelancer who brings their own tools.</p>
+<div class="note"><strong>StreamCast uses standalone everywhere — there is no AppModule at all.</strong></div>
+<pre><code>// Modern standalone
+@Component({
+  standalone: true,
+  imports: [CommonModule, RouterLink, MatIconModule],
+  template: ...
+})
+
+// Bootstrap in main.ts
+bootstrapApplication(AppComponent, appConfig);   // NOT bootstrapModule</code></pre>
+<p><strong>Why this is better:</strong></p>
+<ul>
+  <li>Less boilerplate</li>
+  <li>Each component is portable — copy to another project and it works</li>
+  <li>Lazy loading is one line: <code>loadComponent: () =&gt; import('...')</code></li>
+</ul>
+
+<h2><span class="concept-num">8</span>Template</h2>
+<p><strong>Simple words:</strong> The HTML part of a component, with Angular's special syntax mixed in.</p>
+<div class="analogy"><strong>Analogy:</strong> A template is a <strong>fill-in-the-blank form letter</strong>. "Dear ___, your order ___ is ready." Angular fills the blanks with actual data.</div>
+<pre><code>template: `
+  &lt;h1&gt;{{ title.name }}&lt;/h1&gt;             &lt;!-- blank filled with title.name --&gt;
+  &lt;button (click)="buy()"&gt;Buy&lt;/button&gt;  &lt;!-- click event hooked up --&gt;
+`</code></pre>
+<p>You can have an <strong>external</strong> template file (<code>component.html</code>), but StreamCast uses <strong>inline</strong> templates because each component is small enough to keep in one file.</p>
+
+<h2><span class="concept-num">9</span>Data Binding — The 4 Types</h2>
+<p>This is the heart of Angular. Without binding, you'd update the DOM manually like in 1999.</p>
+
+<h3>9a. Interpolation <code>{{ ... }}</code> — TypeScript → DOM</h3>
+<p><strong>Simple words:</strong> Print a value from your class into the HTML.</p>
+<div class="analogy"><strong>Analogy:</strong> Like the <strong>mail-merge feature</strong> in Word — "{Customer Name}" gets replaced with "John Smith".</div>
+<pre><code>&lt;div&gt;Welcome, {{ user.email }}&lt;/div&gt;
+&lt;span&gt;Items: {{ items.length }}&lt;/span&gt;</code></pre>
+
+<h3>9b. Property Binding <code>[prop]="..."</code> — TypeScript → DOM</h3>
+<p><strong>Simple words:</strong> Set a DOM property (or component input) dynamically.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>thermostat dial</strong> in your TypeScript controlling a <strong>heater's temperature</strong> in the DOM.</div>
+<pre><code>&lt;button [disabled]="form.invalid"&gt;Save&lt;/button&gt;
+&lt;img [src]="user.avatarUrl" /&gt;
+&lt;input [type]="show() ? 'text' : 'password'" /&gt;   &lt;!-- from LoginComponent --&gt;</code></pre>
+
+<h3>9c. Event Binding <code>(event)="handler()"</code> — DOM → TypeScript</h3>
+<p><strong>Simple words:</strong> When the user does something (click, type), call a method.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>doorbell</strong> — the visitor presses (DOM event), the bell calls you (TypeScript method).</div>
+<pre><code>&lt;button (click)="openCreate()"&gt;+ New title&lt;/button&gt;
+&lt;input (input)="query.set($event.target.value)" /&gt;
+&lt;form (ngSubmit)="submit()"&gt;...&lt;/form&gt;</code></pre>
+
+<h3>9d. Two-way Binding <code>[(ngModel)]="x"</code> — Both directions</h3>
+<p><strong>Simple words:</strong> Property + event combined. When user types, the variable updates AND when the variable changes, the input updates.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>shared Google Doc</strong> — you type, your colleague sees. Your colleague edits, you see.</div>
+<pre><code>&lt;input [(ngModel)]="searchText" /&gt;
+&lt;p&gt;You typed: {{ searchText }}&lt;/p&gt;</code></pre>
+<p>StreamCast prefers <strong>Reactive Forms</strong> over <code>ngModel</code>, but the concept is everywhere.</p>
+
+<h2><span class="concept-num">10</span>Directives</h2>
+<p><strong>Simple words:</strong> Magic attributes you put on HTML to change its behavior.</p>
+<div class="analogy"><strong>Analogy:</strong> Directives are <strong>road signs</strong> — same road (HTML element), but signs tell you "STOP", "LOOP HERE", "DETOUR".</div>
+<p>Two flavors:</p>
+
+<h3>10a. Structural directives (start with <code>*</code>) — change the DOM tree</h3>
+
+<h4><code>*ngIf</code> — conditional rendering</h4>
+<pre><code>&lt;div *ngIf="loading()"&gt;Loading spinner...&lt;/div&gt;
+&lt;button *ngIf="canEdit()"&gt;Edit&lt;/button&gt;     &lt;!-- from titles.component --&gt;</code></pre>
+<div class="analogy"><strong>Analogy:</strong> A <strong>light switch</strong> — element exists only when condition is true.</div>
+
+<h4><code>*ngFor</code> — repeat for each item</h4>
+<pre><code>&lt;li *ngFor="let t of titles; trackBy: trackId"&gt;{{ t.name }}&lt;/li&gt;</code></pre>
+<div class="analogy"><strong>Analogy:</strong> A <strong>photocopier</strong> — make one copy per row in the array. The <code>trackBy</code> part is important — it's like giving each photocopy a <strong>serial number</strong> so the copier doesn't reprint identical pages.</div>
+
+<h4><code>*ngSwitch</code> — multiple branches</h4>
+<pre><code>&lt;div [ngSwitch]="status"&gt;
+  &lt;span *ngSwitchCase="'ACTIVE'"&gt;Live&lt;/span&gt;
+  &lt;span *ngSwitchCase="'EXPIRED'"&gt;Done&lt;/span&gt;
+  &lt;span *ngSwitchDefault&gt;Unknown&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>10b. Attribute directives — change appearance/behavior of existing elements</h3>
+
+<h4><code>ngClass</code> — toggle CSS classes</h4>
+<pre><code>&lt;span [ngClass]="{ 'sc-chip-success': t.status === 'AVAILABLE',
+                    'sc-chip-warn':    t.status === 'DRAFT' }"&gt;
+  {{ t.status }}
+&lt;/span&gt;</code></pre>
+<div class="analogy"><strong>Analogy:</strong> Like <strong>highlighter colors</strong> — yellow for important, pink for urgent. Same text, different highlight based on category.</div>
+
+<h4><code>ngStyle</code> — inline styles dynamically</h4>
+<pre><code>&lt;div [ngStyle]="{ background: poster(t) }"&gt;&lt;/div&gt;</code></pre>
+
+<h2><span class="concept-num">11</span>Pipes</h2>
+<p><strong>Simple words:</strong> Transform data right inside the template without changing the original.</p>
+<div class="analogy"><strong>Analogy:</strong> Pipes are <strong>filters on a camera</strong> — the photo (data) is the same, but the filter (pipe) changes how it looks. Black-and-white, sepia, etc.</div>
+<p><strong>Built-in pipes:</strong></p>
+<pre><code>{{ releaseDate | date:'mediumDate' }}     &lt;!-- "May 19, 2026" --&gt;
+{{ price | currency:'USD' }}              &lt;!-- "$42.50" --&gt;
+{{ name | uppercase }}                    &lt;!-- "AFRIN" --&gt;
+{{ description | slice:0:100 }}           &lt;!-- first 100 chars --&gt;
+{{ items | json }}                        &lt;!-- pretty-print object --&gt;</code></pre>
+<p><strong>Custom pipe example:</strong></p>
+<pre><code>@Pipe({ name: 'truncate', standalone: true })
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, max = 50): string {
+    return value.length &gt; max ? value.slice(0, max) + '…' : value;
+  }
+}
+
+// usage
+{{ longTitle | truncate:30 }}</code></pre>
+<p><strong>Pure vs impure pipes:</strong></p>
+<ul>
+  <li><strong>Pure</strong> (default): runs only when input reference changes. Fast.</li>
+  <li><strong>Impure</strong>: runs on every change-detection tick. Use sparingly (e.g., live clock).</li>
+</ul>
+
+<!-- ============================================================
+     PART 2 — ARCHITECTURE
+============================================================ -->
+<h1 class="page-break">Part 2 — Architecture Concepts</h1>
+
+<h2><span class="concept-num">12</span>Services</h2>
+<p><strong>Simple words:</strong> Plain classes that hold logic or talk to APIs. Components use them.</p>
+<div class="analogy"><strong>Analogy:</strong> Components are <strong>waiters</strong> at a restaurant — they greet, take orders, deliver food. Services are the <strong>kitchen</strong> — they actually cook the food.</div>
+<p><strong>Why separate?</strong> A waiter shouldn't need to know how to bake bread. A <code>LoginComponent</code> shouldn't need to know how JWT decoding works.</p>
+<pre><code>// titles.service.ts — kitchen
+@Injectable({ providedIn: 'root' })
+export class TitlesService {
+  private http = inject(HttpClient);
+  list(): Observable&lt;Title[]&gt; {
+    return this.http.get&lt;Title[]&gt;(`${environment.apiBase}/api/titles`);
+  }
+}
+
+// titles.component.ts — waiter
+export class TitlesComponent {
+  private api = inject(TitlesService);
+  refresh() {
+    this.api.list().subscribe(rows =&gt; this.rows.set(rows));
+  }
+}</code></pre>
+
+<h2><span class="concept-num">13</span>Dependency Injection (DI)</h2>
+<p><strong>Simple words:</strong> You declare what your class needs; Angular automatically gives it to you.</p>
+<div class="analogy"><strong>Analogy:</strong> Imagine you build a car. You don't manufacture your own tires — the supplier delivers them. DI is the <strong>supplier system</strong>: you say "I need tires" (a service), Angular hands them over.</div>
+<p><strong>Two styles in StreamCast:</strong></p>
+<pre><code>// Old way: constructor injection
+constructor(private api: TitlesService, private router: Router) {}
+
+// New way: inject() function (preferred in standalone)
+private api = inject(TitlesService);
+private router = inject(Router);</code></pre>
+<p><strong>Why DI matters:</strong></p>
+<ol>
+  <li><strong>Testability</strong> — in tests, you can swap the real <code>TitlesService</code> for a fake one.</li>
+  <li><strong>Singletons</strong> — only one <code>AuthService</code> instance exists in the whole app, so user state is shared.</li>
+  <li><strong>No <code>new</code> everywhere</strong> — you don't manually construct services with all their dependencies.</li>
+</ol>
+<p><code>@Injectable({ providedIn: 'root' })</code> means "create one instance, available everywhere".</p>
+
+<h2><span class="concept-num">14</span>Lifecycle Hooks</h2>
+<p><strong>Simple words:</strong> Special methods Angular calls at specific moments in a component's life.</p>
+<div class="analogy"><strong>Analogy:</strong> A component is like a <strong>plant</strong>. Lifecycle hooks are the moments you tend to it:<br>
+• <strong>ngOnInit</strong> — when the seed sprouts (first appears). Fetch data here.<br>
+• <strong>ngOnChanges</strong> — when you water it (input changes). React to new values.<br>
+• <strong>ngAfterViewInit</strong> — when all leaves are out (child views are ready). Touch the DOM here.<br>
+• <strong>ngOnDestroy</strong> — when you compost it (component removed). Clean up subscriptions.</div>
+<pre><code>export class TitlesComponent implements OnInit, OnDestroy {
+  ngOnInit() {
+    this.refresh();    // good place for initial API call
+  }
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();   // cleanup
+  }
+}</code></pre>
+<p><strong>StreamCast often does init in the constructor</strong> for tiny components (since <code>inject()</code> is available there now), but for new components, prefer <code>ngOnInit</code>.</p>
+
+<h2><span class="concept-num">15</span>Routing</h2>
+<p><strong>Simple words:</strong> Match URLs to components. No page reload.</p>
+<div class="analogy"><strong>Analogy:</strong> Routing is the <strong>map app on your phone</strong>. You type an address (URL); it shows you which area (component) to display.</div>
+<pre><code>export const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'login', loadComponent: () =&gt; import('...').then(m =&gt; m.LoginComponent) },
+  {
+    path: '',
+    canActivate: [authGuard],
+    loadComponent: () =&gt; import('...').then(m =&gt; m.ShellComponent),
+    children: [
+      { path: 'dashboard', loadComponent: ... },
+      { path: 'titles',    loadComponent: ..., canActivate: [roleGuard([...])] },
+      { path: 'titles/:id', loadComponent: ... },
+    ]
+  },
+  { path: '**', redirectTo: 'dashboard' }  // wildcard 404
+];</code></pre>
+<p><strong>Key parts:</strong></p>
+<ul>
+  <li><code>path: 'login'</code> — URL pattern.</li>
+  <li><code>loadComponent</code> — lazy-load (download only when needed).</li>
+  <li><code>canActivate: [authGuard]</code> — guard runs before activation.</li>
+  <li><code>children</code> — nested routes (shown inside parent's <code>&lt;router-outlet&gt;</code>).</li>
+  <li><code>**</code> — catch-all (anything not matched).</li>
+</ul>
+<h3>Navigation</h3>
+<pre><code>// programmatic
+this.router.navigate(['/titles', t.id]);   // → /titles/42
+
+// in template
+&lt;a routerLink="/titles"&gt;Titles&lt;/a&gt;
+&lt;a [routerLink]="['/titles', t.id]"&gt;{{ t.name }}&lt;/a&gt;</code></pre>
+<h3><code>&lt;router-outlet /&gt;</code></h3>
+<p>The placeholder where the matched component renders. StreamCast's <code>AppComponent</code> is literally just:</p>
+<pre><code>template: `&lt;router-outlet /&gt;`</code></pre>
+
+<h2><span class="concept-num">16</span>Route Parameters</h2>
+<p><strong>Simple words:</strong> Variables inside the URL.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>hotel room number</strong> in your booking confirmation — same hotel (route), different room (id).</div>
+<pre><code>// route: { path: 'titles/:id', loadComponent: ... }
+
+// in TitleDetailComponent
+const route = inject(ActivatedRoute);
+const id = +route.snapshot.paramMap.get('id')!;   // → 42</code></pre>
+<p>With <code>withComponentInputBinding()</code> (used in <code>app.config.ts</code>), you can even bind URL params straight to <code>@Input()</code>:</p>
+<pre><code>@Input() id!: string;   // auto-filled from /titles/:id</code></pre>
+
+<h2><span class="concept-num">17</span>Lazy Loading</h2>
+<p><strong>Simple words:</strong> Download a chunk of code only when the user actually navigates there.</p>
+<div class="analogy"><strong>Analogy:</strong> Like <strong>on-demand video streaming</strong> — you don't download the whole 8-season show at startup; you fetch each episode when you click Play.</div>
+<p><strong>Why?</strong> Without lazy loading, the initial JS bundle would include all 13 feature pages → slow first load. StreamCast lazy-loads every route, so the first download is tiny.</p>
+<pre><code>{
+  path: 'usage',
+  loadComponent: () =&gt; import('./features/usage/usage.component').then(m =&gt; m.UsageComponent)
+}</code></pre>
+<p>Open DevTools → Network tab. Navigate to <code>/usage</code>. You'll see a new JS chunk download just then.</p>
+
+<h2><span class="concept-num">18</span>Guards</h2>
+<p><strong>Simple words:</strong> Functions that say yes/no to a route navigation.</p>
+<div class="analogy"><strong>Analogy:</strong> Guards are <strong>bouncers at a club</strong>. You can't enter unless you meet the criteria — age (logged in), VIP list (role), dress code, etc.</div>
+<pre><code>// auth.guard.ts
+export const authGuard: CanActivateFn = () =&gt; {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  if (auth.isAuthenticated()) return true;
+  router.navigate(['/login']);
+  return false;
+};
+
+export const roleGuard = (roles: Role[]): CanActivateFn =&gt; () =&gt; {
+  const auth = inject(AuthService);
+  if (!auth.isAuthenticated()) { /* redirect to login */ return false; }
+  if (auth.hasAnyRole(roles)) return true;
+  inject(Router).navigate(['/forbidden']);
+  return false;
+};</code></pre>
+<p><code>roleGuard</code> is a <strong>factory</strong> — you pass the allowed roles, you get back a guard configured for those roles. Real-world parallel: a wedding's "VIP entrance" bouncer is configured with the actual guest list before the event starts.</p>
+<p><strong>Types of guards:</strong></p>
+<ul>
+  <li><code>CanActivate</code> — can you enter?</li>
+  <li><code>CanActivateChild</code> — can you enter a child route?</li>
+  <li><code>CanDeactivate</code> — can you leave? (e.g., "you have unsaved changes")</li>
+  <li><code>Resolve</code> — pre-fetch data before component opens.</li>
+  <li><code>CanMatch</code> — should this route even be considered?</li>
+</ul>
+
+<h2><span class="concept-num">19</span>HttpClient</h2>
+<p><strong>Simple words:</strong> Angular's tool for making HTTP requests to a backend.</p>
+<div class="analogy"><strong>Analogy:</strong> Like the <strong>phone</strong> in your office — you pick it up, dial, wait, get an answer.</div>
+<pre><code>private http = inject(HttpClient);
+
+this.http.get&lt;Title[]&gt;('/api/titles')              // GET
+this.http.post&lt;Title&gt;('/api/titles', newTitle)     // POST
+this.http.put&lt;Title&gt;(`/api/titles/${id}`, t)       // PUT
+this.http.delete(`/api/titles/${id}`)              // DELETE</code></pre>
+<p>The generic <code>&lt;Title[]&gt;</code> is just a TypeScript hint — the server sends JSON; you tell TS the shape so autocomplete works.</p>
+<p><strong>Why not just <code>fetch()</code>?</strong></p>
+<ul>
+  <li>HttpClient returns <strong>Observables</strong> (cancellable, composable).</li>
+  <li>Automatic JSON parsing.</li>
+  <li><strong>Interceptors</strong> can transform every request.</li>
+</ul>
+
+<h2><span class="concept-num">20</span>Observables</h2>
+<p><strong>Simple words:</strong> A stream of values over time. You <strong>subscribe</strong> to receive them.</p>
+<div class="analogy"><strong>Analogy:</strong> An Observable is like a <strong>newsletter</strong>. You subscribe → emails (values) arrive. Unsubscribe → no more emails. The newsletter doesn't write itself if no one subscribes (lazy).</div>
+<pre><code>const titles$ = this.api.list();   // Observable created, nothing fires yet
+
+titles$.subscribe({                // NOW the HTTP request fires
+  next:  rows  =&gt; console.log('got rows', rows),
+  error: err   =&gt; console.error(err),
+  complete: () =&gt; console.log('done')
+});</code></pre>
+<p><strong>Observable vs Promise:</strong></p>
+<table>
+<tr><th></th><th>Promise</th><th>Observable</th></tr>
+<tr><td>Values</td><td>One</td><td>Many over time</td></tr>
+<tr><td>Eager/lazy</td><td>Eager (fires immediately)</td><td>Lazy (fires on subscribe)</td></tr>
+<tr><td>Cancellable</td><td>No</td><td>Yes (unsubscribe)</td></tr>
+<tr><td>Operators</td><td>Few</td><td>100+ via RxJS</td></tr>
+</table>
+<p>For HTTP, both work — but Observables let you do things like <strong>cancel a stale search request</strong> when the user types faster than the server responds.</p>
+
+<h2><span class="concept-num">21</span>RxJS Operators</h2>
+<p><strong>Simple words:</strong> Functions that transform / filter / combine observable streams.</p>
+<div class="analogy"><strong>Analogy:</strong> Operators are <strong>factory machines on an assembly line</strong>. The raw material (values) enters; each machine (operator) modifies it; the finished product exits.</div>
+<pre><code>this.http.get&lt;ApiResponse&lt;Title[]&gt;&gt;('/contracts')
+  .pipe(
+    map(r =&gt; r.data),                   // unwrap envelope
+    tap(items =&gt; console.log(items)),   // side-effect (logging)
+    catchError(err =&gt; of([]))           // on error, give empty array
+  );</code></pre>
+<p><strong>The 6 you'll use 90% of the time:</strong></p>
+<table>
+<tr><th>Operator</th><th>Real-world analogy</th></tr>
+<tr><td><code>map</code></td><td>A <strong>translator</strong> — converts each value to a new shape.</td></tr>
+<tr><td><code>filter</code></td><td>A <strong>bouncer</strong> — only lets some values through.</td></tr>
+<tr><td><code>tap</code></td><td>A <strong>CCTV camera</strong> — watches without changing the value.</td></tr>
+<tr><td><code>catchError</code></td><td><strong>Insurance</strong> — recover from errors.</td></tr>
+<tr><td><code>switchMap</code></td><td>A <strong>TV remote</strong> — when you press a new channel, the previous one cuts off. Used for search-as-you-type.</td></tr>
+<tr><td><code>mergeMap</code></td><td>A <strong>multi-line phone system</strong> — handles many calls in parallel.</td></tr>
+</table>
+
+<h2><span class="concept-num">22</span>Subjects (advanced Observables)</h2>
+<p><strong>Simple words:</strong> Observables that you can also push values into manually.</p>
+<div class="analogy"><strong>Analogy:</strong> Regular Observable = <strong>radio broadcast</strong> you receive. Subject = a <strong>microphone</strong> you can speak into AND others listen.</div>
+<pre><code>const messages = new Subject&lt;string&gt;();
+messages.subscribe(m =&gt; console.log('A:', m));
+messages.subscribe(m =&gt; console.log('B:', m));
+messages.next('hello');   // → "A: hello", "B: hello"</code></pre>
+<p><strong>BehaviorSubject</strong> — same but holds a <strong>current value</strong> and emits it to new subscribers immediately. Used for global state pre-Signals.</p>
+
+<!-- ============================================================
+     PART 3 — FORMS
+============================================================ -->
+<h1 class="page-break">Part 3 — Forms</h1>
+
+<h2><span class="concept-num">23</span>Forms — Reactive vs Template-driven</h2>
+<p><strong>Two ways to build forms in Angular.</strong></p>
+
+<h3>Template-driven (small forms, defined in HTML)</h3>
+<pre><code>&lt;form #f="ngForm" (ngSubmit)="save(f.value)"&gt;
+  &lt;input name="email" [(ngModel)]="email" required email /&gt;
+&lt;/form&gt;</code></pre>
+
+<h3>Reactive (defined in TypeScript — what StreamCast uses)</h3>
+<pre><code>form = this.fb.nonNullable.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', Validators.required]
+});</code></pre>
+<pre><code>&lt;form [formGroup]="form" (ngSubmit)="submit()"&gt;
+  &lt;input formControlName="email" /&gt;
+  &lt;input formControlName="password" type="password" /&gt;
+  &lt;button [disabled]="form.invalid"&gt;Sign in&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<div class="analogy"><strong>Analogy:</strong><br>
+• Template-driven = <strong>handwriting on a paper form</strong> — quick for simple stuff.<br>
+• Reactive = <strong>filling a database record</strong> — structured, validated, programmatic.</div>
+<p><strong>Why reactive wins for big forms:</strong></p>
+<ul>
+  <li>All logic in TypeScript → testable.</li>
+  <li>Dynamic forms (add/remove fields) are easy.</li>
+  <li>Strong typing.</li>
+</ul>
+
+<h2><span class="concept-num">24</span>Validators</h2>
+<p><strong>Simple words:</strong> Functions that check if a field is valid.</p>
+<pre><code>email: ['', [Validators.required, Validators.email, Validators.minLength(5)]]</code></pre>
+<p><strong>Built-in:</strong> <code>required</code>, <code>email</code>, <code>min</code>, <code>max</code>, <code>minLength</code>, <code>maxLength</code>, <code>pattern</code>, <code>requiredTrue</code>.</p>
+<p><strong>Custom validator example:</strong></p>
+<pre><code>function passwordStrong(c: AbstractControl): ValidationErrors | null {
+  const v = c.value as string;
+  return v.length &gt;= 8 &amp;&amp; /[A-Z]/.test(v) &amp;&amp; /\d/.test(v)
+    ? null
+    : { weak: true };
+}
+
+password: ['', [Validators.required, passwordStrong]]</code></pre>
+<p>Then in template:</p>
+<pre><code>&lt;div *ngIf="form.get('password')?.errors?.['weak']"&gt;
+  Password must be 8+ chars with uppercase and digit.
+&lt;/div&gt;</code></pre>
+
+<!-- ============================================================
+     PART 4 — COMMUNICATION
+============================================================ -->
+<h1 class="page-break">Part 4 — Component Communication</h1>
+
+<h2><span class="concept-num">25</span>@Input — Parent → Child</h2>
+<p><strong>Simple words:</strong> A property that receives data from the parent component.</p>
+<div class="analogy"><strong>Analogy:</strong> Like <strong>sending mail to your kid at college</strong>. Parent sends → child receives.</div>
+<pre><code>// child
+@Component({ selector: 'sc-status-chip', ... })
+export class StatusChip {
+  @Input() status: 'ACTIVE' | 'EXPIRED' = 'ACTIVE';
+}
+
+// parent
+&lt;sc-status-chip [status]="contract.status"&gt;&lt;/sc-status-chip&gt;</code></pre>
+
+<h2><span class="concept-num">26</span>@Output + EventEmitter — Child → Parent</h2>
+<p><strong>Simple words:</strong> A property the child uses to emit events the parent listens to.</p>
+<div class="analogy"><strong>Analogy:</strong> Like the <strong>kid at college sending you their grade report</strong>. Child emits → parent reacts.</div>
+<pre><code>// child
+@Output() saved = new EventEmitter&lt;Title&gt;();
+onSave(value: Title) { this.saved.emit(value); }
+
+// parent
+&lt;sc-title-form (saved)="refresh($event)"&gt;&lt;/sc-title-form&gt;</code></pre>
+<p><code>$event</code> is whatever the child passed to <code>emit()</code>.</p>
+
+<h2><span class="concept-num">27</span>Shared Service — Sibling Communication</h2>
+<p><strong>Problem:</strong> Two components that aren't parent/child need to share state. They can't @Input/@Output each other.</p>
+<p><strong>Solution:</strong> Put the state in a service. Both components inject it.</p>
+<div class="analogy"><strong>Analogy:</strong> Two siblings can't talk through their dad's phone, but they both have access to the <strong>family WhatsApp group</strong> (service) — they post there, everyone sees.</div>
+<pre><code>@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private _user = signal&lt;CurrentUser | null&gt;(null);
+  user = this._user.asReadonly();
+  setUser(u: CurrentUser) { this._user.set(u); }
+}
+
+// LoginComponent writes
+this.auth.setUser(newUser);
+
+// ShellComponent reads — auto re-renders
+template: `&lt;span&gt;{{ auth.user()?.email }}&lt;/span&gt;`</code></pre>
+
+<h2><span class="concept-num">28</span>ng-content (Content Projection)</h2>
+<p><strong>Simple words:</strong> A slot where the parent can put markup that the child component renders inside itself.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>picture frame</strong>. The frame (child component) has an empty middle (<code>&lt;ng-content&gt;</code>). You hang any photo (parent's markup) inside it.</div>
+<pre><code>// child component
+@Component({
+  selector: 'sc-card',
+  template: `
+    &lt;div class="sc-card"&gt;
+      &lt;ng-content&gt;&lt;/ng-content&gt;      &lt;!-- slot --&gt;
+    &lt;/div&gt;
+  `
+})
+export class CardComponent {}
+
+// parent uses it
+&lt;sc-card&gt;
+  &lt;h2&gt;Hello&lt;/h2&gt;
+  &lt;p&gt;Anything I put here lands inside the card.&lt;/p&gt;
+&lt;/sc-card&gt;</code></pre>
+<p><strong>Multi-slot:</strong></p>
+<pre><code>template: `
+  &lt;header&gt;&lt;ng-content select="[header]"&gt;&lt;/ng-content&gt;&lt;/header&gt;
+  &lt;main&gt;&lt;ng-content&gt;&lt;/ng-content&gt;&lt;/main&gt;
+`</code></pre>
+
+<h2><span class="concept-num">29</span>ng-template &amp; ng-container</h2>
+<p><strong><code>&lt;ng-template&gt;</code></strong> — a template fragment that <strong>doesn't render unless referenced</strong>. Used with <code>*ngIf else</code>:</p>
+<pre><code>&lt;div *ngIf="user; else loading"&gt;Welcome {{ user.email }}&lt;/div&gt;
+&lt;ng-template #loading&gt;Loading...&lt;/ng-template&gt;</code></pre>
+<p><strong><code>&lt;ng-container&gt;</code></strong> — a wrapper that doesn't produce any DOM. Useful when you need a structural directive on multiple sibling elements without adding a <code>&lt;div&gt;</code>:</p>
+<pre><code>&lt;ng-container *ngIf="show"&gt;
+  &lt;h1&gt;Title&lt;/h1&gt;
+  &lt;p&gt;Body&lt;/p&gt;
+&lt;/ng-container&gt;</code></pre>
+
+<!-- ============================================================
+     PART 5 — MODERN ANGULAR
+============================================================ -->
+<h1 class="page-break">Part 5 — Modern Angular (StreamCast uses all of these)</h1>
+
+<h2><span class="concept-num">30</span>Signals (Angular 17 Reactivity)</h2>
+<p><strong>Simple words:</strong> A value holder that tells everyone watching when it changes.</p>
+<div class="analogy"><strong>Analogy:</strong> A signal is like a <strong>price tag in a supermarket</strong>. When the price changes, every shelf-sticker, every checkout system, every app instantly sees the new price.</div>
+<pre><code>const count = signal(0);
+console.log(count());          // read with () → 0
+count.set(5);                  // write
+count.update(n =&gt; n + 1);      // update based on previous</code></pre>
+<p><strong>StreamCast example:</strong></p>
+<pre><code>export class TitlesComponent {
+  rows    = signal&lt;Title[]&gt;([]);
+  loading = signal(false);
+  query   = signal('');
+
+  // computed = derived signal, auto-recomputes when inputs change
+  filtered = computed(() =&gt; {
+    const q = this.query().trim().toLowerCase();
+    return q ? this.rows().filter(t =&gt; t.name.toLowerCase().includes(q))
+             : this.rows();
+  });
+}</code></pre>
+<p>In the template:</p>
+<pre><code>&lt;input [value]="query()" (input)="query.set($event.target.value)" /&gt;
+&lt;div *ngFor="let t of filtered()"&gt;{{ t.name }}&lt;/div&gt;</code></pre>
+<p>When the user types, <code>query</code> updates → <code>filtered</code> automatically recomputes → template refreshes. <strong>No subscriptions, no manual change detection.</strong></p>
+
+<h2><span class="concept-num">31</span>computed() — Derived Signals</h2>
+<p><strong>Simple words:</strong> A signal whose value is calculated from other signals. Auto-updates.</p>
+<div class="analogy"><strong>Analogy:</strong> Like a <strong>spreadsheet formula</strong>. Cells A1 and B1 hold numbers; C1 = <code>=A1+B1</code>. Change A1 → C1 updates automatically.</div>
+<pre><code>canEdit = computed(() =&gt; this.auth.hasAnyRole(['ADMIN', 'CONTENT_OWNER']));</code></pre>
+<p><code>canEdit()</code> updates whenever <code>auth.role()</code> changes, <strong>without</strong> you wiring anything.</p>
+
+<h2><span class="concept-num">32</span>effect() — Side Effects on Signal Changes</h2>
+<p><strong>Simple words:</strong> Run code whenever the signals you read inside change.</p>
+<div class="analogy"><strong>Analogy:</strong> Like setting up a <strong>CCTV motion sensor</strong>. Whenever motion (signal change) occurs, the lights turn on (effect runs).</div>
+<pre><code>effect(() =&gt; {
+  console.log('user is now', this.auth.user());
+});</code></pre>
+<p>Used sparingly — usually for side effects like logging or syncing to localStorage.</p>
+
+<h2><span class="concept-num">33</span>Interceptors</h2>
+<p><strong>Simple words:</strong> Middleware that runs on every HTTP request.</p>
+<div class="analogy"><strong>Analogy:</strong> A <strong>toll booth</strong> on the highway. Every car (HTTP request) must pass through. The booth (interceptor) can attach a sticker (JWT header), check for issues, or send the car back.</div>
+<p><strong>StreamCast's <code>authInterceptor</code>:</strong></p>
+<pre><code>export const authInterceptor: HttpInterceptorFn = (req, next) =&gt; {
+  const auth = inject(AuthService);
+  const token = auth.user()?.token;
+
+  // Add Authorization header
+  const cloned = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
+
+  // Handle 401 globally
+  return next(cloned).pipe(
+    catchError(err =&gt; {
+      if (err.status === 401) auth.logout();
+      return throwError(() =&gt; err);
+    })
+  );
+};</code></pre>
+<p>Installed in <code>app.config.ts</code>:</p>
+<pre><code>provideHttpClient(withInterceptors([authInterceptor]))</code></pre>
+<p>Now every HTTP call goes through this — you never write <code>Authorization: Bearer ...</code> manually in any service. Power of DRY (Don't Repeat Yourself).</p>
+
+<h2><span class="concept-num">34</span>Change Detection (CD)</h2>
+<p><strong>Simple words:</strong> Angular's process of looking at your data and updating the DOM.</p>
+<div class="analogy"><strong>Analogy:</strong> Imagine a <strong>museum guide doing rounds every X seconds</strong>, checking each exhibit (component) to see if the description (bound value) changed. If yes, repaint the placard.</div>
+<p><strong>Two strategies:</strong></p>
+
+<h3>Default (<code>ChangeDetectionStrategy.Default</code>)</h3>
+<p>Checks every component on every "tick" (after every async event). Safe but slow for huge UIs.</p>
+
+<h3>OnPush</h3>
+<p>Only checks when:</p>
+<ol>
+  <li>An <code>@Input()</code> changes by reference, OR</li>
+  <li>An event fires inside the component, OR</li>
+  <li>A Signal it reads changes, OR</li>
+  <li>An async pipe emits.</li>
+</ol>
+<p>Much faster. With Signals, you get fine-grained reactivity automatically.</p>
+<pre><code>@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  ...
+})</code></pre>
+
+<h2><span class="concept-num">35</span>The async pipe</h2>
+<p><strong>Simple words:</strong> Subscribes to an Observable in the template and auto-unsubscribes when the component is destroyed.</p>
+<div class="analogy"><strong>Analogy:</strong> Hiring a <strong>personal mail-handler</strong> who opens your subscription letters (Observable) and shows you the content, then politely cancels your subscriptions when you move out.</div>
+<pre><code>titles$ = this.api.list();</code></pre>
+<pre><code>&lt;div *ngFor="let t of titles$ | async"&gt;{{ t.name }}&lt;/div&gt;</code></pre>
+<p>No <code>subscribe()</code>, no <code>ngOnDestroy</code> cleanup. Eliminates memory leaks.</p>
+
+<h2><span class="concept-num">36</span>Environment Configuration</h2>
+<p><strong>Simple words:</strong> Different values for dev vs prod, set at build time.</p>
+<div class="analogy"><strong>Analogy:</strong> Like having <strong>dev keys and prod keys</strong> in your wallet — same shape, different doors.</div>
+<pre><code>// environments/environment.ts
+export const environment = { production: false, apiBase: 'http://localhost:8082' };
+
+// environments/environment.prod.ts
+export const environment = { production: true,  apiBase: 'https://api.streamcast.io' };</code></pre>
+<p>Used in services:</p>
+<pre><code>this.http.get(`${environment.apiBase}/api/titles`)</code></pre>
+<p>At build time, Angular swaps which file is bundled based on the configuration.</p>
+
+<h2><span class="concept-num">37</span>AOT vs JIT</h2>
+<p><strong>JIT (Just-In-Time):</strong> Angular compiles your templates <strong>in the browser</strong> at startup. Bigger bundle, slower start. (Old default.)</p>
+<p><strong>AOT (Ahead-Of-Time):</strong> Angular compiles templates <strong>at build time</strong> on your machine. Smaller bundle, faster start. (Modern default.)</p>
+<div class="analogy"><strong>Analogy:</strong> JIT = ordering a <strong>made-to-order meal</strong> at the restaurant (wait at the table). AOT = a <strong>frozen meal</strong> prepared in advance (instant heat-and-serve).</div>
+<p>Production builds (<code>ng build</code>) use AOT.</p>
+
+<h2><span class="concept-num">38</span>Tree-shaking</h2>
+<p><strong>Simple words:</strong> The bundler throws away code you never use.</p>
+<div class="analogy"><strong>Analogy:</strong> Like <strong>only packing the clothes you wear</strong> for a trip. Don't bring the 50 t-shirts you'll never touch.</div>
+<p>If <code>TitlesService</code> is never imported, it won't be in the final JS bundle. This is why <strong><code>@Injectable({ providedIn: 'root' })</code></strong> is preferred over module-based providers — tree-shakable.</p>
+
+<h2><span class="concept-num">39</span>The inject() function</h2>
+<p><strong>Simple words:</strong> A new way to get dependencies without a constructor.</p>
+<div class="analogy"><strong>Analogy:</strong> Old style = <strong>standing in line at a counter</strong> to collect parcels. <code>inject()</code> = <strong>vending machine</strong> — press button anywhere, get item.</div>
+<pre><code>// Old
+constructor(private http: HttpClient, private router: Router) {}
+
+// New
+private http = inject(HttpClient);
+private router = inject(Router);</code></pre>
+<p>Required in functional guards/interceptors (which have no class/constructor):</p>
+<pre><code>export const authGuard: CanActivateFn = () =&gt; {
+  const auth = inject(AuthService);   // only way here
+  return auth.isAuthenticated();
+};</code></pre>
+
+<h2><span class="concept-num">40</span>Provider Functions (provideX)</h2>
+<p><strong>Simple words:</strong> Modern way to register app-wide things in <code>app.config.ts</code>.</p>
+<pre><code>export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAnimations(),
+    importProvidersFrom(MatSnackBarModule)   // bridge old NgModule-style
+  ]
+};</code></pre>
+<div class="analogy"><strong>Analogy:</strong> Like <strong>plugging appliances into the power strip</strong> at the heart of your home. One central place.</div>
+<p>Old way needed an <code>AppModule</code> with <code>BrowserModule</code>, <code>HttpClientModule</code>, <code>RouterModule.forRoot(routes)</code> — verbose and harder to tree-shake.</p>
+
+<!-- ============================================================
+     CONCEPTS WORKING TOGETHER
+============================================================ -->
+<h1 class="page-break">Concepts Working Together — One Click, 19 Concepts</h1>
+<p>Let me trace one user click through every concept to show how they connect.</p>
+<p><strong>User clicks "Sign in" in <code>LoginComponent</code>:</strong></p>
+<ol>
+  <li><strong>Event binding</strong> <code>(ngSubmit)="submit()"</code> calls the method.</li>
+  <li>The method reads the <strong>Reactive Form</strong> value.</li>
+  <li><strong>Service injection</strong> — <code>this.auth</code> was provided by <strong>DI</strong>.</li>
+  <li><code>auth.login(creds)</code> calls <strong>HttpClient</strong> → returns an <strong>Observable</strong>.</li>
+  <li><code>.pipe(tap(...))</code> — <strong>RxJS operator</strong> stores the JWT.</li>
+  <li><code>.subscribe()</code> — fires the network call.</li>
+  <li>The <strong>HTTP Interceptor</strong> receives the request, but for <code>/auth/login</code> there's no token yet so it just forwards.</li>
+  <li>Backend responds.</li>
+  <li><code>tap</code> runs — calls <code>persist()</code> which decodes the <strong>JWT</strong>, builds a <code>CurrentUser</code>, calls <code>signal.set(user)</code>.</li>
+  <li>Every <strong>computed signal</strong> that reads <code>_user</code> (<code>isAuthenticated</code>, <code>role</code>) recomputes.</li>
+  <li>Every template that reads them (Shell nav, guards) re-renders.</li>
+  <li>The <code>next</code> handler calls <code>router.navigate(['/dashboard'])</code>.</li>
+  <li><strong>authGuard</strong> runs → <code>isAuthenticated()</code> is now true → passes.</li>
+  <li><strong>roleGuard</strong> for that route runs → role matches → passes.</li>
+  <li>The <strong>lazy-loaded</strong> chunk for <code>DashboardComponent</code> downloads if it hasn't already.</li>
+  <li>Dashboard mounts → <strong>lifecycle hook</strong> <code>ngOnInit</code> (or constructor) runs.</li>
+  <li><strong>Computed signal</strong> <code>tiles = computed(() =&gt; allTiles.filter(t =&gt; auth.hasAnyRole(t.roles)))</code> filters to allowed tiles.</li>
+  <li>Template renders tiles via <strong><code>*ngFor</code></strong> + <strong><code>trackBy</code></strong>.</li>
+  <li>Each tile is a <strong><code>routerLink</code></strong> to a feature.</li>
+</ol>
+<p>Every concept in this guide fired in those 19 steps. That's why learning Angular feels overwhelming at first — you can't really learn one piece without the others.</p>
+
+<!-- ============================================================
+     HOW TO INTERNALIZE FAST
+============================================================ -->
+<h1 class="page-break">How to Internalize This Fast</h1>
+<ol>
+  <li><strong>Open <code>streamcast-ui/src/app/features/auth/login.component.ts</code> and trace what every annotation, function, and binding does.</strong> Re-read this guide while looking at the code.</li>
+  <li><strong>Change one thing and see what breaks.</strong> Remove <code>[disabled]="form.invalid"</code> → button is always clickable. Remove <code>(ngSubmit)="submit()"</code> → form does nothing. This builds intuition faster than any tutorial.</li>
+  <li><strong>Build a minimal copy.</strong> Make a tiny "TodoList" component with: a signal for items, ngFor to display, ngIf for empty state, a form to add, a service to fetch from JSONPlaceholder. You'll use ~20 of the concepts above in 100 lines of code.</li>
+</ol>
+
+<div class="success">
+<strong>You're set.</strong> Keep this PDF open next to your code editor. When you encounter a concept in the StreamCast source, jump to its section. After ~3 reads you'll have the whole map in your head and the project will feel small.
+</div>
+
+<h2>One-page summary of the 40 concepts</h2>
+<table>
+<tr><th>#</th><th>Concept</th><th>One-line description</th></tr>
+<tr><td>1</td><td>Angular</td><td>Toolkit for SPA web apps</td></tr>
+<tr><td>2</td><td>SPA</td><td>One HTML page, JS swaps content</td></tr>
+<tr><td>3</td><td>TypeScript</td><td>JS + static types</td></tr>
+<tr><td>4</td><td>Decorators</td><td>@Annotations adding metadata</td></tr>
+<tr><td>5</td><td>Component</td><td>Reusable UI piece (class + template + style)</td></tr>
+<tr><td>6</td><td>Selector</td><td>Custom HTML tag the component matches</td></tr>
+<tr><td>7</td><td>Standalone</td><td>Component declares own imports, no NgModule</td></tr>
+<tr><td>8</td><td>Template</td><td>HTML with Angular syntax</td></tr>
+<tr><td>9</td><td>Data binding</td><td>{{}} [prop] (event) [(two-way)]</td></tr>
+<tr><td>10</td><td>Directives</td><td>*ngIf, *ngFor, ngClass, ngStyle…</td></tr>
+<tr><td>11</td><td>Pipes</td><td>Template formatters (date, currency…)</td></tr>
+<tr><td>12</td><td>Services</td><td>Reusable classes for logic / HTTP</td></tr>
+<tr><td>13</td><td>DI</td><td>Framework supplies dependencies</td></tr>
+<tr><td>14</td><td>Lifecycle hooks</td><td>ngOnInit, ngOnDestroy, etc.</td></tr>
+<tr><td>15</td><td>Routing</td><td>URL → component mapping</td></tr>
+<tr><td>16</td><td>Route params</td><td>Values in URL (/titles/:id)</td></tr>
+<tr><td>17</td><td>Lazy loading</td><td>Download chunks on demand</td></tr>
+<tr><td>18</td><td>Guards</td><td>Yes/no decisions on navigation</td></tr>
+<tr><td>19</td><td>HttpClient</td><td>Typed HTTP wrapper, returns Observables</td></tr>
+<tr><td>20</td><td>Observables</td><td>Lazy async streams</td></tr>
+<tr><td>21</td><td>RxJS operators</td><td>map, tap, catchError, switchMap…</td></tr>
+<tr><td>22</td><td>Subjects</td><td>Push-able Observables</td></tr>
+<tr><td>23</td><td>Forms</td><td>Reactive (TS) or Template-driven (HTML)</td></tr>
+<tr><td>24</td><td>Validators</td><td>Required, email, custom rules</td></tr>
+<tr><td>25</td><td>@Input</td><td>Parent → child data</td></tr>
+<tr><td>26</td><td>@Output</td><td>Child → parent events</td></tr>
+<tr><td>27</td><td>Shared service</td><td>Sibling state sharing</td></tr>
+<tr><td>28</td><td>ng-content</td><td>Content projection slot</td></tr>
+<tr><td>29</td><td>ng-template/container</td><td>Inert template / DOM-less wrapper</td></tr>
+<tr><td>30</td><td>Signals</td><td>Reactive value holder (Angular 17)</td></tr>
+<tr><td>31</td><td>computed()</td><td>Derived signal, auto-updates</td></tr>
+<tr><td>32</td><td>effect()</td><td>Side effect on signal change</td></tr>
+<tr><td>33</td><td>Interceptors</td><td>Middleware on every HTTP request</td></tr>
+<tr><td>34</td><td>Change detection</td><td>Process that updates DOM</td></tr>
+<tr><td>35</td><td>async pipe</td><td>Subscribes in template, auto-cleans</td></tr>
+<tr><td>36</td><td>Environment</td><td>Build-time config (dev/prod)</td></tr>
+<tr><td>37</td><td>AOT vs JIT</td><td>Compile at build vs in browser</td></tr>
+<tr><td>38</td><td>Tree-shaking</td><td>Drop unused code from bundle</td></tr>
+<tr><td>39</td><td>inject()</td><td>Get dependency outside constructor</td></tr>
+<tr><td>40</td><td>provideX</td><td>Standalone way to register providers</td></tr>
+</table>
+
+<p class="small" style="margin-top:40px; text-align:center;">— End of Guide — Angular Concepts Explained, Basics to Advanced — May 2026 —</p>
+
+</body>
+</html>

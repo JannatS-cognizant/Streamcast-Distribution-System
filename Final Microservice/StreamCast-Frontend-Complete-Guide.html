@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>StreamCast Frontend — Complete Placement &amp; Viva Guide</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937; line-height: 1.55; font-size: 10.5pt; margin: 0;
+  }
+  h1, h2, h3, h4, h5 { color: #0b3a5b; line-height: 1.25; page-break-after: avoid; }
+  h1 { font-size: 24pt; border-bottom: 3px solid #0b3a5b; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17pt; margin-top: 26px; border-bottom: 2px solid #d1d5db; padding-bottom: 4px; }
+  h3 { font-size: 13pt; margin-top: 18px; color: #1d4ed8; }
+  h4 { font-size: 11.5pt; margin-top: 14px; color: #334155; }
+  h5 { font-size: 10.5pt; margin-top: 10px; color: #475569; }
+  p, li { font-size: 10.5pt; }
+  ul, ol { margin: 4px 0 10px 22px; } li { margin: 2px 0; }
+  code, pre { font-family: "Consolas","Courier New",monospace; font-size: 9pt; }
+  code { background: #eef2ff; color: #1e3a8a; padding: 1px 5px; border-radius: 3px; }
+  pre {
+    background: #0f172a; color: #e2e8f0; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; page-break-inside: avoid; border-left: 4px solid #2563eb;
+    white-space: pre-wrap; word-break: break-word; font-size: 8.8pt; line-height: 1.4;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #cbd5e1; padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: #0b3a5b; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .cover { text-align: center; padding: 50px 0 30px; page-break-after: always; }
+  .cover h1 { border: none; font-size: 34pt; color: #0b3a5b; margin-bottom: 8px; }
+  .cover .sub { font-size: 13pt; color: #475569; margin-bottom: 24px; }
+  .cover .meta { font-size: 10pt; color: #64748b; margin-top: 40px; }
+  .page-break { page-break-before: always; }
+  .callout { background: #fef3c7; border-left: 5px solid #f59e0b; padding: 8px 12px; margin: 10px 0; border-radius: 4px; page-break-inside: avoid; }
+  .note    { background: #dbeafe; border-left: 5px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 4px; page-break-inside: avoid; }
+  .danger  { background: #fee2e2; border-left: 5px solid #dc2626; padding: 8px 12px; margin: 10px 0; border-radius: 4px; page-break-inside: avoid; }
+  .success { background: #dcfce7; border-left: 5px solid #16a34a; padding: 8px 12px; margin: 10px 0; border-radius: 4px; page-break-inside: avoid; }
+  .qa { background: #f1f5f9; border-left: 4px solid #475569; padding: 8px 12px; margin: 8px 0; border-radius: 4px; page-break-inside: avoid; }
+  .qa .q { font-weight: 600; color: #0b3a5b; }
+  .qa .a { margin-top: 3px; }
+  .slide {
+    border: 2px solid #1d4ed8; border-radius: 8px; padding: 16px 20px;
+    margin: 16px 0; background: #f8fafc; page-break-inside: avoid;
+  }
+  .slide h3 { margin-top: 0; color: #0b3a5b; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
+  .slide .notes { font-size: 9pt; color: #475569; font-style: italic; margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 6px; }
+  .toc { background: #f1f5f9; padding: 14px 18px; border-radius: 6px; }
+  .toc ol { margin-left: 20px; } .toc li { margin: 3px 0; }
+  .badge { display: inline-block; background: #1d4ed8; color: #fff; padding: 1px 7px; border-radius: 10px; font-size: 8.5pt; margin-right: 3px; }
+  .small { font-size: 9pt; color: #64748b; }
+</style>
+</head>
+<body>
+
+<!-- ============== COVER ============== -->
+<div class="cover">
+  <h1>StreamCast Frontend</h1>
+  <div class="sub">Complete Placement, Viva &amp; Project Presentation Guide<br>Angular 17 · TypeScript · HTML · CSS</div>
+  <div class="meta">
+    For: Afrin Banua &nbsp;|&nbsp; Project: streamcast-ui &nbsp;|&nbsp; Date: 19 May 2026<br>
+    14 sections · Concepts · File-by-file · 100+ interview Q&amp;A · PPT content
+  </div>
+</div>
+
+<!-- ============== TOC ============== -->
+<h1>Table of Contents</h1>
+<div class="toc">
+<ol>
+  <li>Project Overview</li>
+  <li>Angular Concepts Used (deep dive)</li>
+  <li>Folder Structure</li>
+  <li>File-by-File Explanation</li>
+  <li>HTML Explanation</li>
+  <li>CSS Explanation</li>
+  <li>API Flow</li>
+  <li>Authentication Flow</li>
+  <li>Component Communication</li>
+  <li>Interview Preparation — 100 Q&amp;A</li>
+  <li>Debugging &amp; Common Errors</li>
+  <li>Best Practices</li>
+  <li>PPT Slide Content</li>
+  <li>Final Quick Revision</li>
+</ol>
+</div>
+
+<!-- =====================================================================
+     SECTION 1 — PROJECT OVERVIEW
+===================================================================== -->
+<h1 class="page-break">1. Project Overview</h1>
+
+<h2>1.1 Project Title</h2>
+<p><strong>StreamCast — Digital Content Distribution Console (Frontend)</strong></p>
+
+<h2>1.2 Project Purpose</h2>
+<p>StreamCast is an internal back-office web application used by a streaming/broadcasting company (think Netflix, Hotstar, Prime Video) to manage everything that happens <em>before</em> a movie or show reaches the viewer:</p>
+<ul>
+  <li>Cataloguing every film/show + its video/audio/subtitle assets.</li>
+  <li>Recording licensing contracts and the legal clauses inside them.</li>
+  <li>Managing distribution partners (broadcasters, downstream streamers).</li>
+  <li>Packaging content into delivery manifests and shipping to partners.</li>
+  <li>Scheduling broadcast windows and resolving overlap conflicts.</li>
+  <li>Reporting on views and revenue.</li>
+  <li>Administering users and role-based access.</li>
+</ul>
+
+<h2>1.3 Problem Statement</h2>
+<p>Streaming businesses juggle thousands of titles, dozens of legal contracts per title, multiple delivery partners, and tight broadcast windows. Doing this in spreadsheets is error-prone — overlapping rights, missed deliveries, expired contracts, and conflicting schedules. <strong>StreamCast centralises the workflow into one secure, role-based console</strong> backed by a microservices API, so each team (Rights, Distribution, Scheduling, Compliance) sees only what they need.</p>
+
+<h2>1.4 Real-World Usage</h2>
+<ul>
+  <li><strong>Content Owner</strong> uploads a new movie → creates a Title + Assets.</li>
+  <li><strong>Rights Manager</strong> attaches a Contract granting India broadcast rights for 2 years, with exclusivity Clauses.</li>
+  <li><strong>Scheduler</strong> plans a primetime slot on Platform-X next Friday 9 PM.</li>
+  <li><strong>Compliance Officer</strong> reviews the Conflicts page if two schedules overlap.</li>
+  <li><strong>Distribution Operator</strong> creates a Manifest, ships to a Partner, tracks delivery.</li>
+  <li><strong>Admin</strong> creates users, assigns roles.</li>
+</ul>
+
+<h2>1.5 Features Implemented</h2>
+<table>
+<tr><th>Feature</th><th>Page</th><th>Allowed Roles</th></tr>
+<tr><td>Login + JWT auth</td><td>/login</td><td>Everyone (public)</td></tr>
+<tr><td>Dashboard with role tiles</td><td>/dashboard</td><td>All authenticated</td></tr>
+<tr><td>Titles catalog (CRUD + search)</td><td>/titles</td><td>ADMIN, CONTENT_OWNER, RIGHTS_MANAGER, SCHEDULER</td></tr>
+<tr><td>Title detail (assets, metadata)</td><td>/titles/:id</td><td>Same as above</td></tr>
+<tr><td>Contracts</td><td>/contracts</td><td>ADMIN, RIGHTS_MANAGER, SCHEDULER, COMPLIANCE_OFFICER</td></tr>
+<tr><td>Clauses</td><td>/clauses</td><td>ADMIN, RIGHTS_MANAGER, SCHEDULER, COMPLIANCE_OFFICER</td></tr>
+<tr><td>Partners</td><td>/partners</td><td>ADMIN, DISTRIBUTION_OPERATOR, PARTNER_ADMIN, RIGHTS_MANAGER</td></tr>
+<tr><td>Manifests (delivery packages)</td><td>/manifests</td><td>ADMIN, DISTRIBUTION_OPERATOR, PARTNER_ADMIN</td></tr>
+<tr><td>Schedules (calendar)</td><td>/schedules</td><td>ADMIN, SCHEDULER, RIGHTS_MANAGER, COMPLIANCE_OFFICER</td></tr>
+<tr><td>Conflicts</td><td>/conflicts</td><td>ADMIN, SCHEDULER, COMPLIANCE_OFFICER</td></tr>
+<tr><td>Usage analytics</td><td>/usage</td><td>ADMIN, COMPLIANCE_OFFICER, SCHEDULER</td></tr>
+<tr><td>Users admin</td><td>/users</td><td>ADMIN only</td></tr>
+<tr><td>Roles admin</td><td>/roles</td><td>ADMIN only</td></tr>
+</table>
+
+<h2>1.6 Angular Architecture Overview</h2>
+<pre><code>BROWSER (Angular SPA)
+┌────────────────────────────────────────────────────────┐
+│  main.ts  →  AppComponent  →  &lt;router-outlet&gt;          │
+│                                                         │
+│  app.config.ts provides: Router, HttpClient,            │
+│      authInterceptor, Animations, Material              │
+│                                                         │
+│  Routes (app.routes.ts) lazily load:                    │
+│    /login       → LoginComponent (public)               │
+│    /forbidden   → ForbiddenComponent                    │
+│    /            → ShellComponent (authGuard)            │
+│        ├─ /dashboard                                    │
+│        ├─ /titles, /titles/:id  (roleGuard)             │
+│        ├─ /contracts, /clauses, /partners,              │
+│        │   /manifests, /schedules, /conflicts, /usage   │
+│        └─ /users, /roles  (ADMIN only)                  │
+│                                                         │
+│  Every component talks to a Service.                    │
+│  Every Service uses HttpClient → API-Gateway :8082.     │
+│  authInterceptor attaches JWT to every request.         │
+└────────────────────────────────────────────────────────┘
+                       │  HTTPS + JWT
+                       ▼
+        Spring Cloud API-Gateway → 9 microservices
+</code></pre>
+
+<h2>1.7 Complete Application Flow</h2>
+<ol>
+  <li><code>index.html</code> loads → bootstraps Angular via <code>main.ts</code>.</li>
+  <li><code>AppComponent</code> renders <code>&lt;router-outlet /&gt;</code>.</li>
+  <li>Router checks the URL. For protected routes, <code>authGuard</code> runs first.</li>
+  <li>If guard passes, the route's <code>loadComponent()</code> downloads the chunk on demand.</li>
+  <li>The component is constructed → its dependencies (services) are injected.</li>
+  <li>The component fetches data via its service using <code>HttpClient</code>.</li>
+  <li>The <code>authInterceptor</code> adds the <code>Authorization: Bearer …</code> header automatically.</li>
+  <li>Response arrives → service maps it → component updates a Signal → template re-renders.</li>
+  <li>On user action (click/submit), the component calls the service again (POST/PUT/DELETE).</li>
+  <li>On 401, the interceptor logs the user out and redirects to <code>/login</code>.</li>
+</ol>
+
+<h2>1.8 Architecture Diagram</h2>
+<pre><code>┌─────────────── User (browser) ────────────────┐
+│                                                │
+│  ┌──────────────┐    bootstrap     ┌─────────┐ │
+│  │ index.html   │ ───────────────► │ main.ts │ │
+│  └──────────────┘                  └────┬────┘ │
+│                                         ▼       │
+│         ┌──────────── AppComponent ──────────┐  │
+│         │   &lt;router-outlet /&gt;                │  │
+│         └─────────────┬──────────────────────┘  │
+│                       ▼                          │
+│            ┌──── Router (routes.ts) ────┐        │
+│            │ checks URL + Guards        │        │
+│            └─────┬──────────────────────┘        │
+│                  ▼                                │
+│   Shell + Feature Components ◄── Services        │
+│         │                          │              │
+│         │ template binds Signals   │ HttpClient   │
+│         ▼                          ▼              │
+│     HTML + CSS               ↓ authInterceptor    │
+│                              ↓ adds JWT header    │
+└──────────────────────────────┼────────────────────┘
+                               ▼
+                  http://localhost:8082 (Gateway)
+</code></pre>
+
+<h2>1.9 User Flow Diagram (login → schedule a title)</h2>
+<pre><code>User visits /  ──► redirect to /dashboard
+         │              │
+         │   authGuard fails (no JWT)
+         ▼              ▼
+  /login form  ───►  AuthService.login()  ───►  POST /auth/login
+                                                  │
+                                       JWT returned (stored in localStorage)
+                                                  │
+                              ──► navigate('/dashboard')
+                                                  │
+   user clicks "Titles" tile  ──► /titles  (roleGuard checks role)
+                                                  │
+   TitlesComponent ngOnInit ──► TitlesService.list() ──► GET /api/titles
+                                                  │
+   user clicks "+ New title" ──► MatDialog opens TitleFormDialog
+                                                  │
+   submit ──► POST /api/titles ──► refresh list
+                                                  │
+   user clicks a card ──► /titles/42 ──► TitleDetailComponent
+                                                  │
+   user goes to /schedules ──► creates a schedule for title 42
+                                                  │
+   POST /api/schedules ──► conflict detection ──► /conflicts page
+</code></pre>
+
+<h2>1.10 Component Communication Diagram</h2>
+<pre><code>          ┌────────────────────────────────────────┐
+          │            AuthService                  │
+          │  (Signal: user, isAuthenticated, role)  │
+          └──────┬─────────────────────────┬────────┘
+                 │ reads                   │ reads
+                 ▼                         ▼
+        authGuard / roleGuard       ShellComponent (nav, user chip)
+                                            │
+                                            │ &lt;router-outlet /&gt;
+                                            ▼
+                            ┌───────── Feature Components ────────┐
+                            │ TitlesComponent, ContractsComponent │
+                            │ uses [Component-level Signals]      │
+                            └──────────────┬──────────────────────┘
+                                           │ injects
+                                           ▼
+                              Feature Service (TitlesService…)
+                                           │ uses
+                                           ▼
+                                       HttpClient
+                                           │ interceptor adds JWT
+                                           ▼
+                                     API-Gateway
+</code></pre>
+
+<!-- =====================================================================
+     SECTION 2 — ANGULAR CONCEPTS USED
+===================================================================== -->
+<h1 class="page-break">2. Angular Concepts Used (Deep Dive)</h1>
+<p>For each concept: <strong>What → Why → Where in project → Advantages → Real-time example → Interview Qs → Common mistakes</strong>.</p>
+
+<!-- 2.1 Angular basics -->
+<h2>2.1 Angular Basics</h2>
+<p><strong>What:</strong> Angular is a TypeScript-based SPA framework by Google. It organises a UI as a tree of <em>components</em>, talks to a backend via <em>services</em>, and changes screen via the <em>router</em>.</p>
+<p><strong>Why:</strong> Two-way binding, dependency injection, strong typing, batteries-included tooling.</p>
+<p><strong>Where:</strong> The whole <code>streamcast-ui/</code> folder.</p>
+<p><strong>Advantages:</strong> Component reuse, TypeScript safety, opinionated structure → easy to onboard, integrated forms/HTTP/router/animations.</p>
+<p><strong>Real-time example:</strong> Banking dashboards, Gmail, Microsoft Office Online — all built with Angular or similar frameworks.</p>
+<div class="qa"><span class="q">Q. What is Angular?</span><div class="a">A TypeScript SPA framework that uses components, services, and the router to build dynamic single-page applications.</div></div>
+<div class="qa"><span class="q">Q. Difference between Angular and AngularJS?</span><div class="a">AngularJS (1.x) uses JavaScript + scope. Angular (2+) is a complete rewrite using TypeScript, components, and tree-shakable Ivy compiler.</div></div>
+<p><strong>Common mistakes:</strong> Mixing AngularJS tutorials with Angular code; forgetting that Angular is component-based, not page-based.</p>
+
+<!-- 2.2 Components -->
+<h2>2.2 Components</h2>
+<p><strong>What:</strong> The fundamental UI building block. Each component = <code>@Component</code>-decorated class + HTML template + CSS.</p>
+<p><strong>Why:</strong> Encapsulation, reusability, testability, clear ownership.</p>
+<p><strong>Where:</strong> Every <code>*.component.ts</code> file — <code>LoginComponent</code>, <code>DashboardComponent</code>, <code>TitlesComponent</code>, <code>ShellComponent</code>, etc.</p>
+<pre><code>@Component({
+  selector: 'sc-login',         // becomes &lt;sc-login&gt; tag
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  template: `&lt;form&gt;...&lt;/form&gt;`
+})
+export class LoginComponent {}</code></pre>
+<p><strong>Advantages:</strong> Replace HTML+JS spaghetti with reusable units. Material-style design systems are built on this idea.</p>
+<p><strong>Real-time example:</strong> One <code>TitleCard</code> rendered 50 times in a grid. Change once → all 50 update.</p>
+<div class="qa"><span class="q">Q. What is a component?</span><div class="a">A reusable UI element with its own template, style, and logic, decorated with <code>@Component</code>.</div></div>
+<p><strong>Common mistakes:</strong> Putting business logic in a component instead of a service; not declaring imports for standalone components.</p>
+
+<!-- 2.3 Modules vs Standalone -->
+<h2>2.3 Modules &amp; Standalone Components</h2>
+<p><strong>What:</strong> Earlier Angular versions required every component to be inside an <code>NgModule</code>. Angular 14+ introduced <strong>standalone components</strong> — they declare their own imports and don't need an <code>NgModule</code>.</p>
+<p><strong>Why standalone:</strong> Less boilerplate, faster lazy loading, simpler mental model.</p>
+<p><strong>Where:</strong> <em>Every</em> component in StreamCast uses <code>standalone: true</code>. There is no <code>AppModule</code>. <code>main.ts</code> uses <code>bootstrapApplication()</code> instead of <code>bootstrapModule()</code>.</p>
+<pre><code>// main.ts
+bootstrapApplication(AppComponent, appConfig);
+
+// every component
+@Component({ standalone: true, imports: [...], template: ... })</code></pre>
+<div class="qa"><span class="q">Q. Standalone components vs NgModule?</span><div class="a">Standalone components declare their own imports directly. NgModules grouped components, but added boilerplate. Standalone is the modern default.</div></div>
+
+<!-- 2.4 TypeScript -->
+<h2>2.4 TypeScript</h2>
+<p><strong>What:</strong> JavaScript with static types added at compile time.</p>
+<p><strong>Why:</strong> Catches bugs before runtime; great IDE autocomplete; interfaces describe data shape.</p>
+<p><strong>Where:</strong> All <code>.ts</code> files. Interfaces in <code>core/models/</code> describe API data.</p>
+<pre><code>// core/models/user.ts
+export type Role = 'ADMIN' | 'CONTENT_OWNER' | 'RIGHTS_MANAGER' | ...;
+export interface CurrentUser { email: string; role: Role; token: string; expiresAt: number; }</code></pre>
+<p><strong>Real-time example:</strong> Renaming a field in <code>Title</code> immediately flags every component that used the old name.</p>
+<div class="qa"><span class="q">Q. Difference between <code>interface</code> and <code>type</code> in TS?</span><div class="a">Both describe shape. <code>interface</code> can be extended/merged. <code>type</code> supports unions and primitives. Either works for objects.</div></div>
+
+<!-- 2.5 HTML Templates -->
+<h2>2.5 HTML Templates</h2>
+<p><strong>What:</strong> Angular templates extend HTML with bindings and directives (<code>{{ }}</code>, <code>[prop]</code>, <code>(event)</code>, <code>*ngIf</code>).</p>
+<p><strong>Why:</strong> Lets you describe what the UI should look like for any state, with no manual DOM manipulation.</p>
+<p><strong>Where:</strong> Inline in the <code>template:</code> of each component (StreamCast uses inline templates everywhere).</p>
+
+<!-- 2.6 CSS Styling -->
+<h2>2.6 CSS Styling</h2>
+<p>StreamCast originally used Tailwind utility classes; the styling has been converted to <strong>plain CSS</strong> in two files: <code>src/utilities.css</code> (utility classes used by templates) and <code>src/styles.scss</code> (Material theme + global rules).</p>
+
+<!-- 2.7 Data binding -->
+<h2>2.7 Data Binding (All Four Forms)</h2>
+<table>
+<tr><th>Type</th><th>Syntax</th><th>Direction</th><th>Example from StreamCast</th></tr>
+<tr><td>Interpolation</td><td><code>{{ value }}</code></td><td>TS → DOM</td><td><code>&lt;div&gt;{{ t.name }}&lt;/div&gt;</code></td></tr>
+<tr><td>Property binding</td><td><code>[prop]="expr"</code></td><td>TS → DOM</td><td><code>[disabled]="form.invalid"</code></td></tr>
+<tr><td>Event binding</td><td><code>(event)="handler()"</code></td><td>DOM → TS</td><td><code>(click)="openCreate()"</code></td></tr>
+<tr><td>Two-way binding</td><td><code>[(ngModel)]="x"</code></td><td>Both</td><td>Used in template forms (reactive forms preferred here)</td></tr>
+</table>
+<div class="qa"><span class="q">Q. What is two-way binding?</span><div class="a">Property + event in one syntax: <code>[(ngModel)]="x"</code> = <code>[ngModel]="x" (ngModelChange)="x=$event"</code>.</div></div>
+
+<!-- 2.8 Directives -->
+<h2>2.8 Directives — <code>ngIf</code>, <code>ngFor</code>, <code>ngClass</code>, <code>ngStyle</code></h2>
+<pre><code>&lt;div *ngIf="loading()"&gt;Spinner&lt;/div&gt;
+&lt;li *ngFor="let t of filtered(); trackBy: trackId"&gt;{{ t.name }}&lt;/li&gt;
+&lt;span [ngClass]="{ 'sc-chip-success': t.status === 'AVAILABLE' }"&gt;{{ t.status }}&lt;/span&gt;
+&lt;div [ngStyle]="{ background: poster(t) }"&gt;&lt;/div&gt;</code></pre>
+<ul>
+  <li><strong>ngIf</strong> — adds/removes element from DOM.</li>
+  <li><strong>ngFor</strong> — loops over an array; <code>trackBy</code> tells Angular which row is which for efficient updates.</li>
+  <li><strong>ngClass</strong> — adds/removes CSS classes conditionally.</li>
+  <li><strong>ngStyle</strong> — sets inline styles dynamically.</li>
+</ul>
+<div class="qa"><span class="q">Q. Difference between <code>*ngIf</code> and <code>[hidden]</code>?</span><div class="a"><code>*ngIf</code> removes from DOM (cheaper if rarely shown). <code>[hidden]</code> keeps it but sets <code>display:none</code> (cheaper to toggle often).</div></div>
+
+<!-- 2.9 Pipes -->
+<h2>2.9 Pipes</h2>
+<p><strong>What:</strong> Format data in templates without changing the underlying value: <code>{{ value | pipe:args }}</code>.</p>
+<p><strong>Where in StreamCast:</strong> <code>DatePipe</code> formats release dates — <code>{{ t.releaseDate | date:'mediumDate' }}</code>. <code>CurrencyPipe</code>/<code>NumberPipe</code> could format revenue.</p>
+<div class="qa"><span class="q">Q. Pure vs impure pipes?</span><div class="a">Pure pipes (default) re-run only when the input reference changes. Impure pipes run on every change-detection cycle — use sparingly.</div></div>
+
+<!-- 2.10 Services -->
+<h2>2.10 Services</h2>
+<p><strong>What:</strong> Plain TypeScript classes that hold logic / talk to the backend, decorated with <code>@Injectable</code>.</p>
+<p><strong>Why:</strong> Keep components focused on UI; logic is reusable; testable in isolation.</p>
+<p><strong>Where:</strong> <code>AuthService</code>, <code>TitlesService</code>, <code>ContractsService</code>, <code>SchedulesService</code>, etc.</p>
+<pre><code>@Injectable({ providedIn: 'root' })
+export class TitlesService {
+  private http = inject(HttpClient);
+  list(): Observable&lt;Title[]&gt; { return this.http.get&lt;Title[]&gt;(...); }
+}</code></pre>
+<p><code>providedIn: 'root'</code> makes the service a <em>singleton</em> — only one instance per app, available to inject anywhere.</p>
+<div class="qa"><span class="q">Q. Why use services?</span><div class="a">Single Responsibility — keep API calls and shared state out of components. They are also singletons and easily mockable in tests.</div></div>
+
+<!-- 2.11 DI -->
+<h2>2.11 Dependency Injection (DI)</h2>
+<p><strong>What:</strong> Angular's mechanism for giving a class the dependencies it needs (services, router, http client) without it constructing them.</p>
+<p><strong>Two styles used in StreamCast:</strong></p>
+<pre><code>// Style 1: constructor
+constructor(private api: TitlesService) {}
+
+// Style 2: inject() function (preferred in standalone code)
+private api = inject(TitlesService);</code></pre>
+<div class="qa"><span class="q">Q. What is DI?</span><div class="a">A design pattern where a class declares what it needs; the framework supplies it. Decouples creation from usage and makes testing easy.</div></div>
+
+<!-- 2.12 Routing -->
+<h2>2.12 Routing</h2>
+<p><strong>What:</strong> Maps URLs to components. SPA → no full page reload.</p>
+<p><strong>Where:</strong> <code>app.routes.ts</code> + <code>provideRouter(routes)</code> in <code>app.config.ts</code>.</p>
+<p><strong>Key idea — lazy loading:</strong> each route uses <code>loadComponent: () => import(...)</code> so the JS chunk is fetched only when the user actually navigates there. Initial bundle stays small.</p>
+<pre><code>{
+  path: 'titles',
+  canActivate: [roleGuard(['ADMIN','CONTENT_OWNER',...])],
+  loadComponent: () =&gt; import('./features/catalog/titles.component')
+                       .then(m =&gt; m.TitlesComponent)
+}</code></pre>
+
+<!-- 2.13 Route parameters -->
+<h2>2.13 Route Parameters</h2>
+<p>The route <code>titles/:id</code> reads <code>id</code> from the URL inside the component:</p>
+<pre><code>private route = inject(ActivatedRoute);
+const id = +this.route.snapshot.paramMap.get('id')!;</code></pre>
+<p>With <code>withComponentInputBinding()</code> (used in <code>app.config.ts</code>), you can also bind URL params straight to <code>@Input()</code>s.</p>
+
+<!-- 2.14 Reactive forms -->
+<h2>2.14 Reactive Forms</h2>
+<p><strong>What:</strong> Forms defined in TypeScript, not HTML.</p>
+<p><strong>Where:</strong> <code>LoginComponent</code>, <code>TitleFormDialog</code>, every dialog.</p>
+<pre><code>form = this.fb.nonNullable.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', Validators.required]
+});</code></pre>
+<p>Template uses <code>[formGroup]</code> + <code>formControlName</code>. Read with <code>form.value</code>; check validity with <code>form.invalid</code>.</p>
+
+<!-- 2.15 Template-driven forms -->
+<h2>2.15 Template-driven Forms</h2>
+<p><strong>What:</strong> Forms defined inside the template using <code>[(ngModel)]</code> + <code>#fname="ngModel"</code>. Best for tiny forms.</p>
+<p><strong>Where:</strong> Not used in StreamCast — the project standardised on Reactive Forms because they scale better and validation is in code.</p>
+<div class="qa"><span class="q">Q. Reactive vs Template-driven forms?</span><div class="a">Reactive: defined in TS, sync, typed, easy to unit-test, used for complex/large forms. Template-driven: defined in HTML with <code>ngModel</code>, async, less typing, used for tiny forms.</div></div>
+
+<!-- 2.16 Form validation -->
+<h2>2.16 Form Validation</h2>
+<p>Built-in validators: <code>Validators.required</code>, <code>Validators.email</code>, <code>Validators.minLength</code>, <code>Validators.pattern</code>.</p>
+<p>In <code>LoginComponent</code> the submit button is disabled until both fields are valid:</p>
+<pre><code>&lt;button type="submit" [disabled]="form.invalid || loading()"&gt;Sign in&lt;/button&gt;</code></pre>
+
+<!-- 2.17 API integration / HttpClient -->
+<h2>2.17 API Integration &amp; HttpClient</h2>
+<p><strong>What:</strong> <code>HttpClient</code> is Angular's wrapper over <code>fetch</code>/XHR. It returns Observables.</p>
+<p><strong>Where:</strong> Every service injects <code>HttpClient</code>.</p>
+<pre><code>this.http.get&lt;Title[]&gt;(`${environment.apiBase}/api/titles`)</code></pre>
+<p>The generic <code>&lt;Title[]&gt;</code> tells TypeScript the response shape; runtime cast is your responsibility.</p>
+
+<!-- 2.18 Observables -->
+<h2>2.18 Observables</h2>
+<p><strong>What:</strong> A lazy stream of values over time. You <em>subscribe</em> to start it; <em>unsubscribe</em> to stop.</p>
+<p><strong>Where:</strong> Every HTTP call returns an Observable; signals do not replace Observables for HTTP.</p>
+<pre><code>this.api.list().subscribe({
+  next: data =&gt; this.rows.set(data),
+  error: () =&gt; this.snack.open('Failed', 'OK')
+});</code></pre>
+
+<!-- 2.19 RxJS -->
+<h2>2.19 RxJS Operators</h2>
+<table>
+<tr><th>Operator</th><th>Purpose</th><th>Used in</th></tr>
+<tr><td><code>map</code></td><td>Transform value</td><td>Services unwrapping <code>ApiResponse&lt;T&gt;</code> envelope</td></tr>
+<tr><td><code>tap</code></td><td>Side effect, no transform</td><td><code>AuthService.login()</code> stores the JWT in <code>tap</code></td></tr>
+<tr><td><code>catchError</code></td><td>Handle errors</td><td><code>authInterceptor</code> catches 401 and logs out</td></tr>
+<tr><td><code>switchMap</code></td><td>Chain dependent calls, cancel previous</td><td>Useful in search-as-you-type</td></tr>
+</table>
+
+<!-- 2.20 Lifecycle hooks -->
+<h2>2.20 Lifecycle Hooks</h2>
+<ul>
+  <li><code>ngOnInit</code> — runs once after input bindings set. Fetch initial data here.</li>
+  <li><code>ngOnChanges</code> — runs when any <code>@Input()</code> changes.</li>
+  <li><code>ngOnDestroy</code> — cleanup (unsubscribe, clear timers).</li>
+  <li><code>ngAfterViewInit</code> — DOM ready, child components accessible.</li>
+</ul>
+<p>StreamCast often does init work inside the <code>constructor</code> (fine for tiny components like <code>TitlesComponent.refresh()</code> in <code>constructor()</code>).</p>
+
+<!-- 2.21 Guards -->
+<h2>2.21 Guards</h2>
+<p><strong>What:</strong> Functions returning <code>true | false | UrlTree</code> to allow or block navigation.</p>
+<p><strong>Where:</strong> <code>authGuard</code> (logged in?), <code>roleGuard(['ADMIN', …])</code> (correct role?). Defined in <code>core/auth/auth.guard.ts</code>.</p>
+
+<!-- 2.22 Interceptors -->
+<h2>2.22 Interceptors</h2>
+<p>Run on every HTTP request. The <code>authInterceptor</code> in StreamCast:</p>
+<ul>
+  <li>Clones the request and adds <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+  <li>Catches 401 errors and calls <code>auth.logout()</code> → redirect to <code>/login</code>.</li>
+</ul>
+
+<!-- 2.23 Auth / Authorization -->
+<h2>2.23 Authentication &amp; Authorization</h2>
+<ul>
+  <li><strong>Authentication</strong> = "who are you?" → login + JWT.</li>
+  <li><strong>Authorization</strong> = "what can you do?" → roles + guards + UI <code>*ngIf="canEdit()"</code>.</li>
+</ul>
+
+<!-- 2.24 Storage -->
+<h2>2.24 LocalStorage vs SessionStorage</h2>
+<table>
+<tr><th></th><th>localStorage</th><th>sessionStorage</th></tr>
+<tr><td>Lifetime</td><td>Until cleared explicitly</td><td>Until tab/window closes</td></tr>
+<tr><td>Shared across tabs</td><td>Yes (same origin)</td><td>No</td></tr>
+<tr><td>Capacity</td><td>~5–10 MB</td><td>~5 MB</td></tr>
+</table>
+<p>StreamCast uses <strong>localStorage</strong> with key <code>sc.auth</code> to persist the JWT through page refreshes.</p>
+
+<!-- 2.25 Error handling -->
+<h2>2.25 Error Handling</h2>
+<ul>
+  <li>Service uses <code>{ error: ... }</code> callback in <code>subscribe</code>.</li>
+  <li>Errors classified by status: 0 (network), 400 (bad data), 401/403 (auth), 500+ (server).</li>
+  <li>UI shows <code>MatSnackBar</code> for transient errors and inline messages for forms.</li>
+</ul>
+
+<!-- 2.26 Responsive -->
+<h2>2.26 Responsive Design</h2>
+<p>Achieved via CSS classes with breakpoints (<code>sm:</code> 640px, <code>md:</code> 768px, <code>lg:</code> 1024px, <code>2xl:</code> 1536px). Example from titles grid:</p>
+<pre><code>class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"</code></pre>
+<p>Phones see 2 columns; tablets 3; laptops 4; ultra-wide 6.</p>
+
+<!-- =====================================================================
+     SECTION 3 — FOLDER STRUCTURE
+===================================================================== -->
+<h1 class="page-break">3. Folder Structure</h1>
+<pre><code>streamcast-ui/
+├─ angular.json              ← workspace + build config
+├─ package.json              ← npm dependencies + scripts
+├─ tsconfig.json             ← TypeScript compiler options
+├─ tsconfig.app.json         ← app-specific TS overrides
+└─ src/
+   ├─ index.html             ← single HTML entry point
+   ├─ main.ts                ← bootstraps Angular
+   ├─ styles.scss            ← global Material theme + base
+   ├─ utilities.css          ← all CSS utility classes (was Tailwind)
+   ├─ environments/
+   │   └─ environment.ts     ← apiBase URL etc.
+   └─ app/
+       ├─ app.component.ts   ← root component (just &lt;router-outlet&gt;)
+       ├─ app.config.ts      ← global providers
+       ├─ app.routes.ts      ← all routes + guards
+       ├─ core/              ← cross-cutting reusable code
+       │   ├─ auth/
+       │   │   ├─ auth.service.ts
+       │   │   ├─ auth.guard.ts
+       │   │   ├─ auth.interceptor.ts
+       │   │   └─ jwt.utils.ts
+       │   └─ models/
+       │       ├─ user.ts, catalog.ts, contract.ts,
+       │       ├─ clause.ts, partner.ts, manifest.ts,
+       │       ├─ schedule.ts, usage.ts, admin.ts
+       ├─ layout/
+       │   └─ shell.component.ts   ← top bar, side nav, outlet
+       └─ features/
+           ├─ auth/login.component.ts
+           ├─ dashboard/dashboard.component.ts
+           ├─ catalog/{titles, title-detail}.component.ts
+           ├─ catalog/{titles, assets}.service.ts
+           ├─ contracts/{contracts.component.ts, contracts.service.ts}
+           ├─ clauses/{clauses.component.ts, clauses.service.ts}
+           ├─ partners/{partners.component.ts, partners.service.ts}
+           ├─ manifests/{manifests.component.ts, manifests.service.ts}
+           ├─ schedules/{schedules.component.ts, schedules.service.ts}
+           ├─ conflicts/conflicts.component.ts
+           ├─ usage/{usage.component.ts, usage.service.ts}
+           ├─ admin/{users, roles}.component.ts + admin.service.ts
+           └─ misc/forbidden.component.ts
+</code></pre>
+
+<h3>Why this structure?</h3>
+<ul>
+  <li><strong>core/</strong> = singleton things used everywhere (auth, models).</li>
+  <li><strong>layout/</strong> = chrome around feature pages (header, side nav).</li>
+  <li><strong>features/</strong> = one folder per business capability. Each holds its own components + service. Easy to find. Easy to delete a feature without leaks.</li>
+  <li><strong>environments/</strong> = swap config (dev vs prod) at build time.</li>
+  <li><strong>assets/</strong> = static images / fonts / icons (here: <code>logo.svg</code>).</li>
+</ul>
+
+<h3>Each folder's purpose at a glance</h3>
+<table>
+<tr><th>Folder</th><th>Purpose</th></tr>
+<tr><td><code>src/</code></td><td>All source code Angular needs.</td></tr>
+<tr><td><code>app/</code></td><td>All application code.</td></tr>
+<tr><td><code>core/auth/</code></td><td>Auth service, JWT helper, guards, HTTP interceptor.</td></tr>
+<tr><td><code>core/models/</code></td><td>TypeScript interfaces shared by components &amp; services.</td></tr>
+<tr><td><code>layout/</code></td><td>Outer shell (nav + outlet).</td></tr>
+<tr><td><code>features/X/</code></td><td>One feature: component(s) + service + maybe sub-components.</td></tr>
+<tr><td><code>environments/</code></td><td>Build-time configuration (API URL, production flag).</td></tr>
+</table>
+
+<!-- =====================================================================
+     SECTION 4 — FILE-BY-FILE EXPLANATION
+===================================================================== -->
+<h1 class="page-break">4. File-by-File Explanation</h1>
+
+<!-- 4.1 index.html -->
+<h2>4.1 <code>src/index.html</code></h2>
+<p><strong>Purpose:</strong> The one HTML page the browser loads. Angular replaces <code>&lt;sc-root&gt;&lt;/sc-root&gt;</code> with the app.</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;title&gt;Streamcast Console&lt;/title&gt;
+  &lt;base href="/" /&gt;            &lt;!-- router uses this --&gt;
+  &lt;link rel="icon" type="image/svg+xml" href="/assets/logo.svg" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter..." rel="stylesheet"/&gt;
+  &lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body class="mat-typography bg-bg text-ink-100"&gt;
+  &lt;sc-root&gt;&lt;/sc-root&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul>
+  <li><code>&lt;base href="/" /&gt;</code> — required by Angular Router to resolve URLs.</li>
+  <li><code>Inter</code> font + <code>Material Icons</code> loaded from Google CDN.</li>
+  <li><code>&lt;sc-root&gt;</code> matches the selector of <code>AppComponent</code>.</li>
+</ul>
+
+<!-- 4.2 main.ts -->
+<h2>4.2 <code>src/main.ts</code></h2>
+<pre><code>import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
+
+bootstrapApplication(AppComponent, appConfig).catch(err =&gt; console.error(err));</code></pre>
+<p><strong>Step-by-step:</strong></p>
+<ol>
+  <li>Imports Angular's standalone bootstrap function.</li>
+  <li>Imports the root component (the one selector matched in index.html).</li>
+  <li>Imports the app-wide providers config.</li>
+  <li>Calls <code>bootstrapApplication</code> — Angular renders <code>AppComponent</code> into <code>&lt;sc-root&gt;</code> and registers all providers.</li>
+</ol>
+<p><strong>If you delete this file:</strong> Angular has no entry point — nothing renders.</p>
+
+<!-- 4.3 app.component.ts -->
+<h2>4.3 <code>app/app.component.ts</code></h2>
+<pre><code>@Component({
+  selector: 'sc-root',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `&lt;router-outlet /&gt;`
+})
+export class AppComponent {}</code></pre>
+<p><strong>Purpose:</strong> Pure shell — its only template is <code>&lt;router-outlet /&gt;</code> where the router renders whatever component matches the URL.</p>
+
+<!-- 4.4 app.config.ts -->
+<h2>4.4 <code>app/app.config.ts</code></h2>
+<pre><code>export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAnimations(),
+    importProvidersFrom(MatSnackBarModule)
+  ]
+};</code></pre>
+<p><strong>Line-by-line:</strong></p>
+<ul>
+  <li><code>provideRouter(routes, withComponentInputBinding())</code> — installs router + lets URL params bind directly to <code>@Input()</code>s.</li>
+  <li><code>provideHttpClient(withInterceptors([authInterceptor]))</code> — installs <code>HttpClient</code> and chains the JWT interceptor on every request.</li>
+  <li><code>provideAnimations()</code> — needed by Angular Material for dialogs, ripples, etc.</li>
+  <li><code>importProvidersFrom(MatSnackBarModule)</code> — older-style module imported into the standalone world for global snack-bars.</li>
+</ul>
+
+<!-- 4.5 app.routes.ts -->
+<h2>4.5 <code>app/app.routes.ts</code></h2>
+<p>Defines every URL the app understands. Highlights:</p>
+<pre><code>{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },          // home → dashboard
+{ path: 'login', loadComponent: () =&gt; import('...').then(...) },   // public, lazy
+{
+  path: '',
+  canActivate: [authGuard],                                        // every child needs login
+  loadComponent: () =&gt; import('./layout/shell.component')...,      // shell wraps them
+  children: [
+    { path: 'dashboard', loadComponent: ... },
+    { path: 'titles',
+      canActivate: [roleGuard(['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'])],
+      loadComponent: ... },
+    ...
+  ]
+},
+{ path: '**', redirectTo: 'dashboard' }                            // wildcard 404
+</code></pre>
+<p><strong>Why lazy loading?</strong> Each <code>loadComponent</code> downloads only when that route is visited. Initial bundle &lt; 250 KB; the rest is fetched on demand.</p>
+
+<!-- 4.6 auth.service.ts -->
+<h2>4.6 <code>core/auth/auth.service.ts</code></h2>
+<pre><code>@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private readonly _user = signal&lt;CurrentUser | null&gt;(this.restore());
+  readonly user = this._user.asReadonly();
+  readonly isAuthenticated = computed(() =&gt; {
+    const u = this._user(); return !!u &amp;&amp; u.expiresAt &gt; Date.now();
+  });
+  readonly role = computed&lt;Role | null&gt;(() =&gt; this._user()?.role ?? null);
+
+  login(req: LoginRequest): Observable&lt;string&gt; {
+    return this.http.post(`${environment.apiBase}/auth/login`, req,
+                          { responseType: 'text' })
+                    .pipe(tap(token =&gt; this.persist(token)));
+  }
+  logout(): void { localStorage.removeItem(STORAGE_KEY); this._user.set(null); this.router.navigate(['/login']); }
+  hasAnyRole(roles: Role[]): boolean { const r = this._user()?.role; return !!r &amp;&amp; roles.includes(r); }
+  private persist(token: string): void {
+    const claims = decodeJwt(token);
+    const user: CurrentUser = { email: claims.sub, role: claims.role as Role, token, expiresAt: claims.exp * 1000 };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+    this._user.set(user);
+  }
+  private restore(): CurrentUser | null { /* read localStorage, expire check */ }
+}</code></pre>
+<p><strong>Key ideas:</strong></p>
+<ul>
+  <li><code>signal(...)</code> + <code>computed(...)</code> = Angular 17 reactivity. Anyone reading <code>auth.isAuthenticated()</code> re-renders when the user logs in/out.</li>
+  <li><code>tap</code> in the login observable persists the token without changing the value passed downstream.</li>
+  <li><code>restore()</code> auto-logs in the user on page refresh if their JWT is still valid.</li>
+</ul>
+
+<!-- 4.7 auth.guard.ts -->
+<h2>4.7 <code>core/auth/auth.guard.ts</code></h2>
+<pre><code>export const authGuard: CanActivateFn = () =&gt; {
+  const auth = inject(AuthService); const router = inject(Router);
+  if (auth.isAuthenticated()) return true;
+  router.navigate(['/login']); return false;
+};
+
+export const roleGuard = (roles: Role[]): CanActivateFn =&gt; () =&gt; {
+  const auth = inject(AuthService); const router = inject(Router);
+  if (!auth.isAuthenticated()) { router.navigate(['/login']); return false; }
+  if (auth.hasAnyRole(roles)) return true;
+  router.navigate(['/forbidden']); return false;
+};</code></pre>
+<p><strong>What:</strong> Functional guards. <code>authGuard</code> blocks unauthenticated users; <code>roleGuard</code> is a factory — pass the allowed roles, get a guard.</p>
+
+<!-- 4.8 auth.interceptor.ts -->
+<h2>4.8 <code>core/auth/auth.interceptor.ts</code></h2>
+<pre><code>export const authInterceptor: HttpInterceptorFn = (req, next) =&gt; {
+  const auth = inject(AuthService); const router = inject(Router);
+  const token = auth.user()?.token;
+  const cloned = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
+  return next(cloned).pipe(
+    catchError(err =&gt; {
+      if (err?.status === 401) { auth.logout(); router.navigate(['/login']); }
+      return throwError(() =&gt; err);
+    })
+  );
+};</code></pre>
+<p>Runs for every HTTP call. Adds the JWT and reacts to 401s globally.</p>
+
+<!-- 4.9 jwt.utils.ts -->
+<h2>4.9 <code>core/auth/jwt.utils.ts</code></h2>
+<pre><code>export function decodeJwt(token: string): JwtClaims | null {
+  try {
+    const payload = token.split('.')[1];
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(json) as JwtClaims;
+  } catch { return null; }
+}</code></pre>
+<p>Decodes the base64 payload (no signature verification — that's the server's job). Used to read <code>sub</code> (email), <code>role</code>, <code>exp</code>.</p>
+
+<!-- 4.10 Models -->
+<h2>4.10 <code>core/models/*</code> (TypeScript interfaces)</h2>
+<table>
+<tr><th>File</th><th>Defines</th></tr>
+<tr><td>user.ts</td><td><code>Role</code> union, <code>CurrentUser</code>, <code>LoginRequest</code></td></tr>
+<tr><td>catalog.ts</td><td><code>Title</code>, <code>Asset</code>, <code>Metadata</code></td></tr>
+<tr><td>contract.ts</td><td><code>Contract</code>, <code>ApiResponse&lt;T&gt;</code></td></tr>
+<tr><td>clause.ts</td><td><code>Clause</code></td></tr>
+<tr><td>partner.ts</td><td><code>Partner</code></td></tr>
+<tr><td>manifest.ts</td><td><code>Manifest</code></td></tr>
+<tr><td>schedule.ts</td><td><code>Schedule</code>, <code>Conflict</code>, <code>CalendarSchedule</code>, <code>ScheduleApiResponse&lt;T&gt;</code></td></tr>
+<tr><td>usage.ts</td><td><code>UsageRecord</code>, <code>UsageSummary</code>, <code>UsageBreakdown</code></td></tr>
+<tr><td>admin.ts</td><td><code>UserDef</code>, <code>UserCreate</code>, <code>RoleDef</code></td></tr>
+</table>
+
+<!-- 4.11 environment.ts -->
+<h2>4.11 <code>environments/environment.ts</code></h2>
+<pre><code>export const environment = { production: false, apiBase: 'http://localhost:8082' };</code></pre>
+<p>Single source of truth for the gateway URL. <code>environment.prod.ts</code> would point to the production URL.</p>
+
+<!-- 4.12 styles.scss -->
+<h2>4.12 <code>src/styles.scss</code></h2>
+<p>Global styles + Angular Material dark theme. Loads <code>Inter</code> font, sets body bg <code>#08090d</code>, defines custom scrollbar, overrides Material dialog/menu/tab colours for a dark UI.</p>
+
+<!-- 4.13 utilities.css -->
+<h2>4.13 <code>src/utilities.css</code></h2>
+<p>~44 KB of plain CSS containing every utility class used by templates (<code>.flex</code>, <code>.bg-bg</code>, <code>.text-ink-100</code>, <code>.sc-card</code>, <code>.sc-btn-primary</code>, responsive variants, etc.). Generated by compiling Tailwind once and freezing the output.</p>
+
+<!-- 4.14 shell.component.ts -->
+<h2>4.14 <code>layout/shell.component.ts</code></h2>
+<p>The visual frame around every authenticated page:</p>
+<ul>
+  <li>Top bar with logo, breadcrumb, user avatar dropdown.</li>
+  <li>Left side nav with role-filtered links (computed from <code>auth.role()</code>).</li>
+  <li><code>&lt;router-outlet /&gt;</code> in the centre that renders the current page.</li>
+  <li><code>logout()</code> → calls <code>AuthService.logout()</code>.</li>
+</ul>
+
+<!-- 4.15 login.component.ts -->
+<h2>4.15 <code>features/auth/login.component.ts</code></h2>
+<p><strong>Reactive form</strong> with email + password, password show/hide toggle, inline error banner, loading spinner.</p>
+<pre><code>form = this.fb.nonNullable.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', Validators.required]
+});
+
+submit(): void {
+  if (this.form.invalid || this.loading()) return;
+  this.loading.set(true);
+  this.auth.login(this.form.getRawValue()).subscribe({
+    next: () =&gt; { this.loading.set(false); this.router.navigate(['/dashboard']); },
+    error: err =&gt; { /* maps status → friendly message */ }
+  });
+}</code></pre>
+<p>The error mapper distinguishes status 0 (gateway down), 400 (bad request), 401/403 (bad creds), 5xx (server) — gives the user actionable feedback.</p>
+
+<!-- 4.16 dashboard.component.ts -->
+<h2>4.16 <code>features/dashboard/dashboard.component.ts</code></h2>
+<p>Reads <code>auth.role()</code> and renders coloured tiles for every feature the user is allowed to access. Each tile is a <code>routerLink</code> to that feature.</p>
+
+<!-- 4.17 titles -->
+<h2>4.17 <code>features/catalog/titles.component.ts</code> + <code>titles.service.ts</code></h2>
+<p><strong>Service:</strong> Plain CRUD wrapper over <code>/api/titles</code>.</p>
+<p><strong>Component:</strong></p>
+<ul>
+  <li>Uses three signals: <code>rows</code>, <code>loading</code>, <code>query</code>.</li>
+  <li><code>filtered</code> is a <code>computed</code> derived from <code>rows()</code> + <code>query()</code> — re-runs only when those change.</li>
+  <li>Grid of poster cards with <code>*ngFor</code> + <code>trackBy</code> for performance.</li>
+  <li>"New title" button opens <code>TitleFormDialog</code> (Material Dialog) → on save calls <code>api.create()</code> then refreshes.</li>
+  <li>Card click routes to <code>/titles/:id</code> via <code>router.navigate</code>.</li>
+</ul>
+
+<h2>4.18 <code>features/catalog/title-detail.component.ts</code></h2>
+<p>Shows title hero header + tabs for Assets, Metadata. Uses route param <code>:id</code> to fetch the title and related resources.</p>
+
+<!-- 4.19 other feature components -->
+<h2>4.19 Other feature components (same pattern)</h2>
+<table>
+<tr><th>File</th><th>What it does</th></tr>
+<tr><td>contracts.component.ts + contracts.service.ts</td><td>List + create/edit/delete contracts. Service unwraps <code>ApiResponse&lt;T&gt;</code> envelope using <code>map</code>.</td></tr>
+<tr><td>clauses.component.ts + clauses.service.ts</td><td>List + create clauses. Each clause references a contractId.</td></tr>
+<tr><td>partners.component.ts + partners.service.ts</td><td>Partner CRUD with validation (10-digit phone, name 2–50 chars).</td></tr>
+<tr><td>manifests.component.ts + manifests.service.ts</td><td>Create delivery manifests; log attempts/receipts.</td></tr>
+<tr><td>schedules.component.ts + schedules.service.ts</td><td>Calendar view + create. Calls <code>/api/schedules/calendar?start=&amp;end=</code>.</td></tr>
+<tr><td>conflicts.component.ts</td><td>Lists conflicts; calls resolve endpoint.</td></tr>
+<tr><td>usage.component.ts + usage.service.ts</td><td>Summary / details / breakdown reports with date-range pickers.</td></tr>
+<tr><td>admin/users.component.ts + admin/roles.component.ts + admin.service.ts</td><td>ADMIN-only — CRUD over users + roles.</td></tr>
+<tr><td>misc/forbidden.component.ts</td><td>Static 403 page.</td></tr>
+</table>
+
+<!-- 4.20 important best practices in code -->
+<h2>4.20 Best practices reflected in the code</h2>
+<ul>
+  <li><strong>One service per feature</strong> — small, single-purpose.</li>
+  <li><strong>Strong typing everywhere</strong> — every endpoint has a model.</li>
+  <li><strong>Signals for local state</strong>, RxJS for HTTP — right tool for the job.</li>
+  <li><strong>Guards centralised in <code>core/auth</code></strong> — no role logic inside templates beyond <code>canEdit()</code>.</li>
+  <li><strong>Interceptor handles 401 globally</strong> — no copy-pasted error blocks.</li>
+</ul>
+
+<!-- =====================================================================
+     SECTION 5 — HTML EXPLANATION
+===================================================================== -->
+<h1 class="page-break">5. HTML Explanation</h1>
+
+<h2>5.1 Page structure (Login example)</h2>
+<pre><code>&lt;div class="relative min-h-screen flex items-center justify-center bg-bg"&gt;
+  &lt;!-- decorative background --&gt;
+  &lt;div class="absolute inset-0 bg-grad-hero"&gt;&lt;/div&gt;
+
+  &lt;!-- card --&gt;
+  &lt;div class="sc-glass p-8"&gt;
+    &lt;form [formGroup]="form" (ngSubmit)="submit()"&gt;
+      &lt;input formControlName="email" class="sc-input" /&gt;
+      &lt;input formControlName="password" class="sc-input" /&gt;
+      &lt;button type="submit" class="sc-btn-primary" [disabled]="form.invalid"&gt;Sign in&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h2>5.2 Why each HTML tag is used</h2>
+<table>
+<tr><th>Tag</th><th>Purpose</th></tr>
+<tr><td><code>&lt;form&gt;</code></td><td>Logical group of inputs, allows Enter-to-submit + a single submit handler.</td></tr>
+<tr><td><code>&lt;input&gt;</code></td><td>Single-line user data entry.</td></tr>
+<tr><td><code>&lt;label&gt;</code></td><td>Accessible name for inputs (clickable to focus).</td></tr>
+<tr><td><code>&lt;button&gt;</code></td><td>Action trigger. <code>type="submit"</code> submits the form; <code>type="button"</code> doesn't.</td></tr>
+<tr><td><code>&lt;table&gt;</code></td><td>Tabular data (used in admin pages, manifests list).</td></tr>
+<tr><td><code>&lt;nav&gt;</code></td><td>Semantically marks navigation regions.</td></tr>
+<tr><td><code>&lt;div&gt; / &lt;section&gt;</code></td><td>Layout containers. <code>section</code> when content has a heading.</td></tr>
+</table>
+
+<h2>5.3 Angular template syntax cheat-sheet</h2>
+<table>
+<tr><th>Syntax</th><th>Meaning</th></tr>
+<tr><td><code>{{ x }}</code></td><td>Interpolation — print value.</td></tr>
+<tr><td><code>[prop]="x"</code></td><td>Property binding (TS → DOM).</td></tr>
+<tr><td><code>(event)="fn()"</code></td><td>Event binding (DOM → TS).</td></tr>
+<tr><td><code>[(ngModel)]="x"</code></td><td>Two-way binding.</td></tr>
+<tr><td><code>*ngIf="cond"</code></td><td>Conditionally include element.</td></tr>
+<tr><td><code>*ngFor="let i of list"</code></td><td>Repeat element per item.</td></tr>
+<tr><td><code>#ref</code></td><td>Template reference variable.</td></tr>
+<tr><td><code>ng-container</code></td><td>Wrap structural directives without producing extra DOM.</td></tr>
+<tr><td><code>ng-template #x</code></td><td>Define a template fragment (used with <code>*ngIf else</code>).</td></tr>
+</table>
+
+<h2>5.4 User interaction flow inside a template</h2>
+<ol>
+  <li>User types → input fires <code>input</code> event → form control updates → <code>form.valueChanges</code> emits.</li>
+  <li>Angular re-evaluates bindings (<code>form.invalid</code> changes).</li>
+  <li>Disabled button toggles automatically.</li>
+  <li>User presses Enter → <code>(ngSubmit)</code> calls the component's submit handler.</li>
+</ol>
+
+<!-- =====================================================================
+     SECTION 6 — CSS EXPLANATION
+===================================================================== -->
+<h1 class="page-break">6. CSS Explanation</h1>
+
+<h2>6.1 Styling approach</h2>
+<p>StreamCast uses two CSS layers:</p>
+<ol>
+  <li><strong>Global theme</strong> (<code>styles.scss</code>) — Material dark theme + base body + scrollbar + Material overrides.</li>
+  <li><strong>Utility classes</strong> (<code>utilities.css</code>) — pre-written single-purpose classes like <code>.flex</code>, <code>.gap-4</code>, <code>.bg-surface-2</code>, <code>.rounded-2xl</code>. Templates compose UI by listing these classes.</li>
+</ol>
+<p><strong>Component-class layer</strong> (e.g. <code>.sc-card</code>, <code>.sc-btn-primary</code>, <code>.sc-input</code>, <code>.sc-chip-success</code>) groups multiple utilities for reuse — applied as a single class name in templates.</p>
+
+<h2>6.2 Layout structure (Flexbox + Grid)</h2>
+<pre><code>/* Side-by-side header */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-4 { gap: 1rem; }
+
+/* Responsive grid of poster cards */
+.grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 640px) {
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}</code></pre>
+
+<h2>6.3 Responsive design</h2>
+<p>Mobile-first. Default = phone. Then <code>sm:</code> overrides at 640px, <code>md:</code> at 768px, <code>lg:</code> at 1024px, <code>2xl:</code> at 1536px.</p>
+
+<h2>6.4 Form styling</h2>
+<pre><code>.sc-input {
+  display: block; height: 2.75rem; width: 100%;
+  border: 1px solid #272a35; border-radius: 0.5rem;
+  background: #0f1015; color: #e7e9ee;
+  padding: 0 0.875rem; transition: box-shadow .15s, border-color .15s;
+}
+.sc-input:focus {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 4px rgba(244,63,94,0.18);
+}</code></pre>
+
+<h2>6.5 Button styling</h2>
+<pre><code>.sc-btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 2.75rem; padding: 0 1rem; gap: 0.5rem;
+  font-size: 14px; font-weight: 600; color: #fff;
+  border-radius: 0.5rem;
+  background: linear-gradient(to right, #e11d48, #f43f5e);
+  transition: filter .15s, transform .15s;
+}
+.sc-btn-primary:hover { background: linear-gradient(to right, #be123c, #e11d48); }
+.sc-btn-primary:disabled { opacity: .5; cursor: not-allowed; }</code></pre>
+
+<h2>6.6 Card design</h2>
+<pre><code>.sc-card {
+  border-radius: 1rem;
+  background: #15161e;
+  border: 1px solid #272a35;
+  box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 8px 24px rgba(0,0,0,.35);
+}
+.sc-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.45);
+}</code></pre>
+
+<h2>6.7 Navigation styling</h2>
+<p>Side-nav uses a vertical flex layout with active-link highlighting via <code>routerLinkActive</code>. Active state changes background and adds a left brand-coloured indicator.</p>
+
+<h2>6.8 Possible UI improvements</h2>
+<ul>
+  <li>Use <code>prefers-reduced-motion</code> to disable animations for accessibility.</li>
+  <li>Add a light theme via CSS custom properties.</li>
+  <li>Make the dashboard responsive on very small phones (currently 2-col on &lt;640px).</li>
+  <li>Add skeleton loaders instead of spinner-only states.</li>
+</ul>
+
+<!-- =====================================================================
+     SECTION 7 — API FLOW
+===================================================================== -->
+<h1 class="page-break">7. API Flow</h1>
+
+<h2>7.1 Big picture</h2>
+<pre><code>Component
+  │ calls method
+  ▼
+Service.get/post/put/delete()  ──►  HttpClient
+                                       │
+                                       │ interceptor adds JWT
+                                       ▼
+                          http://localhost:8082 (Gateway)
+                                       │
+                                       ▼
+                                  Microservice
+                                       │ JSON response
+                                       ▼
+                                   Observable
+                                       │ map (unwrap envelope if any)
+                                       ▼
+                                   subscribe()
+                                       │
+                                       ▼
+                              signal.set(data)  → template re-renders</code></pre>
+
+<h2>7.2 GET — list resources</h2>
+<pre><code>// titles.service.ts
+list(): Observable&lt;Title[]&gt; { return this.http.get&lt;Title[]&gt;(this.base); }
+
+// component
+this.api.list().subscribe({
+  next: rows =&gt; this.rows.set(rows),
+  error: err =&gt; this.snack.open('Failed to load')
+});</code></pre>
+<p><strong>Endpoint:</strong> <code>GET /api/titles</code> → <strong>response body:</strong> <code>Title[]</code>.</p>
+
+<h2>7.3 POST — create</h2>
+<pre><code>create(t: Title): Observable&lt;Title&gt; { return this.http.post&lt;Title&gt;(this.base, t); }</code></pre>
+<p><strong>Request body:</strong> <code>{ name, releaseDate, genre, language, status }</code>. <strong>Response:</strong> the created Title with <code>id</code>.</p>
+
+<h2>7.4 PUT — update</h2>
+<pre><code>update(id: number, t: Title) { return this.http.put&lt;Title&gt;(`${this.base}/${id}`, t); }</code></pre>
+
+<h2>7.5 DELETE</h2>
+<pre><code>delete(id: number) { return this.http.delete(`${this.base}/${id}`); }</code></pre>
+
+<h2>7.6 HttpClient features used</h2>
+<table>
+<tr><th>Feature</th><th>Where used</th></tr>
+<tr><td>Type generics <code>&lt;T&gt;</code></td><td>All services</td></tr>
+<tr><td><code>HttpParams</code></td><td><code>SchedulesService.calendar(start, end)</code></td></tr>
+<tr><td><code>responseType: 'text'</code></td><td><code>AuthService.login()</code> (JWT comes as text, not JSON)</td></tr>
+<tr><td>Generic envelope mapping</td><td><code>ContractsService</code>, <code>SchedulesService</code> use <code>.pipe(map(r =&gt; r.data))</code></td></tr>
+</table>
+
+<h2>7.7 Observable lifecycle</h2>
+<ol>
+  <li><strong>Cold</strong> — nothing happens until you <code>subscribe()</code>.</li>
+  <li>On <code>subscribe()</code>, HTTP request fires.</li>
+  <li>Server responds → observable emits one <code>next</code> value, then <code>complete</code>.</li>
+  <li>If you don't unsubscribe, HttpClient observables auto-complete (no leak), unlike custom long-lived streams.</li>
+</ol>
+
+<h2>7.8 Error handling per request</h2>
+<pre><code>this.api.list().subscribe({
+  next: rows =&gt; this.rows.set(rows),
+  error: (err: HttpErrorResponse) =&gt; {
+    if (err.status === 0)        msg = 'Network error';
+    else if (err.status === 404) msg = 'Not found';
+    else if (err.status &gt;= 500)  msg = 'Server error';
+    else                          msg = err.error?.message ?? 'Request failed';
+    this.snack.open(msg);
+  }
+});</code></pre>
+
+<!-- =====================================================================
+     SECTION 8 — AUTHENTICATION FLOW
+===================================================================== -->
+<h1 class="page-break">8. Authentication Flow</h1>
+
+<h2>8.1 End-to-end diagram</h2>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│  User opens /                                            │
+│        │  authGuard runs                                 │
+│        ▼                                                  │
+│  AuthService.isAuthenticated() ?                          │
+│        │                                                  │
+│  ┌─────┴─────┐                                            │
+│  │ false     │ true                                       │
+│  ▼           ▼                                            │
+│ /login   /dashboard                                       │
+│   │                                                       │
+│   │ submit form                                           │
+│   ▼                                                       │
+│ POST /auth/login  (responseType: text)                    │
+│   │                                                       │
+│   │ tap(token) → AuthService.persist():                   │
+│   │   - decode JWT                                        │
+│   │   - localStorage.setItem('sc.auth', user)             │
+│   │   - signal.set(user)                                  │
+│   ▼                                                       │
+│ router.navigate('/dashboard')                             │
+│                                                           │
+│  ── every subsequent HTTP request ──                      │
+│  authInterceptor adds:                                    │
+│     Authorization: Bearer &lt;jwt&gt;                           │
+│                                                           │
+│  ── on 401 anywhere ──                                    │
+│  authInterceptor calls auth.logout()                      │
+│  → localStorage cleared, signal cleared, redirect /login  │
+└─────────────────────────────────────────────────────────┘</code></pre>
+
+<h2>8.2 JWT contents (decoded payload)</h2>
+<pre><code>{ "sub": "afrin@example.com", "role": "ADMIN", "iat": 1715000000, "exp": 1715086400 }</code></pre>
+
+<h2>8.3 Why localStorage (and the trade-off)</h2>
+<ul>
+  <li><strong>Pro:</strong> Survives page refresh → user stays logged in.</li>
+  <li><strong>Con:</strong> Vulnerable to XSS. <em>Mitigation:</em> never inject untrusted HTML, sanitize user content, use Content Security Policy.</li>
+  <li><strong>Stronger alternative:</strong> HttpOnly cookies + CSRF protection.</li>
+</ul>
+
+<h2>8.4 Route protection layers</h2>
+<ol>
+  <li><strong>authGuard</strong> — must have a non-expired JWT.</li>
+  <li><strong>roleGuard(['ADMIN', …])</strong> — must have one of the listed roles.</li>
+  <li><strong>Backend Spring Security</strong> — re-verifies JWT signature + role on every request (defence in depth).</li>
+</ol>
+
+<!-- =====================================================================
+     SECTION 9 — COMPONENT COMMUNICATION
+===================================================================== -->
+<h1 class="page-break">9. Component Communication</h1>
+
+<h2>9.1 Parent → Child via <code>@Input()</code></h2>
+<pre><code>// child
+export class StatusBadge {
+  @Input() status: 'AVAILABLE' | 'DRAFT' | 'RETIRED' = 'DRAFT';
+}
+
+// parent template
+&lt;sc-status-badge [status]="t.status"&gt;&lt;/sc-status-badge&gt;</code></pre>
+
+<h2>9.2 Child → Parent via <code>@Output()</code> + <code>EventEmitter</code></h2>
+<pre><code>// child
+@Output() saved = new EventEmitter&lt;Title&gt;();
+emit() { this.saved.emit(this.value); }
+
+// parent template
+&lt;sc-title-form (saved)="refresh($event)"&gt;&lt;/sc-title-form&gt;</code></pre>
+
+<h2>9.3 Sibling / unrelated components — shared service</h2>
+<p>The cleanest pattern, and the one StreamCast uses everywhere. The service holds a Signal; multiple components read/write it.</p>
+<pre><code>@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private _user = signal&lt;CurrentUser | null&gt;(null);
+  readonly user = this._user.asReadonly();    // anyone can read
+  setUser(u: CurrentUser) { this._user.set(u); }  // only AuthService can write
+}</code></pre>
+<p><code>ShellComponent</code> reads <code>auth.user()</code> to show the avatar; <code>LoginComponent</code> writes through <code>auth.login()</code>. They never need direct references to each other.</p>
+
+<h2>9.4 Route-based communication</h2>
+<ul>
+  <li><strong>URL params</strong> — <code>/titles/:id</code>.</li>
+  <li><strong>Query params</strong> — <code>/usage?start=&amp;end=</code>.</li>
+  <li><strong>Router state</strong> — pass data via <code>router.navigate([...], { state: {…} })</code>.</li>
+</ul>
+
+<h2>9.5 Dialogs return data</h2>
+<pre><code>this.dialog.open(TitleFormDialog).afterClosed()
+    .subscribe(value =&gt; { if (value) this.api.create(value).subscribe(...); });</code></pre>
+
+<!-- =====================================================================
+     SECTION 10 — INTERVIEW PREPARATION (100 Q&A)
+===================================================================== -->
+<h1 class="page-break">10. Interview Preparation — 100 Q&amp;A</h1>
+
+<h2>10.1 Angular Beginner (Q1–Q30)</h2>
+<div class="qa"><span class="q">1. What is Angular?</span><div class="a">A TypeScript-based SPA framework by Google built around components, services, and the router.</div></div>
+<div class="qa"><span class="q">2. What is a Single Page Application?</span><div class="a">A web app that loads one HTML page once and updates the UI dynamically via JS, avoiding full reloads.</div></div>
+<div class="qa"><span class="q">3. Why TypeScript?</span><div class="a">Static types catch bugs early, give IDE autocomplete, and document data shapes via interfaces.</div></div>
+<div class="qa"><span class="q">4. What is a component?</span><div class="a">A reusable UI piece = decorator + class + template + style.</div></div>
+<div class="qa"><span class="q">5. What is a selector?</span><div class="a">The custom HTML tag the component matches, e.g. <code>sc-login</code>.</div></div>
+<div class="qa"><span class="q">6. What is a module?</span><div class="a">Legacy unit that groups components, directives, pipes, providers. Modern Angular uses standalone components instead.</div></div>
+<div class="qa"><span class="q">7. Standalone component?</span><div class="a">A component that declares its own imports and doesn't belong to any <code>NgModule</code>.</div></div>
+<div class="qa"><span class="q">8. Four data-binding types?</span><div class="a">Interpolation, property, event, two-way.</div></div>
+<div class="qa"><span class="q">9. Difference between <code>{{ x }}</code> and <code>[innerHTML]</code>?</span><div class="a"><code>{{ }}</code> escapes HTML; <code>[innerHTML]</code> renders it (and Angular sanitises).</div></div>
+<div class="qa"><span class="q">10. <code>ngIf</code> vs <code>hidden</code>?</span><div class="a"><code>ngIf</code> removes node from DOM; <code>hidden</code> hides via CSS.</div></div>
+<div class="qa"><span class="q">11. <code>ngFor</code> with trackBy — why?</span><div class="a">Tells Angular how to identify rows so it patches only the changed DOM, not re-renders the whole list.</div></div>
+<div class="qa"><span class="q">12. What is a directive?</span><div class="a">A class that changes element behaviour or appearance. Structural (<code>*ngIf</code>) vs attribute (<code>ngClass</code>).</div></div>
+<div class="qa"><span class="q">13. What is a pipe?</span><div class="a">A template-only transformer: <code>{{ value | date:'medium' }}</code>.</div></div>
+<div class="qa"><span class="q">14. Pure vs impure pipe?</span><div class="a">Pure runs only when input reference changes; impure runs on every change-detection cycle.</div></div>
+<div class="qa"><span class="q">15. What is a service?</span><div class="a">A reusable class that holds logic/data, injected wherever needed.</div></div>
+<div class="qa"><span class="q">16. What is dependency injection?</span><div class="a">A pattern where the framework supplies what a class needs instead of the class creating it.</div></div>
+<div class="qa"><span class="q">17. <code>providedIn: 'root'</code>?</span><div class="a">Makes the service a singleton available app-wide.</div></div>
+<div class="qa"><span class="q">18. What is routing?</span><div class="a">Mapping URLs to components without page reloads.</div></div>
+<div class="qa"><span class="q">19. What is lazy loading?</span><div class="a">Loading a route's code only when the user navigates to it. <code>loadComponent: () =&gt; import(...)</code>.</div></div>
+<div class="qa"><span class="q">20. How to read a route param?</span><div class="a"><code>this.route.snapshot.paramMap.get('id')</code> or via <code>withComponentInputBinding()</code>.</div></div>
+<div class="qa"><span class="q">21. Reactive forms vs template-driven?</span><div class="a">Reactive in TS, sync, typed, scalable. Template-driven in HTML with <code>ngModel</code>, async, smaller forms.</div></div>
+<div class="qa"><span class="q">22. How to validate a form?</span><div class="a">Built-in <code>Validators.required</code>, <code>Validators.email</code>, etc., or a custom function.</div></div>
+<div class="qa"><span class="q">23. What is HttpClient?</span><div class="a">Angular's typed HTTP wrapper that returns Observables.</div></div>
+<div class="qa"><span class="q">24. What is an Observable?</span><div class="a">A lazy stream of values you subscribe to.</div></div>
+<div class="qa"><span class="q">25. Observable vs Promise?</span><div class="a">Promise = single value, eager. Observable = stream, lazy, cancellable, composable with operators.</div></div>
+<div class="qa"><span class="q">26. What is RxJS?</span><div class="a">A reactive programming library for working with streams using operators like <code>map</code>, <code>filter</code>, <code>switchMap</code>.</div></div>
+<div class="qa"><span class="q">27. What is a Subject?</span><div class="a">An Observable that is also an Observer — you can <code>next()</code> values into it manually.</div></div>
+<div class="qa"><span class="q">28. <code>BehaviorSubject</code> vs <code>Subject</code>?</span><div class="a">BehaviorSubject holds a current value and emits it to new subscribers.</div></div>
+<div class="qa"><span class="q">29. Lifecycle hooks?</span><div class="a"><code>ngOnInit</code>, <code>ngOnChanges</code>, <code>ngDoCheck</code>, <code>ngAfterContentInit</code>, <code>ngAfterViewInit</code>, <code>ngOnDestroy</code>.</div></div>
+<div class="qa"><span class="q">30. When to use <code>ngOnInit</code> vs constructor?</span><div class="a">Constructor for DI; <code>ngOnInit</code> for setup that needs inputs to be set.</div></div>
+
+<h2>10.2 Angular Intermediate (Q31–Q60)</h2>
+<div class="qa"><span class="q">31. What is a guard?</span><div class="a">A function returning <code>true|false|UrlTree</code> that allows or blocks navigation.</div></div>
+<div class="qa"><span class="q">32. Types of guards?</span><div class="a"><code>CanActivate</code>, <code>CanActivateChild</code>, <code>CanDeactivate</code>, <code>CanMatch</code>, <code>Resolve</code>.</div></div>
+<div class="qa"><span class="q">33. What is an interceptor?</span><div class="a">Middleware that runs on every HTTP request — useful for auth headers and error handling.</div></div>
+<div class="qa"><span class="q">34. What is a Signal?</span><div class="a">Angular 17 reactive primitive — a holder of a value plus a notification when it changes.</div></div>
+<div class="qa"><span class="q">35. Signal vs Observable?</span><div class="a">Signals are sync, pull-based, simple. Observables are async, push-based, composable.</div></div>
+<div class="qa"><span class="q">36. <code>computed()</code>?</span><div class="a">A derived signal that recomputes only when its dependencies change.</div></div>
+<div class="qa"><span class="q">37. <code>effect()</code>?</span><div class="a">A side-effect runner that executes whenever the signals it reads change.</div></div>
+<div class="qa"><span class="q">38. What is change detection?</span><div class="a">Angular's process of checking templates and updating the DOM. Default strategy = check everything; <code>OnPush</code> = check only when inputs change or events fire.</div></div>
+<div class="qa"><span class="q">39. What is <code>OnPush</code>?</span><div class="a">A change-detection strategy that re-checks the component only when its inputs change by reference or events occur.</div></div>
+<div class="qa"><span class="q">40. <code>@Input()</code> and <code>@Output()</code>?</span><div class="a">Component IO: input receives data from parent; output emits events to parent.</div></div>
+<div class="qa"><span class="q">41. <code>@ViewChild()</code>?</span><div class="a">Reference a child component or DOM element from the template.</div></div>
+<div class="qa"><span class="q">42. <code>HostListener</code> &amp; <code>HostBinding</code>?</span><div class="a">Listen to/bind to events/properties on the host element of a directive.</div></div>
+<div class="qa"><span class="q">43. <code>ng-content</code>?</span><div class="a">Slot for projected content (Angular's transclusion).</div></div>
+<div class="qa"><span class="q">44. <code>ng-template</code> vs <code>ng-container</code>?</span><div class="a"><code>ng-template</code> = inert template fragment. <code>ng-container</code> = wrapper that renders no DOM.</div></div>
+<div class="qa"><span class="q">45. <code>async</code> pipe?</span><div class="a">Subscribes to an Observable/Promise in the template and unsubscribes on destroy.</div></div>
+<div class="qa"><span class="q">46. <code>FormBuilder</code>?</span><div class="a">A helper that creates <code>FormGroup</code>/<code>FormControl</code> with less boilerplate.</div></div>
+<div class="qa"><span class="q">47. <code>FormGroup</code> vs <code>FormArray</code>?</span><div class="a">FormGroup = fixed map of controls. FormArray = dynamic list of controls.</div></div>
+<div class="qa"><span class="q">48. Cross-field validation?</span><div class="a">A custom validator attached to the FormGroup that checks multiple controls together.</div></div>
+<div class="qa"><span class="q">49. How to call APIs?</span><div class="a">Inject <code>HttpClient</code> in a service; call <code>get/post/put/delete</code>; subscribe in the component.</div></div>
+<div class="qa"><span class="q">50. How to cancel an HTTP call?</span><div class="a">Unsubscribe, or use operators like <code>switchMap</code> that cancel previous inner observables.</div></div>
+<div class="qa"><span class="q">51. How to set a header globally?</span><div class="a">Use an HTTP interceptor (see <code>authInterceptor</code>).</div></div>
+<div class="qa"><span class="q">52. <code>switchMap</code> vs <code>mergeMap</code>?</span><div class="a">switchMap cancels previous inner observable on new emission. mergeMap runs all in parallel.</div></div>
+<div class="qa"><span class="q">53. <code>concatMap</code>?</span><div class="a">Queues inner observables — runs the next only after the previous completes. Use for ordered writes.</div></div>
+<div class="qa"><span class="q">54. Error handling in RxJS?</span><div class="a"><code>catchError</code> operator returns a fallback observable; <code>retry</code>/<code>retryWhen</code> retry.</div></div>
+<div class="qa"><span class="q">55. Difference between <code>tap</code> and <code>map</code>?</span><div class="a"><code>tap</code> performs a side effect without changing the value. <code>map</code> returns a transformed value.</div></div>
+<div class="qa"><span class="q">56. How to share a single HTTP call between subscribers?</span><div class="a">Use <code>shareReplay(1)</code>.</div></div>
+<div class="qa"><span class="q">57. Memory leaks in Observables?</span><div class="a">Forgetting to unsubscribe from long-lived streams. Use <code>async</code> pipe or <code>takeUntilDestroyed()</code> in Angular 16+.</div></div>
+<div class="qa"><span class="q">58. <code>takeUntilDestroyed()</code>?</span><div class="a">Auto-unsubscribes when the component/directive is destroyed.</div></div>
+<div class="qa"><span class="q">59. What is route resolver?</span><div class="a">A function that pre-fetches data before activating a route, so the component opens with data ready.</div></div>
+<div class="qa"><span class="q">60. <code>canDeactivate</code> guard?</span><div class="a">Asks "are you sure you want to leave?" — useful for forms with unsaved changes.</div></div>
+
+<h2>10.3 Angular Advanced (Q61–Q80)</h2>
+<div class="qa"><span class="q">61. AOT vs JIT?</span><div class="a">AOT compiles templates at build time → smaller, faster bundles. JIT compiles in the browser (legacy).</div></div>
+<div class="qa"><span class="q">62. Tree-shaking?</span><div class="a">Bundler removes unused exports at build time, reducing JS size.</div></div>
+<div class="qa"><span class="q">63. What is Zone.js?</span><div class="a">Patches async APIs (setTimeout, promises) so Angular knows when to run change detection.</div></div>
+<div class="qa"><span class="q">64. Zoneless Angular?</span><div class="a">Newer Angular versions can run without Zone.js, using Signals for change detection.</div></div>
+<div class="qa"><span class="q">65. How does <code>HttpClient</code> differ from <code>fetch</code>?</span><div class="a">HttpClient returns Observables (cancellable, composable), has interceptors, typed responses, automatic JSON parsing.</div></div>
+<div class="qa"><span class="q">66. SSR (Angular Universal)?</span><div class="a">Server-side rendering — renders the page on the server for first paint, then hydrates on the client.</div></div>
+<div class="qa"><span class="q">67. Hydration?</span><div class="a">Reuses server-rendered DOM on the client instead of throwing it away.</div></div>
+<div class="qa"><span class="q">68. NgRx?</span><div class="a">A Redux-pattern state library for Angular: store, actions, reducers, effects, selectors.</div></div>
+<div class="qa"><span class="q">69. When to use NgRx?</span><div class="a">Large apps with shared global state and many cross-cutting events; otherwise services + Signals suffice.</div></div>
+<div class="qa"><span class="q">70. Service workers?</span><div class="a">Browser-level proxy for offline caching; Angular has <code>@angular/service-worker</code>.</div></div>
+<div class="qa"><span class="q">71. What is Ivy?</span><div class="a">Angular's modern rendering engine — smaller bundles, faster builds, locality of compilation.</div></div>
+<div class="qa"><span class="q">72. Standalone APIs?</span><div class="a"><code>provideRouter</code>, <code>provideHttpClient</code>, <code>provideAnimations</code> — replace module-style imports.</div></div>
+<div class="qa"><span class="q">73. <code>inject()</code> function?</span><div class="a">Lets you DI dependencies outside of constructors (e.g. in functional guards/interceptors).</div></div>
+<div class="qa"><span class="q">74. Standalone vs module-based testing?</span><div class="a">Standalone tests use <code>TestBed.configureTestingModule({ imports: [Component] })</code> directly.</div></div>
+<div class="qa"><span class="q">75. Performance tips?</span><div class="a">OnPush, trackBy, lazy loading, avoid heavy work in templates, use Signals, virtual scrolling for huge lists.</div></div>
+<div class="qa"><span class="q">76. Difference between <code>NgZone.run</code> and <code>NgZone.runOutsideAngular</code>?</span><div class="a"><code>run</code> brings work back into the zone (triggers CD). <code>runOutsideAngular</code> opts out for perf-sensitive code.</div></div>
+<div class="qa"><span class="q">77. What is Angular Material?</span><div class="a">Google's component library implementing Material Design (buttons, dialogs, tables, snack-bars).</div></div>
+<div class="qa"><span class="q">78. What is CDK?</span><div class="a">Component Dev Kit — primitives (overlay, portal, drag-drop, virtual-scroll) used to build custom components.</div></div>
+<div class="qa"><span class="q">79. What is content projection?</span><div class="a">Slot child markup inside a component using <code>ng-content</code>.</div></div>
+<div class="qa"><span class="q">80. Multi-slot projection?</span><div class="a"><code>&lt;ng-content select="[header]"&gt;&lt;/ng-content&gt;</code> — projects only elements with attribute <code>header</code>.</div></div>
+
+<h2>10.4 HTML / CSS / TS Mixed (Q81–Q100)</h2>
+<div class="qa"><span class="q">81. Difference between <code>id</code> and <code>class</code>?</span><div class="a"><code>id</code> unique per page; <code>class</code> can repeat.</div></div>
+<div class="qa"><span class="q">82. Block vs inline element?</span><div class="a">Block fills its parent and starts on a new line (<code>div</code>); inline flows with text (<code>span</code>).</div></div>
+<div class="qa"><span class="q">83. <code>display: flex</code> vs <code>display: grid</code>?</span><div class="a">Flex is 1D (row or column). Grid is 2D (rows + columns).</div></div>
+<div class="qa"><span class="q">84. CSS specificity order?</span><div class="a">Inline &gt; ID &gt; class/attr/pseudo-class &gt; element &gt; <code>*</code>. <code>!important</code> overrides everything.</div></div>
+<div class="qa"><span class="q">85. <code>position: absolute</code> vs <code>fixed</code>?</span><div class="a">Absolute is relative to nearest positioned ancestor. Fixed is relative to the viewport.</div></div>
+<div class="qa"><span class="q">86. Box model?</span><div class="a">content → padding → border → margin. <code>box-sizing: border-box</code> includes padding+border in width.</div></div>
+<div class="qa"><span class="q">87. Media query example?</span><div class="a"><code>@media (min-width: 768px) { ... }</code> applies styles when viewport ≥ 768px.</div></div>
+<div class="qa"><span class="q">88. Why mobile-first?</span><div class="a">Easier to add features for larger screens than remove for smaller. Smaller default = better perf on mobile.</div></div>
+<div class="qa"><span class="q">89. CSS variable?</span><div class="a"><code>--brand: #f43f5e; color: var(--brand);</code> — runtime-themable.</div></div>
+<div class="qa"><span class="q">90. <code>let</code> vs <code>const</code> vs <code>var</code>?</span><div class="a"><code>const</code> = immutable binding, block-scoped. <code>let</code> = mutable, block-scoped. <code>var</code> = function-scoped, legacy.</div></div>
+<div class="qa"><span class="q">91. Arrow functions vs regular?</span><div class="a">Arrow functions don't have their own <code>this</code>; they capture the enclosing scope.</div></div>
+<div class="qa"><span class="q">92. <code>Promise.all</code> vs <code>Promise.race</code>?</span><div class="a"><code>all</code> waits for all; <code>race</code> resolves with the first.</div></div>
+<div class="qa"><span class="q">93. Difference between <code>==</code> and <code>===</code>?</span><div class="a"><code>==</code> coerces types; <code>===</code> doesn't. Always use <code>===</code>.</div></div>
+<div class="qa"><span class="q">94. What is hoisting?</span><div class="a">JS moves variable/function declarations to the top of the scope. <code>var</code> is hoisted (undefined); <code>let</code>/<code>const</code> are in temporal dead zone.</div></div>
+<div class="qa"><span class="q">95. What is event loop?</span><div class="a">The mechanism that picks tasks from the queue and runs them on the single JS thread (macrotask + microtask queues).</div></div>
+<div class="qa"><span class="q">96. <code>async/await</code> internals?</span><div class="a">Syntactic sugar over Promises; <code>await</code> pauses the function until the Promise settles.</div></div>
+<div class="qa"><span class="q">97. CORS?</span><div class="a">Cross-Origin Resource Sharing — the browser blocks calls to a different origin unless the server sends <code>Access-Control-Allow-Origin</code>.</div></div>
+<div class="qa"><span class="q">98. How does Angular handle CORS?</span><div class="a">It doesn't — the backend (here API-Gateway) must respond with the correct CORS headers.</div></div>
+<div class="qa"><span class="q">99. localStorage vs cookie for JWT?</span><div class="a">localStorage = easy but XSS-readable. HttpOnly cookie = safer from XSS but needs CSRF protection.</div></div>
+<div class="qa"><span class="q">100. Why is XSS dangerous?</span><div class="a">An injected script can read localStorage (your JWT) and impersonate the user.</div></div>
+
+<h2>10.5 Project Viva Questions</h2>
+
+<div class="qa"><span class="q">"Explain your project."</span><div class="a">"StreamCast is a web console for a streaming company to manage their content lifecycle — titles, contracts, clauses, partners, manifests, schedules, and usage reports. The frontend is built with Angular 17 standalone components, talks to a Spring Boot microservices backend via an API gateway. Authentication uses JWT stored in localStorage; an HTTP interceptor attaches the token to every request, and route guards plus role-based authorization control which pages each user can see. The UI uses Angular Material + a custom CSS utility layer for a dark, cinematic look."</div></div>
+
+<div class="qa"><span class="q">"Challenges faced?"</span><div class="a">"(1) Role-based UI: 8 roles with different permissions across 13 pages — solved by centralising in <code>authGuard</code>/<code>roleGuard</code> and reading <code>auth.role()</code> via Signals in templates. (2) Generic API envelopes: some services return <code>ApiResponse&lt;T&gt;</code> wrappers, others plain arrays — solved by unwrapping with <code>.pipe(map(r =&gt; r.data))</code> in the service so components always see the data. (3) Token expiry: handled globally in the interceptor — on 401 we log out and redirect."</div></div>
+
+<div class="qa"><span class="q">"Why Angular?"</span><div class="a">"Angular gives me TypeScript by default, batteries-included routing/HTTP/forms/animations, a strong CLI, and great IDE support. Compared to React, it's more opinionated — which helps a team of beginners stay consistent. Signals (Angular 17) give us simple, fine-grained reactivity without learning state libraries."</div></div>
+
+<div class="qa"><span class="q">"Why services?"</span><div class="a">"To keep components thin (UI only) and put logic + HTTP + state in reusable singletons. Easier to test, easier to mock, no duplication."</div></div>
+
+<div class="qa"><span class="q">"Reactive vs Template-driven forms?"</span><div class="a">"Reactive forms are defined in TypeScript — synchronous, typed, easier to validate and unit-test. Template-driven forms are defined in HTML using <code>ngModel</code>, simpler for tiny forms but harder to scale. StreamCast uses Reactive Forms everywhere."</div></div>
+
+<div class="qa"><span class="q">"Explain Angular lifecycle hooks."</span><div class="a">"They are methods Angular calls at specific points: <code>ngOnChanges</code> when inputs change, <code>ngOnInit</code> once after first inputs set (fetch data here), <code>ngDoCheck</code> on every change-detection run, <code>ngAfterContentInit</code> when projected content is ready, <code>ngAfterViewInit</code> when child views are ready, <code>ngOnDestroy</code> for cleanup."</div></div>
+
+<div class="qa"><span class="q">"Explain Observables."</span><div class="a">"An Observable is a lazy stream of values. Nothing happens until you subscribe. Operators like <code>map</code>, <code>filter</code>, <code>switchMap</code> let you compose async logic declaratively. Unlike a Promise, Observables can emit multiple values and be cancelled."</div></div>
+
+<!-- =====================================================================
+     SECTION 11 — DEBUGGING & ERRORS
+===================================================================== -->
+<h1 class="page-break">11. Debugging &amp; Common Errors</h1>
+
+<h2>11.1 Angular runtime errors</h2>
+<table>
+<tr><th>Error</th><th>Cause</th><th>Fix</th></tr>
+<tr><td><code>NG0100 ExpressionChangedAfterChecked</code></td><td>You changed a bound value after change detection finished.</td><td>Wrap the update in <code>setTimeout</code> or move it to a lifecycle hook.</td></tr>
+<tr><td><code>NG0203 inject() must be called…</code></td><td>Calling <code>inject()</code> outside of a DI context.</td><td>Move call into a constructor, factory, or <code>runInInjectionContext</code>.</td></tr>
+<tr><td><code>NG8001 Unknown element</code></td><td>Component used in template but not imported.</td><td>Add to the <code>imports</code> array of the standalone component.</td></tr>
+<tr><td><code>NullInjectorError: No provider for X</code></td><td>Service not provided / not <code>providedIn:'root'</code>.</td><td>Add <code>@Injectable({ providedIn:'root' })</code> or provide it in <code>app.config.ts</code>.</td></tr>
+</table>
+
+<h2>11.2 Routing issues</h2>
+<ul>
+  <li><strong>Blank page after refresh</strong> — server isn't redirecting to <code>index.html</code> on deep links. Configure dev server / Spring Boot to do so.</li>
+  <li><strong>Route param undefined</strong> — typo in <code>:id</code> or reading before parent route resolved. Use <code>paramMap</code> not legacy <code>params</code>.</li>
+  <li><strong>Guard fires twice</strong> — usually a parent + child guard. Decide whether you need both.</li>
+</ul>
+
+<h2>11.3 API errors</h2>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th></tr>
+<tr><td>Status 0</td><td>Network down, gateway not running, mixed content (https→http).</td></tr>
+<tr><td>Status 401</td><td>Token missing/expired. Interceptor handles this.</td></tr>
+<tr><td>Status 403</td><td>Logged in but wrong role.</td></tr>
+<tr><td>Status 404</td><td>Wrong URL — check <code>environment.apiBase</code> and the path.</td></tr>
+<tr><td>Status 500</td><td>Backend bug — read backend logs.</td></tr>
+</table>
+
+<h2>11.4 CORS issues</h2>
+<p><strong>Symptom:</strong> Browser console — "blocked by CORS policy". <strong>Fix:</strong> only call the gateway (<code>http://localhost:8082</code>), never call services directly; gateway emits CORS headers.</p>
+
+<h2>11.5 Template errors</h2>
+<ul>
+  <li><strong>Cannot read 'x' of undefined</strong> — bind only after data arrives: <code>*ngIf="data() as d"</code>.</li>
+  <li><strong>Unknown directive</strong> — missing <code>CommonModule</code> in standalone imports.</li>
+</ul>
+
+<h2>11.6 Observable issues</h2>
+<ul>
+  <li><strong>HTTP call doesn't fire</strong> — you didn't <code>subscribe()</code>.</li>
+  <li><strong>Memory leak</strong> — long-lived stream never unsubscribed. Use <code>async</code> pipe or <code>takeUntilDestroyed()</code>.</li>
+  <li><strong>Double fire on submit</strong> — <code>(click)</code> AND <code>(ngSubmit)</code> both firing. Use one.</li>
+</ul>
+
+<h2>11.7 DI errors</h2>
+<ul>
+  <li>"No provider for <code>HttpClient</code>" — you forgot <code>provideHttpClient()</code> in <code>app.config.ts</code>.</li>
+  <li>"Circular dependency" — Service A injects Service B which injects Service A. Break the cycle by extracting a third class.</li>
+</ul>
+
+<h2>11.8 How to debug</h2>
+<ol>
+  <li>Open DevTools → Console for runtime errors.</li>
+  <li>DevTools → Network for HTTP — check request URL, headers (Authorization!), status, response body.</li>
+  <li>Use <code>console.log</code> in components/services; check the browser source map shows real TS lines.</li>
+  <li>Install <strong>Angular DevTools</strong> Chrome extension — inspect component tree, profiler.</li>
+  <li>For Signals, log them via <code>effect(() =&gt; console.log(value()))</code>.</li>
+</ol>
+
+<!-- =====================================================================
+     SECTION 12 — BEST PRACTICES
+===================================================================== -->
+<h1 class="page-break">12. Best Practices</h1>
+
+<h3>Clean architecture</h3>
+<ul>
+  <li><strong>Smart vs dumb components</strong> — feature components fetch data; small reusable components only render.</li>
+  <li><strong>One feature = one folder</strong> — drop-in / drop-out without leaks.</li>
+  <li><strong>Models live in <code>core/models</code></strong> — shared by services and components.</li>
+</ul>
+
+<h3>Reusable components</h3>
+<ul>
+  <li>Extract repeated UI into a child component with <code>@Input</code>/<code>@Output</code>.</li>
+  <li>Use <code>ng-content</code> for slot-based composition.</li>
+</ul>
+
+<h3>Service-based architecture</h3>
+<ul>
+  <li>One service per feature; never put HTTP in components directly.</li>
+  <li>Wrap envelopes (<code>ApiResponse&lt;T&gt;</code>) in the service so components see only <code>T</code>.</li>
+</ul>
+
+<h3>Naming conventions</h3>
+<ul>
+  <li><strong>files</strong>: kebab-case → <code>titles.service.ts</code>, <code>title-detail.component.ts</code>.</li>
+  <li><strong>classes</strong>: PascalCase → <code>TitlesService</code>, <code>TitleDetailComponent</code>.</li>
+  <li><strong>booleans</strong>: <code>is</code>/<code>has</code>/<code>can</code> prefix.</li>
+  <li><strong>observables</strong>: trailing <code>$</code> (e.g. <code>users$</code>) when assigned to a property.</li>
+</ul>
+
+<h3>Performance</h3>
+<ul>
+  <li><strong>Lazy load every route</strong> (already done in StreamCast).</li>
+  <li><strong>trackBy in <code>*ngFor</code></strong> for big lists.</li>
+  <li><strong>OnPush + Signals</strong> for fewer change-detection passes.</li>
+  <li><strong>Virtual scrolling</strong> (CDK) for 1000+ rows.</li>
+  <li><strong>Production build</strong> with AOT, minification, sourcemaps off.</li>
+</ul>
+
+<h3>Security</h3>
+<ul>
+  <li>Always validate on the backend too; client checks are UX only.</li>
+  <li>Sanitize any user content rendered as HTML (Angular sanitises by default for <code>[innerHTML]</code>).</li>
+  <li>Never log JWTs to console in production.</li>
+  <li>Set short JWT expiry; use refresh tokens for long sessions.</li>
+  <li>Lock down CORS to known origins in the gateway.</li>
+</ul>
+
+<!-- =====================================================================
+     SECTION 13 — PPT SLIDE CONTENT
+===================================================================== -->
+<h1 class="page-break">13. PPT Slide Content</h1>
+<p>Copy these bullets into PowerPoint / Google Slides. Notes below each slide are speaker notes.</p>
+
+<div class="slide">
+<h3>Slide 1 — Title</h3>
+<ul>
+  <li>StreamCast Console</li>
+  <li>A Digital Content Distribution Platform</li>
+  <li>Built with Angular 17 + Spring Boot Microservices</li>
+  <li>Presented by Afrin Banua</li>
+</ul>
+<div class="notes">Greet the panel. Mention this is the frontend (Angular) on top of a 10-service Java backend.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 2 — Problem Statement</h3>
+<ul>
+  <li>Streaming companies juggle 1000+ titles, contracts, partners, schedules.</li>
+  <li>Spreadsheets cause overlapping rights, missed deliveries, expired licenses.</li>
+  <li>Need: a single, secure, role-based console.</li>
+</ul>
+<div class="notes">Frame the pain: legal risk + ops chaos = need software.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 3 — Technology Stack</h3>
+<ul>
+  <li>Frontend: <strong>Angular 17, TypeScript, HTML, CSS, Angular Material</strong></li>
+  <li>Backend: Spring Boot, Spring Cloud Gateway, Eureka, OpenFeign, Resilience4j</li>
+  <li>Database: MySQL (one per microservice)</li>
+  <li>Auth: JWT</li>
+</ul>
+<div class="notes">Briefly justify: Angular for SPA, Spring Cloud for microservices, JWT for stateless auth.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 4 — Architecture Overview</h3>
+<ul>
+  <li>Single-page Angular app calls Spring Cloud Gateway (:8082).</li>
+  <li>Gateway routes to 9 microservices via Eureka discovery.</li>
+  <li>JWT validated at the gateway; downstream services trust forwarded identity.</li>
+</ul>
+<div class="notes">Show the architecture diagram. Mention defence-in-depth on the backend.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 5 — Folder Structure</h3>
+<ul>
+  <li>core/ → auth, models, interceptor, guards</li>
+  <li>layout/ → shell (top bar + side nav + outlet)</li>
+  <li>features/ → one folder per business capability</li>
+  <li>environments/ → API URLs, prod/dev flags</li>
+</ul>
+<div class="notes">Emphasise feature isolation = easier to maintain.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 6 — Angular Concepts Used</h3>
+<ul>
+  <li>Standalone components (no NgModule)</li>
+  <li>Signals + computed for state</li>
+  <li>Reactive Forms + Validators</li>
+  <li>HttpClient + Observables + RxJS operators</li>
+  <li>Functional Guards + HTTP Interceptor</li>
+  <li>Lazy loading every feature route</li>
+</ul>
+<div class="notes">Highlight modern Angular: standalone, Signals, functional guards.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 7 — Routing &amp; Guards</h3>
+<ul>
+  <li><code>authGuard</code> — only logged-in users.</li>
+  <li><code>roleGuard(['ADMIN', …])</code> — only allowed roles.</li>
+  <li>Forbidden role → /forbidden.</li>
+  <li>13 routes, all lazy-loaded.</li>
+</ul>
+<div class="notes">If asked: explain the difference between authentication and authorization.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 8 — API Integration</h3>
+<ul>
+  <li>One service per feature (TitlesService, ContractsService, …)</li>
+  <li>Generic types: <code>HttpClient.get&lt;Title[]&gt;()</code></li>
+  <li>Envelope unwrap: <code>.pipe(map(r =&gt; r.data))</code></li>
+  <li>Interceptor adds JWT to every request</li>
+</ul>
+<div class="notes">Mention error handling: status 0 / 401 / 5xx flows.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 9 — Authentication Flow</h3>
+<ul>
+  <li>Login → backend returns JWT (text response).</li>
+  <li>Client decodes payload → reads email + role.</li>
+  <li>Stored in localStorage; restored on refresh.</li>
+  <li>Interceptor sends Bearer header; 401 → auto-logout.</li>
+</ul>
+<div class="notes">Mention XSS trade-off and HttpOnly cookie alternative.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 10 — Demo Flow</h3>
+<ul>
+  <li>Login as ADMIN → Dashboard tiles render based on role.</li>
+  <li>Open Titles → search + create → poster grid.</li>
+  <li>Open Schedules → calendar → create → see conflicts page.</li>
+  <li>Open Usage → date-range report.</li>
+  <li>Open Users (ADMIN only) → create/delete user.</li>
+</ul>
+<div class="notes">Run the actual app live if possible.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 11 — Challenges</h3>
+<ul>
+  <li>Role-aware UI across 13 pages + 8 roles.</li>
+  <li>Two different API envelope styles unified at service layer.</li>
+  <li>Global 401 handling in interceptor.</li>
+  <li>Converting Tailwind → plain CSS without changing UI.</li>
+</ul>
+<div class="notes">Pick one to talk about in depth if asked.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 12 — Future Enhancements</h3>
+<ul>
+  <li>Refresh-token flow for longer sessions.</li>
+  <li>WebSocket for real-time conflict notifications.</li>
+  <li>Server-Side Rendering (Angular Universal) for SEO of public pages.</li>
+  <li>Light theme.</li>
+  <li>Internationalisation (i18n).</li>
+  <li>Unit + e2e test coverage (Karma / Cypress).</li>
+</ul>
+<div class="notes">Shows you're aware of next steps and quality.</div>
+</div>
+
+<div class="slide">
+<h3>Slide 13 — Conclusion</h3>
+<ul>
+  <li>Built a production-grade Angular console for a microservices backend.</li>
+  <li>Demonstrated modern Angular patterns: standalone, Signals, lazy loading, guards, interceptors.</li>
+  <li>Followed industry best practices for security, architecture, and code organisation.</li>
+  <li>Thank you — questions?</li>
+</ul>
+<div class="notes">Stop, smile, invite questions. Keep this slide short.</div>
+</div>
+
+<!-- =====================================================================
+     SECTION 14 — FINAL QUICK REVISION
+===================================================================== -->
+<h1 class="page-break">14. Final Quick Revision (one-day notes)</h1>
+
+<h2>14.1 Memorise this overnight</h2>
+<ul>
+  <li><strong>Entry:</strong> <code>main.ts</code> → <code>bootstrapApplication(AppComponent, appConfig)</code>.</li>
+  <li><strong>App config:</strong> <code>provideRouter</code>, <code>provideHttpClient(withInterceptors([authInterceptor]))</code>, <code>provideAnimations</code>.</li>
+  <li><strong>Standalone components</strong> — no NgModule; each declares its own <code>imports</code>.</li>
+  <li><strong>Lazy routes</strong> — <code>loadComponent: () =&gt; import(...)</code>.</li>
+  <li><strong>Guards</strong> — functional, return <code>true|false</code>; use <code>inject()</code> inside.</li>
+  <li><strong>Interceptor</strong> — clone request, set <code>Authorization</code>, <code>catchError</code> on 401.</li>
+  <li><strong>Signals</strong> — <code>signal()</code> + <code>computed()</code> + (optional) <code>effect()</code>. Read with <code>()</code>.</li>
+  <li><strong>Reactive forms</strong> — <code>fb.nonNullable.group({ ... })</code>; validators in array.</li>
+  <li><strong>HttpClient</strong> — services return <code>Observable&lt;T&gt;</code>; component <code>subscribe</code>s.</li>
+  <li><strong>RxJS</strong> — <code>map</code> (transform), <code>tap</code> (side-effect), <code>catchError</code> (handle), <code>switchMap</code> (cancel-and-switch).</li>
+  <li><strong>JWT</strong> — base64 payload, exp in seconds, stored in localStorage; never trust it client-side.</li>
+</ul>
+
+<h2>14.2 Important interview points</h2>
+<ol>
+  <li>"Standalone component" = no NgModule. Modern Angular default.</li>
+  <li>"Signals are sync, Observables are async streams" — different tools.</li>
+  <li>"OnPush + Signals" = best change-detection combo.</li>
+  <li>"Functional guards" use <code>inject()</code> instead of constructors.</li>
+  <li>"Interceptor handles auth and global errors in one place."</li>
+  <li>"Always wrap envelopes in the service" — components don't see <code>ApiResponse&lt;T&gt;</code>.</li>
+  <li>"Use trackBy in <code>*ngFor</code>" for performance.</li>
+  <li>"Lazy load every feature" — initial bundle stays small.</li>
+</ol>
+
+<h2>14.3 Frequently asked viva questions (1-liner answers)</h2>
+<table>
+<tr><th>Question</th><th>One-liner</th></tr>
+<tr><td>Why Angular?</td><td>TS by default, batteries-included, opinionated, great tooling.</td></tr>
+<tr><td>Why standalone components?</td><td>Less boilerplate, faster lazy loading, simpler DI.</td></tr>
+<tr><td>What is DI?</td><td>Framework supplies dependencies instead of class constructing them.</td></tr>
+<tr><td>What is an Observable?</td><td>A lazy stream you subscribe to.</td></tr>
+<tr><td>What's RxJS for?</td><td>Compose async flows with operators.</td></tr>
+<tr><td>JWT?</td><td>A signed token carrying claims used for stateless auth.</td></tr>
+<tr><td>Lazy loading?</td><td>Load route code only when navigated to.</td></tr>
+<tr><td>Reactive vs Template-driven?</td><td>Reactive in TS, scales better; template-driven simpler for tiny forms.</td></tr>
+<tr><td>What is change detection?</td><td>Process Angular uses to update the DOM after state changes.</td></tr>
+<tr><td>OnPush?</td><td>Strategy that re-checks only on input change or events — faster.</td></tr>
+<tr><td>Async pipe?</td><td>Subscribes/unsubscribes to an Observable in a template.</td></tr>
+<tr><td>Difference between trackBy and not?</td><td>trackBy reuses DOM nodes; without it, Angular destroys and recreates rows on data updates.</td></tr>
+<tr><td>What is interpolation?</td><td><code>{{ x }}</code> — print value in HTML.</td></tr>
+<tr><td>Why interceptor?</td><td>Add headers / handle errors globally instead of per-call.</td></tr>
+<tr><td>How is your project structured?</td><td>core/ for cross-cutting, layout/ for chrome, features/ per feature.</td></tr>
+</table>
+
+<h2>14.4 Short flashcards</h2>
+<table>
+<tr><th>Term</th><th>30-second definition</th></tr>
+<tr><td>Component</td><td>UI unit = decorator + class + template + style</td></tr>
+<tr><td>Service</td><td>Injectable class with logic/state</td></tr>
+<tr><td>Router</td><td>Maps URL to component, supports lazy loading + guards</td></tr>
+<tr><td>Guard</td><td>Function deciding if a route can activate</td></tr>
+<tr><td>Interceptor</td><td>Middleware running on every HTTP request</td></tr>
+<tr><td>Pipe</td><td>Template formatter</td></tr>
+<tr><td>Directive</td><td>Modifies element behaviour or appearance</td></tr>
+<tr><td>Signal</td><td>Reactive value holder (Angular 17)</td></tr>
+<tr><td>Observable</td><td>Lazy async stream</td></tr>
+<tr><td>RxJS</td><td>Library of operators for streams</td></tr>
+<tr><td>DI</td><td>Framework supplies dependencies</td></tr>
+<tr><td>JWT</td><td>Signed token = header.payload.signature</td></tr>
+<tr><td>SPA</td><td>One HTML page, JS updates UI</td></tr>
+<tr><td>CORS</td><td>Cross-origin request permission system</td></tr>
+<tr><td>SSR</td><td>Server-side rendering for first paint</td></tr>
+</table>
+
+<div class="success">
+<strong>You're set.</strong> Open this PDF the night before any viva/interview. Read sections 1, 3, 8, 10.5, 14 thoroughly — they directly answer 90% of project-defence questions. Open sections 4 and 7 if asked anything code-specific. Good luck!
+</div>
+
+<p class="small" style="margin-top:30px; text-align:center;">— End of guide — StreamCast Frontend Complete Documentation — May 2026 —</p>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+package com.cts.streamcast.service;
+
+import com.cts.streamcast.dto.UserRequestDTO;
+import com.cts.streamcast.entity.User;
+import com.cts.streamcast.entity.Role;
+import com.cts.streamcast.repository.UserRepository;
+import com.cts.streamcast.repository.RoleRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepo;
+    private final RoleRepository roleRepo;
+    private final BCryptPasswordEncoder encoder;
+    
+    private final EmailService emailService;
+
+    public UserService(UserRepository userRepo, RoleRepository roleRepo, BCryptPasswordEncoder encoder, EmailService emailService) {
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+        this.encoder = encoder;
+        this.emailService = emailService;
+    }
+
+    public User createUser(UserRequestDTO dto) {
+        Role role = roleRepo.findById(dto.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+
+        // Encrypt password
+        user.setPassword(encoder.encode(dto.getPassword()));
+
+        user.setRole(role);
+
+        return userRepo.save(user);
+    }
+    
+    public User updateUser(Long id, UserRequestDTO dto)
+    {
+    	User user=userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    	
+    	user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        
+        Role role = roleRepo.findById(dto.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        
+        user.setRole(role);
+        return userRepo.save(user);
+    	
+    }
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
+    
+    public User getUserById(Long id)
+    {
+    	return userRepo.findById(id)
+    			.orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id);
+    }
+    
+    
+    
+}

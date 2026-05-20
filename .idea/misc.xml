@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Final Microservice/Contract-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Content-Catalog-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Clause-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/API-Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Distribution-Delivery/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Partner-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/schedule-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Service-Registry/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Streamcast-Backend/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/usage-service/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
