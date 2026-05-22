@@ -11,6 +11,7 @@
         <module name="API-Gateway" />
         <module name="StreamCast" />
         <module name="Service-Registry" />
+        <module name="Identity-Auth-Service" />
       </profile>
       <profile name="Annotation profile for Streamcast-Backend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -42,6 +43,7 @@
       <module name="Clause-Service" options="-parameters" />
       <module name="Contract-Service" options="-parameters" />
       <module name="Distribution-Delivery" options="-parameters" />
+      <module name="Identity-Auth-Service" options="-parameters" />
       <module name="Partner-Service" options="-parameters" />
       <module name="Service-Registry" options="-parameters" />
       <module name="StreamCast" options="-parameters" />

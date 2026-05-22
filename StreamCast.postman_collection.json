@@ -1,0 +1,752 @@
+{
+  "info": {
+    "name": "StreamCast — Full Microservices API",
+    "description": "Complete API collection for the StreamCast microservices, routed through the API-Gateway at http://localhost:8082.\n\nServices covered:\n- Identity-Auth-Service (auth, users, roles)\n- Content-Catalog-Service (titles, assets, metadata)\n- Contract-Service (contracts)\n- Clause-Service (clauses)\n- Partner-Service (partners)\n- Distribution-Delivery (manifests, attempts, receipts)\n- schedule-service (schedules, conflicts)\n- usage-service (usage analytics)\n\nThe `Auth / Login` request automatically saves the JWT to the `{{authToken}}` collection variable. Every protected request uses Bearer-token auth at the collection level — no per-request setup needed.\n\nDefault credentials variables (`adminEmail` / `adminPassword`) and sample IDs are pre-set in the collection variables — edit them to match your data.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "streamcast-full-collection-2026"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{authToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8082", "type": "string" },
+    { "key": "authToken", "value": "", "type": "string" },
+    { "key": "adminEmail", "value": "admin@streamcast.com", "type": "string" },
+    { "key": "adminPassword", "value": "admin123", "type": "string" },
+    { "key": "registerEmail", "value": "newuser@streamcast.com", "type": "string" },
+    { "key": "registerPassword", "value": "pass123", "type": "string" },
+    { "key": "roleId", "value": "1", "type": "string" },
+    { "key": "userId", "value": "1", "type": "string" },
+    { "key": "titleId", "value": "1", "type": "string" },
+    { "key": "assetId", "value": "1", "type": "string" },
+    { "key": "metadataId", "value": "1", "type": "string" },
+    { "key": "contractId", "value": "1", "type": "string" },
+    { "key": "clauseId", "value": "1", "type": "string" },
+    { "key": "partnerId", "value": "1", "type": "string" },
+    { "key": "manifestId", "value": "1", "type": "string" },
+    { "key": "scheduleId", "value": "1", "type": "string" },
+    { "key": "conflictId", "value": "1", "type": "string" },
+    { "key": "verifyToken", "value": "PASTE_FROM_SERVICE_LOG", "type": "string" },
+    { "key": "resetToken", "value": "PASTE_FROM_SERVICE_LOG", "type": "string" }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Collection-level pre-request — nothing required, but a hook is here if needed."
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth (Identity-Auth-Service)",
+      "description": "Public auth endpoints: register / login / verify-email / forgot-password / reset-password / forgot-username. Login auto-saves the JWT.",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New User\",\n  \"email\": \"{{registerEmail}}\",\n  \"password\": \"{{registerPassword}}\",\n  \"roleId\": {{roleId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login (saves authToken)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const body = pm.response.json();",
+                  "    if (body && body.token) {",
+                  "        pm.collectionVariables.set('authToken', body.token);",
+                  "        console.log('authToken saved:', body.token.slice(0, 20) + '...');",
+                  "    }",
+                  "    pm.test('login returns token + user', () => {",
+                  "        pm.expect(body).to.have.property('token');",
+                  "        pm.expect(body).to.have.property('user');",
+                  "    });",
+                  "} else {",
+                  "    console.warn('Login failed:', pm.response.code, pm.response.text());",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify?token={{verifyToken}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify"],
+              "query": [{ "key": "token", "value": "{{verifyToken}}" }]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password?email={{adminEmail}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"],
+              "query": [{ "key": "email", "value": "{{adminEmail}}" }]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password?token={{resetToken}}&newPassword=newPass123",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"],
+              "query": [
+                { "key": "token", "value": "{{resetToken}}" },
+                { "key": "newPassword", "value": "newPass123" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Forgot Username",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-username?email={{adminEmail}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-username"],
+              "query": [{ "key": "email", "value": "{{adminEmail}}" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Admin only)",
+      "description": "CRUD for users. Requires ADMIN role.",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@streamcast.com\",\n  \"password\": \"pass123\",\n  \"roleId\": {{roleId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Updated\",\n  \"email\": \"jane@streamcast.com\",\n  \"password\": \"newPass123\",\n  \"roleId\": {{roleId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles (Admin only)",
+      "description": "CRUD for roles. Requires ADMIN role.",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"COMPLIANCE_OFFICER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "Get All Roles",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "Get Role by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"COMPLIANCE_OFFICER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/roles/{{roleId}}", "host": ["{{baseUrl}}"], "path": ["roles", "{{roleId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog — Titles",
+      "description": "Titles CRUD (Content-Catalog-Service).",
+      "item": [
+        {
+          "name": "Create Title",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"The Streamcast Saga\",\n  \"releaseDate\": \"2026-01-15\",\n  \"genre\": \"Drama\",\n  \"language\": \"English\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/titles", "host": ["{{baseUrl}}"], "path": ["api", "titles"] }
+          }
+        },
+        {
+          "name": "Get All Titles",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/titles", "host": ["{{baseUrl}}"], "path": ["api", "titles"] }
+          }
+        },
+        {
+          "name": "Get Title by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}"] }
+          }
+        },
+        {
+          "name": "Update Title",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"The Streamcast Saga - Updated\",\n  \"releaseDate\": \"2026-02-15\",\n  \"genre\": \"Drama\",\n  \"language\": \"English\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}"] }
+          }
+        },
+        {
+          "name": "Delete Title",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}"] }
+          }
+        },
+        {
+          "name": "Title Exists",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}/exists", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}", "exists"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog — Assets",
+      "description": "Assets attached to a title.",
+      "item": [
+        {
+          "name": "Get Assets by Title",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}/assets", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}", "assets"] }
+          }
+        },
+        {
+          "name": "Create Asset",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetType\": \"VIDEO\",\n  \"fileURI\": \"s3://streamcast/title-1/master.mp4\",\n  \"checksum\": \"sha256:abcdef0123456789\",\n  \"duration\": 5400,\n  \"status\": \"READY\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/assets/{{titleId}}", "host": ["{{baseUrl}}"], "path": ["api", "assets", "{{titleId}}"] }
+          }
+        },
+        {
+          "name": "Update Asset",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetType\": \"VIDEO\",\n  \"fileURI\": \"s3://streamcast/title-1/master-v2.mp4\",\n  \"checksum\": \"sha256:1234567890abcdef\",\n  \"duration\": 5400,\n  \"status\": \"READY\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/assets/{{assetId}}", "host": ["{{baseUrl}}"], "path": ["api", "assets", "{{assetId}}"] }
+          }
+        },
+        {
+          "name": "Delete Asset",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/assets/{{assetId}}", "host": ["{{baseUrl}}"], "path": ["api", "assets", "{{assetId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog — Metadata",
+      "description": "Title metadata key/value pairs.",
+      "item": [
+        {
+          "name": "Get Metadata by Title",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}/metadata", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}", "metadata"] }
+          }
+        },
+        {
+          "name": "Create Metadata",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"director\",\n  \"value\": \"Jane Doe\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/titles/{{titleId}}/metadata", "host": ["{{baseUrl}}"], "path": ["api", "titles", "{{titleId}}", "metadata"] }
+          }
+        },
+        {
+          "name": "Update Metadata",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"director\",\n  \"value\": \"John Smith\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/metadata/{{metadataId}}", "host": ["{{baseUrl}}"], "path": ["api", "metadata", "{{metadataId}}"] }
+          }
+        },
+        {
+          "name": "Delete Metadata",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/metadata/{{metadataId}}", "host": ["{{baseUrl}}"], "path": ["api", "metadata", "{{metadataId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "description": "Contracts CRUD (Contract-Service).",
+      "item": [
+        {
+          "name": "Create Contract",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": \"{{titleId}}\",\n  \"territoryListJson\": \"[\\\"IN\\\",\\\"US\\\",\\\"GB\\\"]\",\n  \"startDate\": \"2026-01-01\",\n  \"endDate\": \"2027-01-01\",\n  \"exclusivityFlag\": true,\n  \"termsSummary\": \"Exclusive streaming rights for 12 months.\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/contracts", "host": ["{{baseUrl}}"], "path": ["contracts"] }
+          }
+        },
+        {
+          "name": "Get All Contracts",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/contracts", "host": ["{{baseUrl}}"], "path": ["contracts"] }
+          }
+        },
+        {
+          "name": "Get Contract by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/contracts/{{contractId}}", "host": ["{{baseUrl}}"], "path": ["contracts", "{{contractId}}"] }
+          }
+        },
+        {
+          "name": "Update Contract",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": \"{{titleId}}\",\n  \"territoryListJson\": \"[\\\"IN\\\",\\\"US\\\"]\",\n  \"startDate\": \"2026-01-01\",\n  \"endDate\": \"2027-06-01\",\n  \"exclusivityFlag\": false,\n  \"termsSummary\": \"Updated terms.\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/contracts/{{contractId}}", "host": ["{{baseUrl}}"], "path": ["contracts", "{{contractId}}"] }
+          }
+        },
+        {
+          "name": "Delete Contract",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/contracts/{{contractId}}", "host": ["{{baseUrl}}"], "path": ["contracts", "{{contractId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clauses",
+      "description": "Clauses attached to contracts (Clause-Service).",
+      "item": [
+        {
+          "name": "Create Clause",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clauseType\": \"GEO_RESTRICTION\",\n  \"detailsJSON\": \"{\\\"blockedRegions\\\":[\\\"CN\\\",\\\"RU\\\"]}\",\n  \"effectiveFrom\": \"2026-01-01\",\n  \"effectiveTo\": \"2027-01-01\",\n  \"contractId\": {{contractId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/clauses/post", "host": ["{{baseUrl}}"], "path": ["clauses", "post"] }
+          }
+        },
+        {
+          "name": "Get All Clauses",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/clauses/get", "host": ["{{baseUrl}}"], "path": ["clauses", "get"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Partners",
+      "description": "Distribution partners (Partner-Service).",
+      "item": [
+        {
+          "name": "Create Partner",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AcmeStream\",\n  \"contactInfo\": \"ops@acmestream.com\",\n  \"endpointDetailsNote\": \"FTP drop at sftp://acmestream.com/incoming\",\n  \"status\": \"ACTIVE\",\n  \"titleId\": {{titleId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/partners", "host": ["{{baseUrl}}"], "path": ["partners"] }
+          }
+        },
+        {
+          "name": "Get All Partners",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/partners", "host": ["{{baseUrl}}"], "path": ["partners"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manifests (Distribution)",
+      "description": "Distribution manifests, attempts, and receipts (Distribution-Delivery).",
+      "item": [
+        {
+          "name": "Create Manifest",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": \"{{titleId}}\",\n  \"assetIdsJSON\": \"[{{assetId}}]\",\n  \"destination\": \"sftp://acmestream.com/incoming\",\n  \"createdBy\": \"{{adminEmail}}\",\n  \"status\": \"PENDING\",\n  \"partnerId\": {{partnerId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/manifests", "host": ["{{baseUrl}}"], "path": ["manifests"] }
+          }
+        },
+        {
+          "name": "Get All Manifests",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/manifests", "host": ["{{baseUrl}}"], "path": ["manifests"] }
+          }
+        },
+        {
+          "name": "Get Manifest by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/manifests/{{manifestId}}", "host": ["{{baseUrl}}"], "path": ["manifests", "{{manifestId}}"] }
+          }
+        },
+        {
+          "name": "Update Manifest",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": \"{{titleId}}\",\n  \"assetIdsJSON\": \"[{{assetId}}]\",\n  \"destination\": \"sftp://acmestream.com/incoming\",\n  \"createdBy\": \"{{adminEmail}}\",\n  \"status\": \"DELIVERED\",\n  \"partnerId\": {{partnerId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/manifests/{{manifestId}}", "host": ["{{baseUrl}}"], "path": ["manifests", "{{manifestId}}"] }
+          }
+        },
+        {
+          "name": "Record Delivery Attempt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"result\": \"SUCCESS\",\n  \"details\": \"Uploaded 4 files, 5.4 GB total.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/manifests/{{manifestId}}/attempts", "host": ["{{baseUrl}}"], "path": ["manifests", "{{manifestId}}", "attempts"] }
+          }
+        },
+        {
+          "name": "Record Receipt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"receivedBy\": \"partner.ops@acmestream.com\",\n  \"receiptURI\": \"s3://streamcast/receipts/manifest-1.pdf\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/manifests/{{manifestId}}/receipt", "host": ["{{baseUrl}}"], "path": ["manifests", "{{manifestId}}", "receipt"] }
+          }
+        },
+        {
+          "name": "Get Manifests by Partner",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/manifests/partner/{{partnerId}}", "host": ["{{baseUrl}}"], "path": ["manifests", "partner", "{{partnerId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedules",
+      "description": "Programming schedules (schedule-service).",
+      "item": [
+        {
+          "name": "Get Calendar",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules/calendar?start=2026-01-01T00:00:00&end=2026-01-31T23:59:59&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules", "calendar"],
+              "query": [
+                { "key": "start", "value": "2026-01-01T00:00:00" },
+                { "key": "end", "value": "2026-01-31T23:59:59" },
+                { "key": "status", "value": "", "disabled": true },
+                { "key": "platform", "value": "", "disabled": true },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Schedule",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": {{titleId}},\n  \"contractId\": {{contractId}},\n  \"platform\": \"WEB\",\n  \"startDateTime\": \"2026-06-01T20:00:00\",\n  \"endDateTime\": \"2026-06-01T22:00:00\",\n  \"windowType\": \"PRIMETIME\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/schedules", "host": ["{{baseUrl}}"], "path": ["api", "schedules"] }
+          }
+        },
+        {
+          "name": "Get Schedule by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}", "host": ["{{baseUrl}}"], "path": ["api", "schedules", "{{scheduleId}}"] }
+          }
+        },
+        {
+          "name": "Update Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titleId\": {{titleId}},\n  \"contractId\": {{contractId}},\n  \"platform\": \"MOBILE\",\n  \"startDateTime\": \"2026-06-02T20:00:00\",\n  \"endDateTime\": \"2026-06-02T22:00:00\",\n  \"windowType\": \"PRIMETIME\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}", "host": ["{{baseUrl}}"], "path": ["api", "schedules", "{{scheduleId}}"] }
+          }
+        },
+        {
+          "name": "Partial Update Schedule",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"TV\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}", "host": ["{{baseUrl}}"], "path": ["api", "schedules", "{{scheduleId}}"] }
+          }
+        },
+        {
+          "name": "Delete Schedule",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}", "host": ["{{baseUrl}}"], "path": ["api", "schedules", "{{scheduleId}}"] }
+          }
+        },
+        {
+          "name": "Detect Conflicts",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}/detect-conflicts", "host": ["{{baseUrl}}"], "path": ["api", "schedules", "{{scheduleId}}", "detect-conflicts"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conflicts",
+      "description": "Schedule conflicts (schedule-service).",
+      "item": [
+        {
+          "name": "Get Conflicts by Schedule",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/conflicts?schedulesId={{scheduleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "conflicts"],
+              "query": [{ "key": "schedulesId", "value": "{{scheduleId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Get Conflict by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/conflicts/{{conflictId}}", "host": ["{{baseUrl}}"], "path": ["api", "conflicts", "{{conflictId}}"] }
+          }
+        },
+        {
+          "name": "Resolve Conflict",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/conflicts/{{conflictId}}/resolve", "host": ["{{baseUrl}}"], "path": ["api", "conflicts", "{{conflictId}}", "resolve"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usage Analytics",
+      "description": "Usage summary / details / breakdown (usage-service).",
+      "item": [
+        {
+          "name": "Usage Summary",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usage/summary?start=2026-01-01&end=2026-01-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usage", "summary"],
+              "query": [
+                { "key": "start", "value": "2026-01-01" },
+                { "key": "end", "value": "2026-01-31" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Usage Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usage/details?start=2026-01-01&end=2026-01-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usage", "details"],
+              "query": [
+                { "key": "start", "value": "2026-01-01" },
+                { "key": "end", "value": "2026-01-31" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Usage Breakdown",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usage/breakdown?start=2026-01-01&end=2026-01-31&groupBy=title",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usage", "breakdown"],
+              "query": [
+                { "key": "start", "value": "2026-01-01" },
+                { "key": "end", "value": "2026-01-31" },
+                { "key": "groupBy", "value": "title" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>StreamCast — Full Prompt History</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.5;
+    font-size: 11pt;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    color: #64748b;
+    font-size: 10pt;
+    margin-bottom: 14px;
+  }
+  .meta {
+    background: #f1f5f9;
+    border-left: 4px solid #f43f5e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 10pt;
+    color: #334155;
+    margin-bottom: 18px;
+  }
+  .meta b { color: #0f172a; }
+  .phase {
+    margin: 22px 0 6px 0;
+    color: #0f172a;
+    font-size: 12.5pt;
+    font-weight: 700;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .prompt {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #f43f5e;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0 12px 0;
+    page-break-inside: avoid;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .num {
+    display: inline-block;
+    background: #f43f5e;
+    color: white;
+    font-weight: 700;
+    font-size: 9pt;
+    padding: 2px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+  }
+  .text {
+    margin-top: 6px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10.5pt;
+    color: #0f172a;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .ctx {
+    font-size: 9.5pt;
+    color: #475569;
+    margin: 6px 0 0 0;
+  }
+  code {
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    color: #be123c;
+  }
+  .footer {
+    margin-top: 24px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+    color: #94a3b8;
+    font-size: 9pt;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>StreamCast UI &mdash; Full Prompt History</h1>
+<div class="subtitle">From initial frontend scaffold to Identity-Auth-Service integration</div>
+
+<div class="meta">
+  <b>Project:</b> StreamCast (Angular 17 standalone UI + Spring Boot microservices)<br/>
+  <b>UI prefix:</b> <code>sc-</code> &middot; <b>API Gateway:</b> :8082 &middot; <b>UI dev server:</b> :4200<br/>
+  <b>Eight roles:</b> ADMIN, CONTENT_OWNER, RIGHTS_MANAGER, SCHEDULER, DISTRIBUTION_OPERATOR, LEGAL_OFFICER, PARTNER_ADMIN, COMPLIANCE_OFFICER<br/>
+  <b>Compiled on:</b> 2026-05-20
+</div>
+
+<div class="phase">Phase 1 &middot; Scaffolding the Angular app</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#1</span></div>
+  <div class="text">Create a new Angular 17 project called streamcast-ui inside the "Final Microservice" folder. Use standalone components, the "sc" prefix, and SCSS styles. No tests, no SSR.</div>
+  <p class="ctx">Generated the <code>streamcast-ui</code> workspace, <code>angular.json</code>, and the initial <code>app.component.ts</code> shell.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#2</span></div>
+  <div class="text">Add Tailwind CSS and Angular Material. I want a dark, cinematic, rose/red-accented OTT theme &mdash; define a custom palette in utilities.css with classes like sc-glass, sc-btn-primary, sc-btn-ghost, sc-input, sc-chip-brand, sc-card.</div>
+  <p class="ctx">Added <code>src/utilities.css</code>, <code>styles.scss</code>, and the brand/accent gradients used across every component.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#3</span></div>
+  <div class="text">Set up the folder structure: src/app/core/auth, src/app/core/models, src/app/features/{auth,catalog,contracts,clauses,partners,manifests,schedules,conflicts,usage,admin,dashboard,misc}, src/app/layout, src/environments. Add environment.ts with apiBase pointing to http://localhost:8082.</div>
+  <p class="ctx">Established the folder layout that every later feature plugs into.</p>
+</div>
+
+<div class="phase">Phase 2 &middot; Auth foundation</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#4</span></div>
+  <div class="text">Define the user/role model. There are 8 roles: ADMIN, CONTENT_OWNER, RIGHTS_MANAGER, SCHEDULER, DISTRIBUTION_OPERATOR, LEGAL_OFFICER, PARTNER_ADMIN, COMPLIANCE_OFFICER. Create a CurrentUser interface and a LoginRequest interface.</div>
+  <p class="ctx">Created <code>core/models/user.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#5</span></div>
+  <div class="text">Build a glassmorphic login page on a cinematic background &mdash; logo + Streamcast title centered, email/password fields, show/hide password toggle, error banner, primary "Sign in" button. Use Angular reactive forms and signals.</div>
+  <p class="ctx">Created <code>features/auth/login.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#6</span></div>
+  <div class="text">Create an AuthService using signals &mdash; login() should POST to /auth/login on the gateway, decode the JWT, and persist { email, role, token, expiresAt } in localStorage under "sc.auth". Expose user(), isAuthenticated(), role(), hasAnyRole(), logout().</div>
+  <p class="ctx">Created <code>core/auth/auth.service.ts</code> and <code>core/auth/jwt.utils.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#7</span></div>
+  <div class="text">Add an HTTP interceptor that attaches the bearer token to every outgoing request and auto-logs-out on 401 responses. Register it in app.config.ts.</div>
+  <p class="ctx">Created <code>core/auth/auth.interceptor.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#8</span></div>
+  <div class="text">Write an authGuard that redirects unauthenticated users to /login, and a roleGuard factory that takes an array of allowed roles and redirects to /forbidden otherwise.</div>
+  <p class="ctx">Created <code>core/auth/auth.guard.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 3 &middot; Shell layout &amp; dashboard</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#9</span></div>
+  <div class="text">Build the shell layout &mdash; collapsible sidebar with grouped sections (Overview, Catalog, Rights, Distribution, Scheduling, Analytics, Administration), topbar with a role chip and user menu (sign out), and a mobile drawer for small screens.</div>
+  <p class="ctx">Created <code>layout/shell.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#10</span></div>
+  <div class="text">Make the sidebar role-aware &mdash; only render nav items the current user's role is allowed to access, and hide entire sections when nothing inside is visible.</div>
+  <p class="ctx">Added <code>visibleSections()</code> computed signal on the shell.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#11</span></div>
+  <div class="text">Build a dashboard component as the landing page after login. Show a welcome heading, the role chip, and a placeholder grid of stat cards.</div>
+  <p class="ctx">Created <code>features/dashboard/dashboard.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#12</span></div>
+  <div class="text">Wire up app.routes.ts &mdash; / redirects to /dashboard, /login is public, everything else lives under the shell behind authGuard with appropriate roleGuard restrictions.</div>
+  <p class="ctx">Created <code>app/app.routes.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 4 &middot; Catalog feature</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#13</span></div>
+  <div class="text">Build the titles list page &mdash; call /api/titles on the gateway, render a table with poster, title, year, genre, status chip, and a row-click handler that navigates to /titles/:id. Add a search input that filters client-side.</div>
+  <p class="ctx">Created <code>features/catalog/titles.component.ts</code> and <code>titles.service.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#14</span></div>
+  <div class="text">Add a title detail page at /titles/:id &mdash; show metadata, synopsis, and a list of related assets fetched from the assets endpoint.</div>
+  <p class="ctx">Created <code>features/catalog/title-detail.component.ts</code> and <code>assets.service.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 5 &middot; Rights modules</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#15</span></div>
+  <div class="text">Build the contracts page &mdash; list contracts from /contracts with chips for status, action buttons for view/edit, restricted to ADMIN, RIGHTS_MANAGER, SCHEDULER, COMPLIANCE_OFFICER.</div>
+  <p class="ctx">Created <code>features/contracts/contracts.component.ts</code> and <code>contracts.service.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#16</span></div>
+  <div class="text">Build the clauses page &mdash; table of clauses with type and severity chips, and a create-clause dialog.</div>
+  <p class="ctx">Created <code>features/clauses/clauses.component.ts</code> and <code>clauses.service.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 6 &middot; Distribution modules</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#17</span></div>
+  <div class="text">Build the partners page &mdash; list partners from /partners with logo, name, region, integration status. Allow ADMIN, DISTRIBUTION_OPERATOR, PARTNER_ADMIN, RIGHTS_MANAGER only.</div>
+  <p class="ctx">Created <code>features/partners/partners.component.ts</code> and <code>partners.service.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#18</span></div>
+  <div class="text">Build the manifests page &mdash; pull from /manifests with status chips (PENDING, DELIVERED, FAILED) and partner column. Show an indeterminate progress bar while loading.</div>
+  <p class="ctx">Created <code>features/manifests/manifests.component.ts</code> and <code>manifests.service.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 7 &middot; Scheduling &amp; analytics</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#19</span></div>
+  <div class="text">Build the schedules page &mdash; list of /api/schedules with start/end times, channel, and title. Allow ADMIN, SCHEDULER, RIGHTS_MANAGER, COMPLIANCE_OFFICER.</div>
+  <p class="ctx">Created <code>features/schedules/schedules.component.ts</code> and <code>schedules.service.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#20</span></div>
+  <div class="text">Build the conflicts page &mdash; pull /api/conflicts and show overlapping schedules with a severity chip and a "resolve" action.</div>
+  <p class="ctx">Created <code>features/conflicts/conflicts.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#21</span></div>
+  <div class="text">Build the usage analytics page &mdash; call /api/usage and show top titles, top partners, and a trend line. Allow ADMIN, COMPLIANCE_OFFICER, SCHEDULER.</div>
+  <p class="ctx">Created <code>features/usage/usage.component.ts</code> and <code>usage.service.ts</code>.</p>
+</div>
+
+<div class="phase">Phase 8 &middot; Administration &amp; misc</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#22</span></div>
+  <div class="text">Build the admin Users page &mdash; list /users, with a "New user" dialog that has name/email/password/role fields. Delete row with confirmation. ADMIN only.</div>
+  <p class="ctx">Created <code>features/admin/users.component.ts</code> and <code>admin.service.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#23</span></div>
+  <div class="text">Build the admin Roles page &mdash; list /roles, with a "New role" dialog that accepts a name. Allow delete with confirmation. ADMIN only.</div>
+  <p class="ctx">Created <code>features/admin/roles.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#24</span></div>
+  <div class="text">Add a Forbidden 403 page at /forbidden &mdash; when a role guard blocks access, redirect here with a clear message and a "Back to dashboard" button.</div>
+  <p class="ctx">Created <code>features/misc/forbidden.component.ts</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#25</span></div>
+  <div class="text">Tidy up &mdash; unify spacing across pages, fix the role chip styling in the topbar, make the active sidebar item show a left rail. Make sure the layout is responsive on mobile.</div>
+  <p class="ctx">This corresponds to the "UI fix" commit (1777f42) on the current branch.</p>
+</div>
+
+<div class="phase">Phase 9 &middot; Identity-Auth-Service integration</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#26</span></div>
+  <div class="text">In this i have added the identity auth service please do implement that in the frontend and make it work</div>
+  <p class="ctx">Kicked off the integration: switched the gateway routes from <code>Streamcast-Backend</code> to <code>Identity-Auth-Service</code>, expanded AuthService to support register / verify / forgot-password / reset-password / forgot-username, and created five new auth pages plus routes.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#27</span></div>
+  <div class="text">how to verify the changes made now</div>
+  <p class="ctx">Produced a verification plan covering build, service startup order, API smoke tests, and frontend walk-through.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#28</span></div>
+  <div class="text">check the endpoints lemme know if it works</div>
+  <p class="ctx">Live-probed the running services. Found that the API-Gateway was still routing to the old <code>Streamcast-Backend</code> because it had been started before the config change.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#29</span></div>
+  <div class="text">how to verify</div>
+  <p class="ctx">Walked through the post-restart verification recipe &mdash; single-message diagnostic, public-list check, full register/verify/login path, frontend smoke, and DevTools spot-check.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#30</span></div>
+  <div class="text">{
+    "status": "error",
+    "message": "Please verify your email before logging in"
+}</div>
+  <p class="ctx">Shared the login response. This message is exclusive to <code>Identity-Auth-Service</code> &mdash; confirms the gateway is now correctly forwarding to it. Discussion turned to grabbing the verification token from the service log since <code>MailSenderAutoConfiguration</code> is excluded.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#31</span></div>
+  <div class="text">create a pdf of the project overall prompts that i have given</div>
+  <p class="ctx">Asked for the original session-prompts PDF (six prompts). Generated as <code>StreamCast-Session-Prompts.pdf</code>.</p>
+</div>
+
+<div class="prompt">
+  <div class="row"><span class="num">#32</span></div>
+  <div class="text">i want all the prompts starting from the creation of frontend for this project if u dont remember add suitable prompts minimum 25 prompts in a pdf</div>
+  <p class="ctx">Request for this document &mdash; full prompt history covering the entire project, 32 prompts in 9 phases.</p>
+</div>
+
+<div class="footer">
+  StreamCast UI prompt history &middot; 2026-05-20
+</div>
+
+</body>
+</html>

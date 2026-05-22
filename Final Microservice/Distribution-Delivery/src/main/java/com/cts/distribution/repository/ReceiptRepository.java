@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cts.distribution.entity.Receipt;
 
-public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
+import java.util.List;
 
+public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
+    List<Receipt> findByManifestId(Long manifestId);
 }

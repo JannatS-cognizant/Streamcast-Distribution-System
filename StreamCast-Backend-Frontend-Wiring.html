@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>StreamCast &mdash; Backend &harr; Frontend Wiring</title>
+<style>
+  @page { size: A4; margin: 14mm 12mm; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.45;
+    font-size: 10.5pt;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    color: #64748b;
+    font-size: 10pt;
+    margin-bottom: 14px;
+  }
+  .meta {
+    background: #f1f5f9;
+    border-left: 4px solid #f43f5e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 10pt;
+    color: #334155;
+    margin-bottom: 14px;
+  }
+  .meta b { color: #0f172a; }
+  h2 {
+    font-size: 15pt;
+    color: #0f172a;
+    margin: 18px 0 6px 0;
+    padding: 8px 12px;
+    background: linear-gradient(90deg, #fef2f2 0%, #ffffff 100%);
+    border-left: 4px solid #f43f5e;
+    border-radius: 4px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #0f172a;
+    margin: 14px 0 4px 0;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #e2e8f0;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 10.5pt;
+    color: #be123c;
+    margin: 10px 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  p { margin: 4px 0 6px 0; }
+  ul, ol { margin: 4px 0 8px 18px; padding: 0; }
+  li { margin-bottom: 2px; }
+  code {
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9.5pt;
+    color: #be123c;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9pt;
+    overflow-x: auto;
+    line-height: 1.4;
+    margin: 6px 0;
+    page-break-inside: avoid;
+  }
+  pre .kw  { color: #93c5fd; }
+  pre .str { color: #fcd34d; }
+  pre .com { color: #94a3b8; font-style: italic; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 6px 0 10px 0;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #e2e8f0;
+    padding: 5px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 9pt;
+  }
+  td code { font-size: 8.5pt; }
+  .chip {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-right: 4px;
+  }
+  .chip.get    { background: #dcfce7; color: #14532d; }
+  .chip.post   { background: #dbeafe; color: #1e3a8a; }
+  .chip.put    { background: #fef3c7; color: #78350f; }
+  .chip.patch  { background: #fce7f3; color: #831843; }
+  .chip.delete { background: #fee2e2; color: #7f1d1d; }
+  .chip.role   { background: #fff1f2; color: #9f1239; border: 1px solid #fda4af; }
+  .callout {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 9.5pt;
+    margin: 8px 0;
+    color: #78350f;
+    page-break-inside: avoid;
+  }
+  .callout b { color: #78350f; }
+  .info {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 9.5pt;
+    margin: 8px 0;
+    color: #1e3a8a;
+    page-break-inside: avoid;
+  }
+  .diagram {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: "Consolas", monospace;
+    font-size: 9pt;
+    line-height: 1.5;
+    margin: 8px 0;
+    color: #0f172a;
+    white-space: pre;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 6px 0;
+  }
+  .two-col > div h4 { margin-top: 0; }
+  .footer {
+    margin-top: 18px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+    color: #94a3b8;
+    font-size: 9pt;
+    text-align: center;
+  }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>StreamCast &mdash; Backend &harr; Frontend Wiring</h1>
+<div class="subtitle">How the Angular UI talks to the Contract, Clause, Partner, and Distribution microservices, end to end</div>
+
+<div class="meta">
+  <b>UI:</b> <code>streamcast-ui</code> (Angular 17, standalone, signals) &middot; <code>http://localhost:4200</code><br/>
+  <b>Edge:</b> API Gateway &middot; <code>http://localhost:8082</code> (Spring Cloud Gateway + global JWT filter)<br/>
+  <b>Discovery:</b> Eureka &middot; <code>http://localhost:8761</code><br/>
+  <b>Services covered:</b> Contract-Service (8088), Clause-Service (8089), Partner-Service (8087), Distribution-Delivery (8083)<br/>
+  <b>JWT secret:</b> shared across gateway + every service (HS256, 1 hour expiry)
+</div>
+
+<!-- ============================================================== -->
+<!-- 1.  ARCHITECTURE PRIMER                                          -->
+<!-- ============================================================== -->
+<h2>1 &middot; The shared transport &mdash; how every request travels</h2>
+
+<p>Every request below follows the same physical path. The four services only differ in <i>what</i> they store and <i>which roles</i> they accept. Understanding this once means the per-service sections can focus on shape and intent.</p>
+
+<div class="diagram">[Browser :4200]
+   |
+   |  Angular Service (e.g. ContractsService) builds:
+   |    method + URL = environment.apiBase + "/contracts"
+   |    headers = { Content-Type: application/json }
+   |
+   |  HttpClient request is intercepted by `authInterceptor`
+   |    -> attaches  Authorization: Bearer &lt;JWT&gt;  from auth.user()?.token
+   |
+   v
+[API Gateway :8082]   Spring Cloud Gateway
+   1. CorsWebFilter    : allows http://localhost:4200, methods, headers
+   2. JwtAuthFilter    : validates JWT (HS256, shared secret), extracts
+                         email + role, injects them as headers:
+                            X-User-Email: ...
+                            X-User-Role : ROLE_ADMIN
+                         Public paths skipped: /auth/login, /auth/register,
+                         /auth/verify, /auth/forgot-password,
+                         /auth/reset-password, /auth/forgot-username
+   3. Predicate match  : /contracts/** -> lb://Contract-Service
+                         /clauses/**   -> lb://Clause-Service
+                         /partners/**  -> lb://Partner-Service
+                         /manifests/** -> lb://Distribution-Delivery
+   4. Load-balance     : asks Eureka for an instance, forwards request
+   |
+   v
+[Microservice]
+   - Spring Security @PreAuthorize checks the role
+     (e.g. hasAnyRole('ADMIN','RIGHTS_MANAGER'))
+   - Controller -> Service -> Repository -> MySQL
+   - Returns either:
+        APIResponse&lt;T&gt;  { message, data, success }   (Contract / Clause / Partner)
+        OR raw entity                                  (Distribution)
+   |
+   v
+[Angular Service] unwraps APIResponse via `.pipe(map(r =&gt; r.data))`
+                  emits typed objects to the component
+   |
+   v
+[Component] updates a signal -&gt; template re-renders</div>
+
+<h3>1.1 &middot; Role mapping &mdash; one source of truth, three enforcement points</h3>
+
+<p>A role string travels from the JWT claim all the way down to the controller. Each layer checks the same value:</p>
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Where</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. UI &mdash; route guard</td>
+      <td><code>app.routes.ts</code> &rarr; <code>roleGuard([...])</code></td>
+      <td>Stops navigation; sends to <code>/forbidden</code>.</td>
+    </tr>
+    <tr>
+      <td>2. UI &mdash; sidebar &amp; chip</td>
+      <td><code>shell.component.ts</code> &rarr; <code>visibleSections()</code></td>
+      <td>Hides links the user can't use. Cosmetic only.</td>
+    </tr>
+    <tr>
+      <td>3. Gateway &mdash; JWT filter</td>
+      <td><code>JwtAuthFilter.java</code></td>
+      <td>Rejects un-signed / expired tokens with 401 before reaching the service.</td>
+    </tr>
+    <tr>
+      <td>4. Service &mdash; <code>@PreAuthorize</code></td>
+      <td>each controller method</td>
+      <td>Returns 403 if the role isn't in the allowed set.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info"><b>Why four layers?</b> The two UI layers are convenience &mdash; they keep a user from seeing a 403 banner. The two backend layers are the security boundary; a bypassed UI cannot bypass them.</div>
+
+<!-- ============================================================== -->
+<!-- 2.  CONTRACT                                                     -->
+<!-- ============================================================== -->
+<div class="page-break"></div>
+<h2>2 &middot; Contract Service</h2>
+
+<p>Contracts represent licensing deals attached to a catalog title &mdash; territory, dates, exclusivity, and a text summary. The full CRUD set is exposed and the response is always wrapped in an <code>APIResponse</code> envelope.</p>
+
+<h3>2.1 &middot; Service facts</h3>
+
+<table>
+  <tr><th>Eureka name</th><td><code>Contract-Service</code></td></tr>
+  <tr><th>Port (direct)</th><td><code>8088</code></td></tr>
+  <tr><th>Database</th><td><code>contract_database</code> (MySQL)</td></tr>
+  <tr><th>Base URL via gateway</th><td><code>http://localhost:8082/contracts</code></td></tr>
+  <tr><th>Response envelope</th><td><code>APIResponse&lt;T&gt; = { message, data, success }</code></td></tr>
+</table>
+
+<h3>2.2 &middot; Endpoints &mdash; with role gates</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:55px">Verb</th><th>Path</th><th>Roles allowed</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="chip post">POST</span></td><td><code>/contracts</code></td><td><span class="chip role">ADMIN</span><span class="chip role">RIGHTS_MANAGER</span></td><td>Create a contract.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/contracts</code></td><td><span class="chip role">ADMIN</span><span class="chip role">RIGHTS_MANAGER</span><span class="chip role">SCHEDULER</span><span class="chip role">COMPLIANCE_OFFICER</span></td><td>List all contracts.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/contracts/{id}</code></td><td>same as above</td><td>Fetch one contract.</td></tr>
+    <tr><td><span class="chip put">PUT</span></td><td><code>/contracts/{id}</code></td><td><span class="chip role">ADMIN</span><span class="chip role">RIGHTS_MANAGER</span></td><td>Replace fields on a contract.</td></tr>
+    <tr><td><span class="chip delete">DELETE</span></td><td><code>/contracts/{id}</code></td><td><span class="chip role">ADMIN</span></td><td>Hard delete.</td></tr>
+  </tbody>
+</table>
+
+<h3>2.3 &middot; Field-by-field mapping &mdash; UI form &harr; Java entity</h3>
+
+<table>
+  <thead>
+    <tr><th>UI form control</th><th>UI interface (<code>Contract</code>)</th><th>Backend DTO (<code>ContractRequestDTO</code>)</th><th>Entity column</th><th>Validation</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Title ID (number)</td><td><code>titleId: number</code></td><td><code>String titleId</code></td><td><code>long titleId</code></td><td><code>@Positive</code> (backend) &middot; <code>min(1)</code> (UI)</td></tr>
+    <tr><td>Territories (text)</td><td><code>territoryListJson: string</code></td><td><code>String territoryListJson</code></td><td><code>String</code></td><td><code>@NotBlank</code></td></tr>
+    <tr><td>Start date</td><td><code>startDate: string</code></td><td><code>String startDate</code></td><td><code>LocalDate</code> <code>yyyy-MM-dd</code></td><td><code>@NotNull</code></td></tr>
+    <tr><td>End date</td><td><code>endDate: string</code></td><td><code>String endDate</code></td><td><code>LocalDate</code></td><td>must be <i>after</i> startDate (<code>@AssertTrue</code>)</td></tr>
+    <tr><td>Exclusive deal (checkbox)</td><td><code>exclusivityFlag: boolean</code></td><td><code>Boolean exclusivityFlag</code></td><td><code>Boolean</code></td><td><code>@NotNull</code></td></tr>
+    <tr><td>Terms summary</td><td><code>termsSummary: string</code></td><td><code>String termsSummary</code></td><td><code>String</code></td><td><code>@Size(5,200)</code></td></tr>
+    <tr><td>Status (dropdown)</td><td><code>status: 'ACTIVE' | 'INACTIVE'</code></td><td><code>String status</code></td><td><code>String</code></td><td><code>@Pattern(ACTIVE|INACTIVE)</code></td></tr>
+  </tbody>
+</table>
+
+<h3>2.4 &middot; Frontend wiring &mdash; the two files that matter</h3>
+
+<h4>contracts.service.ts</h4>
+<pre>private base = `${environment.apiBase}/contracts`;     <span class="com">// http://localhost:8082/contracts</span>
+
+list()  &rarr; GET    /contracts           .pipe(map(r =&gt; r.data))
+get(id) &rarr; GET    /contracts/{id}      .pipe(map(r =&gt; r.data))
+create()&rarr; POST   /contracts           .pipe(map(r =&gt; r.data))
+update()&rarr; PUT    /contracts/{id}      .pipe(map(r =&gt; r.data))
+delete()&rarr; DELETE /contracts/{id}</pre>
+
+<p>The <code>.pipe(map(r =&gt; r.data))</code> step is what unwraps the <code>APIResponse</code> envelope into plain typed objects, so components never see the <code>message</code> / <code>success</code> wrapper.</p>
+
+<h4>contracts.component.ts</h4>
+<ul>
+  <li><b>ContractsComponent</b> &mdash; signal-based list page. On <code>refresh()</code> it calls <code>contractsService.list()</code> and stores the result in <code>rows = signal&lt;Contract[]&gt;([])</code>.</li>
+  <li><b>ContractFormDialog</b> &mdash; a Material dialog with a reactive form whose validators <i>mirror</i> the backend rules (min(1) for titleId, minLength(5)/maxLength(200) for termsSummary, etc.). On save it returns the form value; the page subscribes to <code>create()</code> or <code>update()</code>, then re-runs <code>refresh()</code>.</li>
+</ul>
+
+<h3>2.5 &middot; End-to-end &mdash; creating a contract</h3>
+<pre>1. User clicks &quot;New contract&quot; in /contracts
+2. Dialog opens (ContractFormDialog), user fills the form
+3. On Save, the page calls:
+       contractsService.create(formValue).subscribe(...)
+4. HttpClient builds the request, authInterceptor adds:
+       Authorization: Bearer eyJ...
+5. Gateway: JwtAuthFilter decodes claims, sets X-User-Role: ROLE_RIGHTS_MANAGER
+6. Gateway forwards to lb://Contract-Service via Eureka
+7. Spring Security checks @PreAuthorize(&quot;hasAnyRole('ADMIN','RIGHTS_MANAGER')&quot;)
+8. ContractController.createContract():
+       - maps DTO -&gt; entity via ContractRequestMapper
+       - contractService.saveContract(contract)
+       - wraps result in APIResponse(&quot;Contract created successfully&quot;, dto, true)
+9. UI service unwraps .data, the page snackbars &quot;Contract created&quot; and refreshes</pre>
+
+<!-- ============================================================== -->
+<!-- 3.  CLAUSE                                                       -->
+<!-- ============================================================== -->
+<div class="page-break"></div>
+<h2>3 &middot; Clause Service</h2>
+
+<p>A clause is a typed legal rule (geo-restriction, royalty split, holdback, etc.) tied to a parent contract. Unlike the other three services this controller uses verb-suffixed paths (<code>/clauses/post</code>, <code>/clauses/get</code>) rather than RESTful conventions.</p>
+
+<h3>3.1 &middot; Service facts</h3>
+
+<table>
+  <tr><th>Eureka name</th><td><code>Clause-Service</code></td></tr>
+  <tr><th>Port (direct)</th><td><code>8089</code></td></tr>
+  <tr><th>Database</th><td><code>clause_database</code> (MySQL)</td></tr>
+  <tr><th>Base URL via gateway</th><td><code>http://localhost:8082/clauses</code></td></tr>
+  <tr><th>Cross-service dep.</th><td><code>ContractClient</code> &mdash; a Feign client pointing to <code>Contract-Service</code> (currently a placeholder for future contract-existence checks).</td></tr>
+</table>
+
+<h3>3.2 &middot; Endpoints</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:55px">Verb</th><th>Path</th><th>Roles allowed</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="chip post">POST</span></td><td><code>/clauses/post</code></td><td><span class="chip role">ADMIN</span><span class="chip role">RIGHTS_MANAGER</span></td><td>Create a clause.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/clauses/get</code></td><td><span class="chip role">ADMIN</span><span class="chip role">RIGHTS_MANAGER</span><span class="chip role">SCHEDULER</span><span class="chip role">COMPLIANCE_OFFICER</span></td><td>List all clauses.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout"><b>Path quirk:</b> the controller uses <code>/post</code> and <code>/get</code> as suffixes rather than HTTP verbs alone. The Angular service mirrors that exactly &mdash; <code>list()</code> calls <code>/clauses/get</code> and <code>create()</code> calls <code>/clauses/post</code>. Don't &quot;fix&quot; this on one side without the other.</div>
+
+<h3>3.3 &middot; Field-by-field mapping</h3>
+
+<table>
+  <thead>
+    <tr><th>UI interface (<code>Clause</code>)</th><th>Backend DTO (<code>ClauseRequestDTO</code>)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>clauseId?: number</code></td><td>(returned only)</td><td>Server-assigned on create.</td></tr>
+    <tr><td><code>clauseType: string</code></td><td><code>String clauseType</code></td><td>e.g. <code>GEO_RESTRICTION</code>, <code>HOLDBACK</code>.</td></tr>
+    <tr><td><code>detailsJSON: string</code></td><td><code>String detailsJSON</code></td><td>Free-form JSON payload describing the rule.</td></tr>
+    <tr><td><code>effectiveFrom: string</code></td><td><code>String effectiveFrom</code></td><td>ISO date.</td></tr>
+    <tr><td><code>effectiveTo: string</code></td><td><code>String effectiveTo</code></td><td>ISO date.</td></tr>
+    <tr><td><code>contractId: number</code></td><td><code>Long contractId</code></td><td>FK pointer to the parent contract.</td></tr>
+  </tbody>
+</table>
+
+<h3>3.4 &middot; Frontend wiring</h3>
+
+<h4>clauses.service.ts</h4>
+<pre>private base = `${environment.apiBase}/clauses`;
+
+list()   &rarr; GET  /clauses/get   .pipe(map(r =&gt; r.data))   <span class="com">// APIResponse&lt;Clause[]&gt;</span>
+create() &rarr; POST /clauses/post  .pipe(map(r =&gt; r.data))   <span class="com">// APIResponse&lt;Clause&gt;</span></pre>
+
+<h4>clauses.component.ts</h4>
+<ul>
+  <li>Reuses the same Material dialog pattern as contracts. The form has fields for <code>clauseType</code>, <code>detailsJSON</code> (a textarea), <code>effectiveFrom</code> / <code>effectiveTo</code> (date pickers), and <code>contractId</code> (number).</li>
+  <li>No delete or update endpoints exist on the backend yet, so the UI offers only list + create.</li>
+</ul>
+
+<h3>3.5 &middot; Route &amp; sidebar visibility</h3>
+<ul>
+  <li>Route: <code>/clauses</code> guarded by <code>roleGuard(['ADMIN','RIGHTS_MANAGER','SCHEDULER','COMPLIANCE_OFFICER'])</code>.</li>
+  <li>Sidebar item appears under the <b>Rights</b> section, hidden for roles not in that list.</li>
+</ul>
+
+<!-- ============================================================== -->
+<!-- 4.  PARTNER                                                      -->
+<!-- ============================================================== -->
+<div class="page-break"></div>
+<h2>4 &middot; Partner Service</h2>
+
+<p>Partners are downstream OTT/distribution endpoints (Acme TV, BigStream, etc.) that StreamCast pushes manifests to. A partner record is mostly contact + endpoint metadata.</p>
+
+<h3>4.1 &middot; Service facts</h3>
+
+<table>
+  <tr><th>Eureka name</th><td><code>Partner-Service</code></td></tr>
+  <tr><th>Port (direct)</th><td><code>8087</code></td></tr>
+  <tr><th>Database</th><td><code>partner_database</code> (MySQL)</td></tr>
+  <tr><th>Base URL via gateway</th><td><code>http://localhost:8082/partners</code></td></tr>
+</table>
+
+<h3>4.2 &middot; Endpoints</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:55px">Verb</th><th>Path</th><th>Roles allowed</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="chip post">POST</span></td><td><code>/partners</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span></td><td>Create a partner.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/partners</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span><span class="chip role">PARTNER_ADMIN</span><span class="chip role">RIGHTS_MANAGER</span></td><td>List all partners.</td></tr>
+  </tbody>
+</table>
+
+<h3>4.3 &middot; Field-by-field mapping</h3>
+
+<table>
+  <thead>
+    <tr><th>UI interface (<code>Partner</code>)</th><th>Backend DTO (<code>PartnerRequestDTO</code>)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>partnerId?: number</code></td><td>(returned)</td><td>PK, auto-assigned.</td></tr>
+    <tr><td><code>name: string</code></td><td><code>String name</code></td><td>Partner display name.</td></tr>
+    <tr><td><code>contactInfo: string</code></td><td><code>String contactInfo</code></td><td>Email / phone / ops contact.</td></tr>
+    <tr><td><code>endpointDetailsNote: string</code></td><td><code>String endpointDetailsNote</code></td><td>Free-form &mdash; SFTP host, S3 bucket, API base, etc.</td></tr>
+    <tr><td><code>status: 'ACTIVE' | 'INACTIVE'</code></td><td><code>String status</code></td><td>Drives whether new manifests can be queued against this partner.</td></tr>
+    <tr><td><code>titleId: number</code></td><td><code>long titleId</code></td><td>The partner-title association the page was created for.</td></tr>
+  </tbody>
+</table>
+
+<h3>4.4 &middot; Frontend wiring</h3>
+
+<h4>partners.service.ts</h4>
+<pre>private base = `${environment.apiBase}/partners`;
+
+list()   &rarr; GET  /partners      .pipe(map(r =&gt; r.data))   <span class="com">// APIResponse&lt;Partner[]&gt;</span>
+create() &rarr; POST /partners      .pipe(map(r =&gt; r.data))   <span class="com">// APIResponse&lt;Partner&gt;</span></pre>
+
+<h4>partners.component.ts</h4>
+<ul>
+  <li>List page lives at <code>/partners</code> under <code>roleGuard(['ADMIN','DISTRIBUTION_OPERATOR','PARTNER_ADMIN','RIGHTS_MANAGER'])</code>.</li>
+  <li>Renders a card grid: name + status chip + endpoint note + contact info.</li>
+  <li>A &quot;New partner&quot; dialog (visible only to ADMIN / DISTRIBUTION_OPERATOR) posts to <code>create()</code> and re-runs <code>list()</code>.</li>
+</ul>
+
+<h3>4.5 &middot; How the partner data flows into Distribution</h3>
+<p>The Partner page is read-only for the distribution flow. When a user creates a <i>manifest</i> on the Manifests page they enter a <code>partnerId</code> &mdash; that value comes from the partners list. There is no foreign-key constraint across databases (each service has its own DB); the link is logical only.</p>
+
+<!-- ============================================================== -->
+<!-- 5.  DISTRIBUTION                                                 -->
+<!-- ============================================================== -->
+<div class="page-break"></div>
+<h2>5 &middot; Distribution Delivery Service</h2>
+
+<p>The richest of the four. Manages <b>manifests</b> (a package of assets + destination), <b>attempts</b> (each delivery try), and <b>receipts</b> (acknowledgements from the partner). Unlike the other three services, this one does <i>not</i> wrap responses in <code>APIResponse</code> &mdash; it returns raw entities.</p>
+
+<h3>5.1 &middot; Service facts</h3>
+
+<table>
+  <tr><th>Eureka name</th><td><code>Distribution-Delivery</code></td></tr>
+  <tr><th>Port (direct)</th><td><code>8083</code></td></tr>
+  <tr><th>Database</th><td><code>distribution_delivery_database</code> (MySQL)</td></tr>
+  <tr><th>Base URL via gateway</th><td><code>http://localhost:8082/manifests</code></td></tr>
+  <tr><th>Response shape</th><td>Raw <code>Manifest</code> / <code>String</code> &mdash; <b>no</b> envelope.</td></tr>
+</table>
+
+<h3>5.2 &middot; Endpoints &mdash; with role gates</h3>
+
+<table>
+  <thead>
+    <tr><th style="width:55px">Verb</th><th>Path</th><th>Roles allowed</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="chip post">POST</span></td><td><code>/manifests</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span></td><td>Create a manifest.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/manifests</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span><span class="chip role">PARTNER_ADMIN</span></td><td>List all manifests.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/manifests/{id}</code></td><td>same as above</td><td>Fetch one manifest.</td></tr>
+    <tr><td><span class="chip put">PUT</span></td><td><code>/manifests/{id}</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span></td><td>Update fields (often status).</td></tr>
+    <tr><td><span class="chip post">POST</span></td><td><code>/manifests/{id}/attempts</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span></td><td>Record a delivery attempt.</td></tr>
+    <tr><td><span class="chip post">POST</span></td><td><code>/manifests/{id}/receipt</code></td><td><span class="chip role">ADMIN</span><span class="chip role">DISTRIBUTION_OPERATOR</span><span class="chip role">PARTNER_ADMIN</span></td><td>Record a partner acknowledgement.</td></tr>
+    <tr><td><span class="chip get">GET</span></td><td><code>/manifests/partner/{partnerId}</code></td><td>same as list</td><td>All manifests for one partner.</td></tr>
+  </tbody>
+</table>
+
+<h3>5.3 &middot; Field-by-field mapping &mdash; manifest body</h3>
+
+<table>
+  <thead>
+    <tr><th>UI form control</th><th>UI interface (<code>Manifest</code>)</th><th>Backend DTO (<code>ManifestDTO</code>)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Title ID</td><td><code>titleId: string</code></td><td><code>String titleId</code></td><td>Stored as string to allow non-numeric identifiers.</td></tr>
+    <tr><td>Asset IDs (JSON array)</td><td><code>assetIdsJSON: string</code></td><td><code>String assetIdsJSON</code></td><td>Free-form, e.g. <code>[1,2,3]</code>.</td></tr>
+    <tr><td>Destination</td><td><code>destination: string</code></td><td><code>String destination</code></td><td>e.g. <code>s3://bucket/path</code>.</td></tr>
+    <tr><td>Created by</td><td><code>createdBy: string</code></td><td><code>String createdBy</code></td><td>Usually the logged-in user's email.</td></tr>
+    <tr><td>Status (dropdown)</td><td><code>status: string</code></td><td><code>String status</code></td><td>QUEUED / IN_PROGRESS / DELIVERED / FAILED.</td></tr>
+    <tr><td>Partner ID</td><td><code>partnerId: number</code></td><td><code>Long partnerId</code></td><td>References a row in Partner-Service.</td></tr>
+  </tbody>
+</table>
+
+<h3>5.4 &middot; The two side payloads &mdash; attempts &amp; receipts</h3>
+
+<div class="two-col">
+  <div>
+    <h4>AttemptDTO (POST /manifests/{id}/attempts)</h4>
+<pre>{
+  &quot;result&quot;  : &quot;SUCCESS&quot; | &quot;FAILED&quot;,
+  &quot;details&quot; : &quot;Uploaded 4 files, 5.4 GB&quot;
+}</pre>
+  </div>
+  <div>
+    <h4>ReceiptDTO (POST /manifests/{id}/receipt)</h4>
+<pre>{
+  &quot;receivedBy&quot; : &quot;partner.ops@acme.com&quot;,
+  &quot;receiptURI&quot; : &quot;s3://receipts/m1.pdf&quot;
+}</pre>
+  </div>
+</div>
+
+<h3>5.5 &middot; Frontend wiring</h3>
+
+<h4>manifests.service.ts</h4>
+<pre>private base = `${environment.apiBase}/manifests`;
+
+list()        &rarr; GET  /manifests              <span class="com">// returns Manifest[]</span>
+get(id)       &rarr; GET  /manifests/{id}         <span class="com">// returns Manifest</span>
+create(m)     &rarr; POST /manifests              <span class="com">// returns Manifest</span>
+recordAttempt &rarr; POST /manifests/{id}/attempts<span class="com">// body: { status }, response: text</span></pre>
+
+<div class="callout"><b>Body mismatch worth knowing:</b> the UI's <code>recordAttempt(id, status)</code> currently posts <code>{ status }</code>, but the backend's <code>AttemptDTO</code> expects <code>{ result, details }</code>. The field will arrive as <code>null</code> on the server. If you start using attempts from the UI, change the UI body to <code>{ result: status, details: '...' }</code> &mdash; or relax the DTO. There is no UI call for <code>/receipt</code> yet.</div>
+
+<h3>5.6 &middot; Frontend component</h3>
+<ul>
+  <li><b>ManifestsComponent</b> &mdash; route <code>/manifests</code>, guarded by <code>roleGuard(['ADMIN','DISTRIBUTION_OPERATOR','PARTNER_ADMIN'])</code>.</li>
+  <li>Table columns: ID, Title, Partner, Destination, Status (coloured chip), Created at, Actions.</li>
+  <li><b>ManifestFormDialog</b> &mdash; reactive form with Title ID, Partner ID, Asset IDs (JSON), Destination, Created by, Status. Posts via <code>manifestsService.create()</code>.</li>
+</ul>
+
+<h3>5.7 &middot; End-to-end &mdash; recording a delivery attempt</h3>
+<pre>1. Operator clicks &quot;Mark delivered&quot; on a row in /manifests
+2. UI calls manifestsService.recordAttempt(id, 'SUCCESS')
+3. authInterceptor attaches the JWT
+4. Gateway accepts, forwards to lb://Distribution-Delivery
+5. Spring Security checks ROLE_ADMIN or ROLE_DISTRIBUTION_OPERATOR
+6. DistributionController.attempt(id, dto) -&gt; service.addAttempt(id, dto)
+7. Returns plain text &quot;Attempt recorded&quot; (responseType: 'text' on the UI)
+8. UI snackbars success, re-fetches the manifest row</pre>
+
+<!-- ============================================================== -->
+<!-- 6.  CROSS-CUTTING                                                -->
+<!-- ============================================================== -->
+<div class="page-break"></div>
+<h2>6 &middot; Cross-cutting concerns</h2>
+
+<h3>6.1 &middot; Error handling</h3>
+<ul>
+  <li><b>UI side:</b> every <code>.subscribe()</code> has an <code>error: err =&gt; ...</code> handler that pops a <code>MatSnackBar</code> with <code>err?.error?.message</code> if present, falling back to a generic message. 401s are special-cased by the interceptor to log out and route to <code>/login</code>.</li>
+  <li><b>Gateway:</b> rejects bad/expired JWT with 401 (empty body) before reaching the service.</li>
+  <li><b>Service:</b> each has a <code>GlobalExceptionHandler</code> that turns <code>BadRequestException</code> &rarr; 400, <code>ResourceNotFoundException</code> &rarr; 404, and validation failures &rarr; 400 with a per-field map.</li>
+</ul>
+
+<h3>6.2 &middot; CORS</h3>
+<p>Configured exactly once at the gateway (<code>CorsConfig.java</code>):</p>
+<ul>
+  <li>Allowed origin: <code>http://localhost:4200</code></li>
+  <li>Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS</li>
+  <li>Exposed header: <code>Authorization</code></li>
+  <li>De-dupe filter strips duplicate <code>Access-Control-Allow-Origin</code> headers in case downstream services also set them.</li>
+</ul>
+
+<h3>6.3 &middot; JWT secret &amp; expiry</h3>
+<p>All four services and the gateway share the same secret string:</p>
+<pre>jwt.secret=Streamcast_Secure_Key_2026_Project_Very_Strong_Key_12345
+jwt.expiration.ms=3600000   <span class="com">// 1 hour</span></pre>
+<p>The Angular <code>AuthService</code> decodes the JWT in <code>jwt.utils.ts</code> and stores <code>{ email, role, token, expiresAt }</code> in <code>localStorage</code> under the key <code>sc.auth</code>. A computed signal <code>isAuthenticated()</code> watches the expiry.</p>
+
+<h3>6.4 &middot; Common payload shapes at a glance</h3>
+
+<table>
+  <thead>
+    <tr><th>Service</th><th>Response envelope?</th><th>Role enforcement</th><th>UI unwrap</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Contract</td><td>Yes &mdash; <code>APIResponse&lt;T&gt;</code></td><td>controller <code>@PreAuthorize</code></td><td><code>map(r =&gt; r.data)</code></td></tr>
+    <tr><td>Clause</td><td>Yes &mdash; <code>APIResponse&lt;T&gt;</code></td><td>controller <code>@PreAuthorize</code></td><td><code>map(r =&gt; r.data)</code></td></tr>
+    <tr><td>Partner</td><td>Yes &mdash; <code>APIResponse&lt;T&gt;</code></td><td>controller <code>@PreAuthorize</code></td><td><code>map(r =&gt; r.data)</code></td></tr>
+    <tr><td>Distribution</td><td><b>No</b> &mdash; raw entity / text</td><td>controller <code>@PreAuthorize</code></td><td>none &mdash; direct cast</td></tr>
+  </tbody>
+</table>
+
+<h3>6.5 &middot; Putting it all together &mdash; a request you can trace by hand</h3>
+
+<div class="diagram">User Action                Network                     Backend
+-----------                -------                     -------
+Click &quot;Save&quot; on    POST /contracts                ContractController
+ContractFormDialog  Host: localhost:8082               .createContract(dto)
+                    Authorization: Bearer eyJ...           |
+                    Content-Type: application/json         v
+                    Body: { titleId: 12, ... }       @PreAuthorize gate
+                          |                                |
+                          v                                v
+                    [JwtAuthFilter]                  ContractServiceImpl
+                    valid? yes                       .saveContract(entity)
+                    role = RIGHTS_MANAGER                  |
+                    -&gt; sets X-User-Role                    v
+                                                     ContractRepository
+                                                     .save(entity)
+                                                           |
+                                                           v
+                                                     INSERT INTO contract...
+                                                           |
+                                                           v
+                                                     APIResponse(
+                                                       message=&quot;Contract created&quot;,
+                                                       data=ContractResponseDTO{...},
+                                                       success=true)
+                          |
+                          v
+                    ContractsService.list()                |
+                    refreshes the page                     v
+                    snackbar &quot;Contract created&quot;      &lt;-- 200 OK + body</div>
+
+<div class="footer">
+  StreamCast architecture brief &middot; Contract / Clause / Partner / Distribution &middot; 2026-05-21
+</div>
+
+</body>
+</html>

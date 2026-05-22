@@ -160,6 +160,18 @@ public class DistributionService {
         manifestRepository.save(manifest);
     }
 
+    // ✅ List receipts for a manifest
+    public List<Receipt> getReceiptsByManifest(Long manifestId) {
+        getById(manifestId);
+        return receiptRepository.findByManifestId(manifestId);
+    }
+
+    // ✅ List delivery attempts for a manifest
+    public List<DeliveryAttempt> getAttemptsByManifest(Long manifestId) {
+        getById(manifestId);
+        return attemptRepository.findByManifestId(manifestId);
+    }
+
     // ✅ Get Manifests by Partner
     public List<Manifest> getByPartner(Long partnerId) {
         List<Manifest> manifests = manifestRepository.findByPartnerId(partnerId);

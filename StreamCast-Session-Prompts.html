@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>StreamCast — Session Prompts</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.55;
+    font-size: 11.5pt;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    color: #64748b;
+    font-size: 10pt;
+    margin-bottom: 18px;
+  }
+  .meta {
+    background: #f1f5f9;
+    border-left: 4px solid #f43f5e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 10pt;
+    color: #334155;
+    margin-bottom: 24px;
+  }
+  .meta b { color: #0f172a; }
+  h2 {
+    font-size: 13.5pt;
+    color: #0f172a;
+    margin: 22px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .prompt {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #f43f5e;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0 16px 0;
+    page-break-inside: avoid;
+  }
+  .prompt .num {
+    display: inline-block;
+    background: #f43f5e;
+    color: white;
+    font-weight: 600;
+    font-size: 9pt;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-right: 8px;
+    letter-spacing: 0.3px;
+  }
+  .prompt .label {
+    font-size: 9pt;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  .prompt .text {
+    margin-top: 8px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10.5pt;
+    color: #0f172a;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .ctx {
+    font-size: 10pt;
+    color: #475569;
+    margin: 4px 0 0 0;
+  }
+  .footer {
+    margin-top: 28px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    color: #94a3b8;
+    font-size: 9pt;
+    text-align: center;
+  }
+  code {
+    background: #f1f5f9;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+    color: #be123c;
+  }
+</style>
+</head>
+<body>
+
+<h1>StreamCast — Session Prompts</h1>
+<div class="subtitle">User prompts captured during the Identity-Auth-Service frontend integration session</div>
+
+<div class="meta">
+  <b>Project:</b> StreamCast (Angular UI + Spring Boot microservices)<br/>
+  <b>Branch:</b> frontend_work_without_forget_password<br/>
+  <b>Session focus:</b> Wiring the new Identity-Auth-Service into the Angular frontend &amp; API Gateway<br/>
+  <b>Date:</b> 2026-05-20
+</div>
+
+<h2>Prompt 1</h2>
+<div class="prompt">
+  <span class="num">#1</span><span class="label">Initial request</span>
+  <div class="text">In this i have added the identity auth service please do implement that in the frontend and make it work</div>
+  <p class="ctx"><b>Context:</b> User had just added <code>Identity-Auth-Service</code> (a new Spring Boot microservice on :8085) to the workspace and wanted the Angular UI &amp; API Gateway to use it instead of the older <code>Streamcast-Backend</code> auth controller.</p>
+</div>
+
+<h2>Prompt 2</h2>
+<div class="prompt">
+  <span class="num">#2</span><span class="label">Verification request</span>
+  <div class="text">how to verify the changes made now</div>
+  <p class="ctx"><b>Context:</b> After the frontend/gateway code changes were applied, the user asked for a verification plan.</p>
+</div>
+
+<h2>Prompt 3</h2>
+<div class="prompt">
+  <span class="num">#3</span><span class="label">Live endpoint check</span>
+  <div class="text">check the endpoints lemme know if it works</div>
+  <p class="ctx"><b>Context:</b> User asked to actively probe the running services. The probes revealed the API-Gateway was still routing to the old <code>Streamcast-Backend</code> because it had been started before the config change and needed a restart.</p>
+</div>
+
+<h2>Prompt 4</h2>
+<div class="prompt">
+  <span class="num">#4</span><span class="label">Follow-up verification</span>
+  <div class="text">how to verify</div>
+  <p class="ctx"><b>Context:</b> Asked for the concrete verification recipe after restarting the API-Gateway — included gateway-routing check, public-list check, full register/verify/login path, and frontend UI smoke.</p>
+</div>
+
+<h2>Prompt 5</h2>
+<div class="prompt">
+  <span class="num">#5</span><span class="label">Login response shared</span>
+  <div class="text">{
+    "status": "error",
+    "message": "Please verify your email before logging in"
+}</div>
+  <p class="ctx"><b>Context:</b> User pasted the response from <code>POST /auth/login</code>. This message is unique to the new <code>Identity-Auth-Service</code> (the old service did not perform an email-verification check), confirming the gateway is correctly routing to the new service. Discussion turned to grabbing the verification token from the service log because <code>MailSenderAutoConfiguration</code> is excluded.</p>
+</div>
+
+<h2>Prompt 6</h2>
+<div class="prompt">
+  <span class="num">#6</span><span class="label">Documentation request</span>
+  <div class="text">create a pdf of the project overall prompts that i have given</div>
+  <p class="ctx"><b>Context:</b> Request for this document — a record of every prompt issued during the session.</p>
+</div>
+
+<div class="footer">
+  Generated locally from session transcript &middot; StreamCast Identity-Auth integration
+</div>
+
+</body>
+</html>

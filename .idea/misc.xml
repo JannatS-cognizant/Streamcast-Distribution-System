@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/Final Microservice/Service-Registry/pom.xml" />
         <option value="$PROJECT_DIR$/Final Microservice/Streamcast-Backend/pom.xml" />
         <option value="$PROJECT_DIR$/Final Microservice/usage-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Final Microservice/Identity-Auth-Service/pom.xml" />
       </list>
     </option>
   </component>

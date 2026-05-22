@@ -17,7 +17,14 @@ import java.util.List;
 @Component
 public class JwtAuthFilter implements GlobalFilter, Ordered {
 
-    private static final List<String> PUBLIC = List.of("/auth/login", "/auth/register");
+    private static final List<String> PUBLIC = List.of(
+            "/auth/login",
+            "/auth/register",
+            "/auth/verify",
+            "/auth/forgot-password",
+            "/auth/reset-password",
+            "/auth/forgot-username"
+    );
 
     @Value("${jwt.secret}")
     private String secret;
