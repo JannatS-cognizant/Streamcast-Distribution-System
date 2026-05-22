@@ -9,8 +9,11 @@ export type Role =
   | 'COMPLIANCE_OFFICER';
 
 export interface CurrentUser {
+  id?: number;
+  name?: string;
   email: string;
   role: Role;
+  emailVerified?: boolean;
   token: string;
   expiresAt: number;
 }
@@ -18,4 +21,24 @@ export interface CurrentUser {
 export interface LoginRequest {
   email: string;
   password: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  roleId: number;
+}
+
+export interface AuthUserDTO {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  emailVerified: boolean;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: AuthUserDTO;
 }

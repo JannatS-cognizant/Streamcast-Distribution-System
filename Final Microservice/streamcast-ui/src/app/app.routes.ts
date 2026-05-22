@@ -9,6 +9,31 @@ export const routes: Routes = [
       import('./features/auth/login.component').then(m => m.LoginComponent)
   },
   {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register.component').then(m => m.RegisterComponent)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./features/auth/forgot-password.component').then(m => m.ForgotPasswordComponent)
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/auth/reset-password.component').then(m => m.ResetPasswordComponent)
+  },
+  {
+    path: 'forgot-username',
+    loadComponent: () =>
+      import('./features/auth/forgot-username.component').then(m => m.ForgotUsernameComponent)
+  },
+  {
+    path: 'verify-email',
+    loadComponent: () =>
+      import('./features/auth/verify-email.component').then(m => m.VerifyEmailComponent)
+  },
+  {
     path: 'forbidden',
     loadComponent: () =>
       import('./features/misc/forbidden.component').then(m => m.ForbiddenComponent)
@@ -37,6 +62,18 @@ export const routes: Routes = [
           import('./features/catalog/title-detail.component').then(m => m.TitleDetailComponent)
       },
       {
+        path: 'assets',
+        canActivate: [roleGuard(['ADMIN', 'CONTENT_OWNER', 'RIGHTS_MANAGER', 'SCHEDULER'])],
+        loadComponent: () =>
+          import('./features/catalog/assets.component').then(m => m.AssetsComponent)
+      },
+      {
+        path: 'metadata',
+        canActivate: [roleGuard(['ADMIN', 'CONTENT_OWNER', 'RIGHTS_MANAGER'])],
+        loadComponent: () =>
+          import('./features/catalog/metadata.component').then(m => m.MetadataComponent)
+      },
+      {
         path: 'contracts',
         canActivate: [roleGuard(['ADMIN', 'RIGHTS_MANAGER', 'SCHEDULER', 'COMPLIANCE_OFFICER'])],
         loadComponent: () =>
@@ -59,6 +96,12 @@ export const routes: Routes = [
         canActivate: [roleGuard(['ADMIN', 'DISTRIBUTION_OPERATOR', 'PARTNER_ADMIN'])],
         loadComponent: () =>
           import('./features/manifests/manifests.component').then(m => m.ManifestsComponent)
+      },
+      {
+        path: 'receipts',
+        canActivate: [roleGuard(['ADMIN', 'DISTRIBUTION_OPERATOR', 'PARTNER_ADMIN'])],
+        loadComponent: () =>
+          import('./features/receipts/receipts.component').then(m => m.ReceiptsComponent)
       },
       {
         path: 'schedules',

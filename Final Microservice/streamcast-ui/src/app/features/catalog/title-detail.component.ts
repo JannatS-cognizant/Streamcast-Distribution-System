@@ -1,23 +1,29 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, Inject, Input, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../core/auth/auth.service';
 import { Asset, Metadata, Title } from '../../core/models/catalog';
-import { AssetsService } from './assets.service';
+import { AssetsService, AssetWrite, MetadataWrite } from './assets.service';
 import { TitlesService } from './titles.service';
+
+interface AssetDialogData { asset?: Asset; }
+interface MetadataDialogData { metadata?: Metadata; }
 
 @Component({
   selector: 'sc-asset-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule],
   template: `
-    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">Add asset</h2>
+    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">
+      {{ data.asset ? 'Edit asset' : 'Add asset' }}
+    </h2>
     <form [formGroup]="form" (ngSubmit)="save()" (submit)="$event.preventDefault()" novalidate>
       <mat-dialog-content class="!px-6 !pt-3 !pb-0">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -68,6 +74,17 @@ export class AssetFormDialog {
     duration: [60, [Validators.required, Validators.min(1)]],
     status: ['ACTIVE', Validators.required]
   });
+  constructor(@Inject(MAT_DIALOG_DATA) public data: AssetDialogData) {
+    if (data?.asset) {
+      this.form.patchValue({
+        assetType: data.asset.assetType,
+        fileURI: data.asset.fileURI,
+        checksum: data.asset.checksum,
+        duration: data.asset.duration,
+        status: data.asset.status
+      });
+    }
+  }
   save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
 }
 
@@ -76,7 +93,9 @@ export class AssetFormDialog {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule],
   template: `
-    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">Add metadata</h2>
+    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">
+      {{ data.metadata ? 'Edit metadata' : 'Add metadata' }}
+    </h2>
     <form [formGroup]="form" (ngSubmit)="save()" (submit)="$event.preventDefault()" novalidate>
       <mat-dialog-content class="!px-6 !pt-3 !pb-0">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -104,13 +123,18 @@ export class MetadataFormDialog {
     key: ['', Validators.required],
     value: ['', Validators.required]
   });
+  constructor(@Inject(MAT_DIALOG_DATA) public data: MetadataDialogData) {
+    if (data?.metadata) {
+      this.form.patchValue({ key: data.metadata.key, value: data.metadata.value });
+    }
+  }
   save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
 }
 
 @Component({
   selector: 'sc-title-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe, RouterLink, MatTabsModule, MatIconModule, MatProgressBarModule],
+  imports: [CommonModule, DatePipe, RouterLink, MatTabsModule, MatIconModule, MatProgressBarModule, MatTooltipModule],
   template: `
     <div class="animate-fade space-y-6">
       <!-- Breadcrumb -->
@@ -168,6 +192,7 @@ export class MetadataFormDialog {
                   <th class="px-5 py-3">File</th>
                   <th class="px-5 py-3">Duration</th>
                   <th class="px-5 py-3">Status</th>
+                  <th class="px-5 py-3 text-right" *ngIf="canEdit() || canDelete()">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -179,6 +204,14 @@ export class MetadataFormDialog {
                   <td class="px-5 py-3 text-ink-300">{{ a.duration }}s</td>
                   <td class="px-5 py-3">
                     <span class="sc-chip" [class.sc-chip-success]="a.status==='ACTIVE'" [class.sc-chip-muted]="a.status!=='ACTIVE'">{{ a.status }}</span>
+                  </td>
+                  <td class="px-5 py-3 text-right whitespace-nowrap" *ngIf="canEdit() || canDelete()">
+                    <button *ngIf="canEdit()" class="sc-icon-btn" (click)="editAsset(a)" matTooltip="Edit asset">
+                      <mat-icon class="!text-[18px]">edit</mat-icon>
+                    </button>
+                    <button *ngIf="canDelete()" class="sc-icon-btn hover:!text-brand-400" (click)="deleteAsset(a)" matTooltip="Delete asset">
+                      <mat-icon class="!text-[18px]">delete_outline</mat-icon>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -200,6 +233,7 @@ export class MetadataFormDialog {
                   <th class="px-5 py-3">ID</th>
                   <th class="px-5 py-3">Key</th>
                   <th class="px-5 py-3">Value</th>
+                  <th class="px-5 py-3 text-right" *ngIf="canEdit() || canDelete()">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,6 +242,14 @@ export class MetadataFormDialog {
                   <td class="px-5 py-3">{{ m.id }}</td>
                   <td class="px-5 py-3 font-medium">{{ m.key }}</td>
                   <td class="px-5 py-3 text-ink-300">{{ m.value }}</td>
+                  <td class="px-5 py-3 text-right whitespace-nowrap" *ngIf="canEdit() || canDelete()">
+                    <button *ngIf="canEdit()" class="sc-icon-btn" (click)="editMetadata(m)" matTooltip="Edit metadata">
+                      <mat-icon class="!text-[18px]">edit</mat-icon>
+                    </button>
+                    <button *ngIf="canDelete()" class="sc-icon-btn hover:!text-brand-400" (click)="deleteMetadata(m)" matTooltip="Delete metadata">
+                      <mat-icon class="!text-[18px]">delete_outline</mat-icon>
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -231,13 +273,14 @@ export class TitleDetailComponent implements OnInit {
   assets = signal<Asset[]>([]);
   metadata = signal<Metadata[]>([]);
 
-  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN','CONTENT_OWNER']));
+  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN', 'CONTENT_OWNER']));
+  canDelete = computed(() => this.auth.hasAnyRole(['ADMIN']));
   banner = computed(() => {
     const t = this.title();
     if (!t) return 'linear-gradient(140deg, #1c1e29, #0f1015)';
     const palettes = [
-      ['#7f1d3a','#1c1e29'], ['#0c4a6e','#0f1015'], ['#581c87','#0f1015'],
-      ['#065f46','#0f1015'], ['#9a3412','#0f1015'], ['#1e1b4b','#15161e']
+      ['#7f1d3a', '#1c1e29'], ['#0c4a6e', '#0f1015'], ['#581c87', '#0f1015'],
+      ['#065f46', '#0f1015'], ['#9a3412', '#0f1015'], ['#1e1b4b', '#15161e']
     ];
     const seed = (t.id ?? t.name?.length ?? 0) % palettes.length;
     return `linear-gradient(140deg, ${palettes[seed][0]} 0%, ${palettes[seed][1]} 100%)`;
@@ -246,31 +289,78 @@ export class TitleDetailComponent implements OnInit {
   ngOnInit(): void {
     const tid = Number(this.id);
     this.titles.get(tid).subscribe(t => this.title.set(t));
+    this.refreshAssets(tid);
+    this.refreshMetadata(tid);
+  }
+
+  private refreshAssets(tid: number): void {
     this.assetsApi.listAssets(tid).subscribe(a => this.assets.set(a));
+  }
+  private refreshMetadata(tid: number): void {
     this.assetsApi.listMetadata(tid).subscribe(m => this.metadata.set(m));
   }
 
   addAsset(): void {
-    this.dialog.open(AssetFormDialog, { width: '640px', panelClass: 'sc-dialog' })
-      .afterClosed().subscribe(v => {
+    this.dialog.open(AssetFormDialog, { width: '640px', panelClass: 'sc-dialog', data: {} })
+      .afterClosed().subscribe((v: AssetWrite | undefined) => {
         if (!v) return;
         this.assetsApi.createAsset(Number(this.id), v).subscribe({
-          next: () => { this.snack.open('Asset added', 'OK', { duration: 2500 });
-                        this.assetsApi.listAssets(Number(this.id)).subscribe(a => this.assets.set(a)); },
+          next: () => { this.snack.open('Asset added', 'OK', { duration: 2500 }); this.refreshAssets(Number(this.id)); },
           error: err => this.snack.open(err?.error?.message ?? 'Create failed', 'OK', { duration: 3000 })
         });
       });
   }
 
+  editAsset(a: Asset): void {
+    if (!a.id) return;
+    this.dialog.open(AssetFormDialog, { width: '640px', panelClass: 'sc-dialog', data: { asset: a } })
+      .afterClosed().subscribe((v: AssetWrite | undefined) => {
+        if (!v) return;
+        this.assetsApi.updateAsset(a.id!, v).subscribe({
+          next: () => { this.snack.open('Asset updated', 'OK', { duration: 2500 }); this.refreshAssets(Number(this.id)); },
+          error: err => this.snack.open(err?.error?.message ?? 'Update failed', 'OK', { duration: 3000 })
+        });
+      });
+  }
+
+  deleteAsset(a: Asset): void {
+    if (!a.id) return;
+    if (!confirm(`Delete asset #${a.id}?`)) return;
+    this.assetsApi.deleteAsset(a.id).subscribe({
+      next: () => { this.snack.open('Asset deleted', 'OK', { duration: 2500 }); this.refreshAssets(Number(this.id)); },
+      error: err => this.snack.open(err?.error?.message ?? 'Delete failed', 'OK', { duration: 3000 })
+    });
+  }
+
   addMetadata(): void {
-    this.dialog.open(MetadataFormDialog, { width: '520px', panelClass: 'sc-dialog' })
-      .afterClosed().subscribe(v => {
+    this.dialog.open(MetadataFormDialog, { width: '520px', panelClass: 'sc-dialog', data: {} })
+      .afterClosed().subscribe((v: MetadataWrite | undefined) => {
         if (!v) return;
         this.assetsApi.createMetadata(Number(this.id), v).subscribe({
-          next: () => { this.snack.open('Metadata added', 'OK', { duration: 2500 });
-                        this.assetsApi.listMetadata(Number(this.id)).subscribe(m => this.metadata.set(m)); },
+          next: () => { this.snack.open('Metadata added', 'OK', { duration: 2500 }); this.refreshMetadata(Number(this.id)); },
           error: err => this.snack.open(err?.error?.message ?? 'Create failed', 'OK', { duration: 3000 })
         });
       });
+  }
+
+  editMetadata(m: Metadata): void {
+    if (!m.id) return;
+    this.dialog.open(MetadataFormDialog, { width: '520px', panelClass: 'sc-dialog', data: { metadata: m } })
+      .afterClosed().subscribe((v: MetadataWrite | undefined) => {
+        if (!v) return;
+        this.assetsApi.updateMetadata(m.id!, v).subscribe({
+          next: () => { this.snack.open('Metadata updated', 'OK', { duration: 2500 }); this.refreshMetadata(Number(this.id)); },
+          error: err => this.snack.open(err?.error?.message ?? 'Update failed', 'OK', { duration: 3000 })
+        });
+      });
+  }
+
+  deleteMetadata(m: Metadata): void {
+    if (!m.id) return;
+    if (!confirm(`Delete metadata "${m.key}"?`)) return;
+    this.assetsApi.deleteMetadata(m.id).subscribe({
+      next: () => { this.snack.open('Metadata deleted', 'OK', { duration: 2500 }); this.refreshMetadata(Number(this.id)); },
+      error: err => this.snack.open(err?.error?.message ?? 'Delete failed', 'OK', { duration: 3000 })
+    });
   }
 }

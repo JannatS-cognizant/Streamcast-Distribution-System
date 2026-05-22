@@ -13,9 +13,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
     : req;
 
+  // Public auth endpoints (login/register/forgot/reset/verify) should not
+  // trigger an auto-logout on 4xx — there is no session to invalidate yet.
+  const isPublicAuthCall = /\/auth\/(login|register|verify|forgot-password|reset-password|forgot-username)\b/
+    .test(req.url);
+
   return next(cloned).pipe(
     catchError(err => {
-      if (err?.status === 401) {
+      if (err?.status === 401 && !isPublicAuthCall) {
         auth.logout();
         router.navigate(['/login']);
       }

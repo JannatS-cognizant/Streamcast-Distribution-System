@@ -19,7 +19,11 @@ const SECTIONS: NavSection[] = [
   ]},
   { title: 'Catalog', items: [
     { path: '/titles', label: 'Titles', icon: 'movie',
-      roles: ['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'] }
+      roles: ['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'] },
+    { path: '/assets', label: 'Assets', icon: 'video_library',
+      roles: ['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER','SCHEDULER'] },
+    { path: '/metadata', label: 'Metadata', icon: 'sell',
+      roles: ['ADMIN','CONTENT_OWNER','RIGHTS_MANAGER'] }
   ]},
   { title: 'Rights', items: [
     { path: '/contracts', label: 'Contracts', icon: 'description',
@@ -31,6 +35,8 @@ const SECTIONS: NavSection[] = [
     { path: '/partners', label: 'Partners', icon: 'handshake',
       roles: ['ADMIN','DISTRIBUTION_OPERATOR','PARTNER_ADMIN','RIGHTS_MANAGER'] },
     { path: '/manifests', label: 'Manifests', icon: 'local_shipping',
+      roles: ['ADMIN','DISTRIBUTION_OPERATOR','PARTNER_ADMIN'] },
+    { path: '/receipts', label: 'Receipts', icon: 'receipt_long',
       roles: ['ADMIN','DISTRIBUTION_OPERATOR','PARTNER_ADMIN'] }
   ]},
   { title: 'Scheduling', items: [

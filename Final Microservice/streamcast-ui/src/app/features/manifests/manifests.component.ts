@@ -5,8 +5,9 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../core/auth/auth.service';
-import { Manifest } from '../../core/models/manifest';
+import { Attempt, Manifest, Receipt } from '../../core/models/manifest';
 import { ManifestsService } from './manifests.service';
 
 @Component({
@@ -62,9 +63,93 @@ export class ManifestFormDialog {
 }
 
 @Component({
+  selector: 'sc-attempt-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIconModule],
+  template: `
+    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">Record delivery attempt</h2>
+    <p class="text-sm text-ink-300 px-6 pt-1 pb-3">Log the outcome of pushing this manifest to its partner.</p>
+    <form [formGroup]="form" (ngSubmit)="save()" (submit)="$event.preventDefault()" novalidate>
+      <mat-dialog-content class="!px-6 !pt-2 !pb-0">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sc-field">
+            <label class="sc-label">Result</label>
+            <select formControlName="result" class="sc-input">
+              <option value="SUCCESS">Success</option>
+              <option value="FAILED">Failed</option>
+            </select>
+          </div>
+          <div class="sc-field sm:col-span-2">
+            <label class="sc-label">Details</label>
+            <textarea rows="3" formControlName="details" class="sc-input"
+                      placeholder="e.g. Uploaded 4 files (5.4 GB). Acknowledged by partner SFTP."></textarea>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="!px-6 !pt-5 !pb-6 !justify-end !gap-2">
+        <button type="button" class="sc-btn-ghost" (click)="ref.close()">Cancel</button>
+        <button type="submit" class="sc-btn-primary" [disabled]="form.invalid">
+          <mat-icon class="!text-[18px] !w-5 !h-5">check</mat-icon> Record
+        </button>
+      </mat-dialog-actions>
+    </form>
+  `
+})
+export class AttemptFormDialog {
+  ref = inject(MatDialogRef<AttemptFormDialog>);
+  private fb = inject(FormBuilder);
+  form = this.fb.nonNullable.group({
+    result: ['SUCCESS', Validators.required],
+    details: ['', [Validators.required, Validators.minLength(3)]]
+  });
+  save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
+}
+
+@Component({
+  selector: 'sc-receipt-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIconModule],
+  template: `
+    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">Record partner receipt</h2>
+    <p class="text-sm text-ink-300 px-6 pt-1 pb-3">Capture the partner's acknowledgement of delivery.</p>
+    <form [formGroup]="form" (ngSubmit)="save()" (submit)="$event.preventDefault()" novalidate>
+      <mat-dialog-content class="!px-6 !pt-2 !pb-0">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sc-field">
+            <label class="sc-label">Received by</label>
+            <input formControlName="receivedBy" class="sc-input"
+                   placeholder="ops@partner.com" />
+          </div>
+          <div class="sc-field">
+            <label class="sc-label">Receipt URI</label>
+            <input formControlName="receiptURI" class="sc-input"
+                   placeholder="s3://bucket/receipts/m1.pdf" />
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="!px-6 !pt-5 !pb-6 !justify-end !gap-2">
+        <button type="button" class="sc-btn-ghost" (click)="ref.close()">Cancel</button>
+        <button type="submit" class="sc-btn-primary" [disabled]="form.invalid">
+          <mat-icon class="!text-[18px] !w-5 !h-5">check</mat-icon> Record
+        </button>
+      </mat-dialog-actions>
+    </form>
+  `
+})
+export class ReceiptFormDialog {
+  ref = inject(MatDialogRef<ReceiptFormDialog>);
+  private fb = inject(FormBuilder);
+  form = this.fb.nonNullable.group({
+    receivedBy: ['', [Validators.required, Validators.minLength(3)]],
+    receiptURI: ['', [Validators.required, Validators.minLength(3)]]
+  });
+  save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
+}
+
+@Component({
   selector: 'sc-manifests',
   standalone: true,
-  imports: [CommonModule, DatePipe, MatIconModule, MatProgressBarModule],
+  imports: [CommonModule, DatePipe, MatIconModule, MatProgressBarModule, MatTooltipModule],
   template: `
     <div class="animate-fade space-y-6">
       <div class="flex items-end justify-between gap-4 flex-wrap">
@@ -90,6 +175,7 @@ export class ManifestFormDialog {
                 <th class="px-5 py-3">Destination</th>
                 <th class="px-5 py-3">Created</th>
                 <th class="px-5 py-3">Status</th>
+                <th class="px-5 py-3 text-right" *ngIf="canEdit() || canReceipt()">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -108,6 +194,16 @@ export class ManifestFormDialog {
                     {{ r.status }}
                   </span>
                 </td>
+                <td class="px-5 py-3 text-right whitespace-nowrap" *ngIf="canEdit() || canReceipt()">
+                  <button *ngIf="canEdit()" class="sc-icon-btn"
+                          (click)="recordAttempt(r)" matTooltip="Record delivery attempt">
+                    <mat-icon class="!text-[18px]">flaky</mat-icon>
+                  </button>
+                  <button *ngIf="canReceipt()" class="sc-icon-btn hover:!text-emerald-400"
+                          (click)="recordReceipt(r)" matTooltip="Record partner receipt">
+                    <mat-icon class="!text-[18px]">receipt_long</mat-icon>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -125,7 +221,8 @@ export class ManifestsComponent {
 
   rows = signal<Manifest[]>([]);
   loading = signal(false);
-  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN','DISTRIBUTION_OPERATOR']));
+  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN', 'DISTRIBUTION_OPERATOR']));
+  canReceipt = computed(() => this.auth.hasAnyRole(['ADMIN', 'DISTRIBUTION_OPERATOR', 'PARTNER_ADMIN']));
 
   constructor() { this.refresh(); }
 
@@ -144,6 +241,30 @@ export class ManifestsComponent {
         this.api.create(value).subscribe({
           next: () => { this.snack.open('Manifest created', 'OK', { duration: 2500 }); this.refresh(); },
           error: err => this.snack.open(err?.error?.message ?? 'Create failed', 'OK', { duration: 3000 })
+        });
+      });
+  }
+
+  recordAttempt(m: Manifest): void {
+    if (!m.id) return;
+    this.dialog.open(AttemptFormDialog, { width: '560px' })
+      .afterClosed().subscribe((value: Attempt | undefined) => {
+        if (!value) return;
+        this.api.recordAttempt(m.id!, value).subscribe({
+          next: () => { this.snack.open('Attempt recorded', 'OK', { duration: 2500 }); this.refresh(); },
+          error: err => this.snack.open(err?.error?.message ?? 'Failed to record attempt', 'OK', { duration: 3000 })
+        });
+      });
+  }
+
+  recordReceipt(m: Manifest): void {
+    if (!m.id) return;
+    this.dialog.open(ReceiptFormDialog, { width: '560px' })
+      .afterClosed().subscribe((value: Receipt | undefined) => {
+        if (!value) return;
+        this.api.recordReceipt(m.id!, value).subscribe({
+          next: () => { this.snack.open('Receipt recorded', 'OK', { duration: 2500 }); this.refresh(); },
+          error: err => this.snack.open(err?.error?.message ?? 'Failed to record receipt', 'OK', { duration: 3000 })
         });
       });
   }
