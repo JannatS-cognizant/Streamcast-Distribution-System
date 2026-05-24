@@ -39,7 +39,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setPassword(encoder.encode(dto.getPassword()));
         user.setRole(role);
-        user.setEmailVerified(false);
+        // Admin-created users skip both gates so the admin can sign someone in immediately.
+        user.setEmailVerified(true);
+        user.setApproved(true);
 
         return toResponse(userRepo.save(user));
     }
@@ -79,6 +81,13 @@ public class UserServiceImpl implements UserService {
         userRepo.delete(findOrThrow(id));
     }
 
+    @Override
+    public UserResponseDTO setApproved(Long id, boolean approved) {
+        User user = findOrThrow(id);
+        user.setApproved(approved);
+        return toResponse(userRepo.save(user));
+    }
+
     // ── helpers ───────────────────────────────────────────
     private User findOrThrow(Long id) {
         return userRepo.findById(id)
@@ -92,6 +101,7 @@ public class UserServiceImpl implements UserService {
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole().getName());
         dto.setEmailVerified(user.isEmailVerified());
+        dto.setApproved(user.isApproved());
         return dto;
     }
 }

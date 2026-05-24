@@ -51,4 +51,16 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/approve")
+    public ResponseEntity<UserResponseDTO> approveUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.setApproved(id, true));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/reject")
+    public ResponseEntity<UserResponseDTO> rejectUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.setApproved(id, false));
+    }
 }

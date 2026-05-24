@@ -34,6 +34,12 @@ export class AuthService {
       .pipe(tap(res => this.persist(res)));
   }
 
+  adminLogin(req: LoginRequest): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${environment.apiBase}/auth/admin/login`, req)
+      .pipe(tap(res => this.persist(res)));
+  }
+
   register(req: RegisterRequest): Observable<AuthUserDTO> {
     return this.http.post<AuthUserDTO>(`${environment.apiBase}/auth/register`, req);
   }
@@ -70,9 +76,10 @@ export class AuthService {
   }
 
   logout(): void {
+    const wasAdmin = this._user()?.role === 'ADMIN';
     localStorage.removeItem(STORAGE_KEY);
     this._user.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate([wasAdmin ? '/admin/login' : '/login']);
   }
 
   hasAnyRole(roles: Role[]): boolean {

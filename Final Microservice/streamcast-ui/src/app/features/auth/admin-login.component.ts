@@ -7,16 +7,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
-  selector: 'sc-login',
+  selector: 'sc-admin-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink, MatIconModule, MatProgressSpinnerModule],
   template: `
     <div class="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-bg">
-      <!-- Cinematic OTT-style background -->
+      <!-- Admin background — cooler, more authoritative palette -->
       <div class="absolute inset-0">
         <div class="absolute inset-0 bg-grad-hero"></div>
-        <div class="absolute -top-32 -left-32 w-[42rem] h-[42rem] rounded-full bg-brand-600/25 blur-[120px]"></div>
-        <div class="absolute -bottom-40 -right-32 w-[42rem] h-[42rem] rounded-full bg-accent-500/20 blur-[120px]"></div>
+        <div class="absolute -top-32 -left-32 w-[42rem] h-[42rem] rounded-full bg-violet-600/30 blur-[120px]"></div>
+        <div class="absolute -bottom-40 -right-32 w-[42rem] h-[42rem] rounded-full bg-emerald-500/20 blur-[120px]"></div>
         <div class="absolute inset-0 opacity-[0.08]"
              style="background-image: linear-gradient(to right, #ffffff 1px, transparent 1px),
                                        linear-gradient(to bottom, #ffffff 1px, transparent 1px);
@@ -24,28 +24,36 @@ import { AuthService } from '../../core/auth/auth.service';
         <div class="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-bg/40"></div>
       </div>
 
-      <!-- Login card -->
+      <!-- Admin login card -->
       <div class="relative w-full max-w-md mx-4 animate-pop">
-        <div class="sc-glass p-8 sm:p-10">
-          <!-- Logo / title -->
+        <div class="sc-glass p-8 sm:p-10 border border-violet-500/30">
+          <!-- Admin shield -->
           <div class="flex flex-col items-center mb-8">
             <div class="relative">
-              <div class="absolute inset-0 rounded-2xl bg-grad-brand blur-xl opacity-60"></div>
-              <img src="/assets/logo.svg" alt="Streamcast"
-                   class="relative h-14 w-14 rounded-2xl shadow-card" />
+              <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500 to-emerald-500 blur-xl opacity-60"></div>
+              <div class="relative h-14 w-14 rounded-2xl shadow-card flex items-center justify-center
+                          bg-gradient-to-br from-violet-500 to-emerald-500">
+                <mat-icon class="!text-white !text-[28px] !w-7 !h-7">admin_panel_settings</mat-icon>
+              </div>
             </div>
-            <h1 class="mt-5 text-2xl font-semibold tracking-tight text-ink-100">Streamcast</h1>
-            <p class="mt-1 text-sm text-ink-300">Sign in to your console</p>
+            <h1 class="mt-5 text-2xl font-semibold tracking-tight text-ink-100">Admin Console</h1>
+            <p class="mt-1 text-sm text-ink-300">Restricted access · Administrators only</p>
+            <span class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                         bg-violet-500/15 border border-violet-500/30 text-violet-300 text-[11px]
+                         uppercase tracking-wider font-medium">
+              <mat-icon class="!text-[12px] !w-3 !h-3">verified_user</mat-icon>
+              Privileged
+            </span>
           </div>
 
           <form [formGroup]="form" (ngSubmit)="submit()"
                 (submit)="$event.preventDefault()" novalidate class="space-y-4">
 
             <div class="sc-field">
-              <label for="email" class="sc-label">Email</label>
+              <label for="email" class="sc-label">Administrator email</label>
               <input id="email" type="email" formControlName="email"
                      autocomplete="username"
-                     placeholder="you@company.com"
+                     placeholder="admin@company.com"
                      class="sc-input" />
             </div>
 
@@ -71,48 +79,30 @@ import { AuthService } from '../../core/auth/auth.service';
               <div>{{ error() }}</div>
             </div>
 
-            <button type="submit" class="sc-btn-primary !w-full !h-12"
+            <button type="submit"
+                    class="sc-btn-primary !w-full !h-12 !bg-gradient-to-r !from-violet-600 !to-emerald-600
+                           hover:!from-violet-500 hover:!to-emerald-500"
                     [disabled]="form.invalid || loading()">
               <ng-container *ngIf="!loading(); else spin">
-                <span>Sign in</span>
-                <mat-icon class="!text-[18px] !w-5 !h-5">arrow_forward</mat-icon>
+                <span>Enter admin console</span>
+                <mat-icon class="!text-[18px] !w-5 !h-5">shield</mat-icon>
               </ng-container>
               <ng-template #spin>
                 <mat-spinner diameter="22" color="accent"></mat-spinner>
               </ng-template>
             </button>
 
-            <div class="flex items-center justify-between text-xs text-ink-300 pt-1">
-              <a routerLink="/forgot-password" class="hover:text-brand-300 transition">Forgot password?</a>
-              <a routerLink="/forgot-username" class="hover:text-brand-300 transition">Forgot username?</a>
-            </div>
-
             <div class="text-center text-sm text-ink-300 pt-2">
-              New here?
-              <a routerLink="/register" class="text-brand-300 hover:text-brand-200 font-medium">Create an account</a>
+              Not an administrator?
+              <a routerLink="/login" class="text-violet-300 hover:text-violet-200 font-medium">Standard sign in</a>
             </div>
-
-            <div class="relative pt-4">
-              <div class="absolute inset-x-0 top-1/2 border-t border-border"></div>
-              <div class="relative flex justify-center">
-                <span class="px-3 bg-surface-1/0 text-[11px] uppercase tracking-wider text-ink-500">or</span>
-              </div>
-            </div>
-
-            <a routerLink="/admin/login"
-               class="flex items-center justify-center gap-2 w-full h-11 rounded-lg
-                      border border-violet-500/30 bg-violet-500/10 text-violet-200
-                      hover:bg-violet-500/15 hover:text-violet-100 transition text-sm font-medium">
-              <mat-icon class="!text-[18px] !w-5 !h-5">admin_panel_settings</mat-icon>
-              Sign in as administrator
-            </a>
           </form>
         </div>
       </div>
     </div>
   `
 })
-export class LoginComponent {
+export class AdminLoginComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
@@ -131,14 +121,13 @@ export class LoginComponent {
     this.loading.set(true);
     this.error.set(null);
 
-    this.auth.login(this.form.getRawValue()).subscribe({
+    this.auth.adminLogin(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigate(['/dashboard']);
       },
       error: err => {
         this.loading.set(false);
-        console.error('[login] error:', err);
         const serverMsg = err?.error?.message;
 
         if (err?.status === 0) {
@@ -146,13 +135,13 @@ export class LoginComponent {
         } else if (err?.status === 400 && serverMsg) {
           this.error.set(serverMsg);
         } else if (err?.status === 401 || err?.status === 403) {
-          this.error.set('Invalid email or password.');
+          this.error.set('Invalid credentials or account is not an administrator.');
         } else if (err?.status >= 500) {
           this.error.set(`Server error (${err.status}).`);
         } else if (err?.status) {
           this.error.set(`Request failed (${err.status})${serverMsg ? ': ' + serverMsg : ''}`);
         } else {
-          this.error.set('Login failed. Please try again.');
+          this.error.set('Admin login failed. Please try again.');
         }
       }
     });

@@ -55,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(encoder.encode(dto.getPassword()));
         user.setRole(role);
         user.setEmailVerified(false);
+        user.setApproved(false); // self-registrations require admin approval
 
         String token = UUID.randomUUID().toString();
         user.setEmailVerificationToken(token);
@@ -80,6 +81,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Please verify your email before logging in");
         }
 
+        if (!user.isApproved()) {
+            throw new BadRequestException("Account pending admin approval");
+        }
+
         if (!encoder.matches(req.getPassword(), user.getPassword())) {
             throw new BadRequestException("Invalid email or password");
         }
@@ -92,6 +97,23 @@ public class AuthServiceImpl implements AuthService {
         LoginResponseDTO response = new LoginResponseDTO();
         response.setToken(jwtUtil.generateToken(user.getEmail(), roleForToken));
         response.setUser(toUserResponse(user));
+        return response;
+    }
+
+    /**
+     * Admin-only login. Validates credentials and additionally enforces that the
+     * authenticated user holds the ADMIN role. Non-admin accounts are rejected
+     * even when their email/password are correct, so this endpoint can back a
+     * dedicated administrator console.
+     */
+    @Override
+    public LoginResponseDTO adminLogin(LoginRequest req) {
+        LoginResponseDTO response = login(req);
+        String role = response.getUser().getRole();
+        String normalised = role == null ? "" : role.toUpperCase().replace(" ", "_");
+        if (!"ADMIN".equals(normalised)) {
+            throw new BadRequestException("This account is not authorised for the admin console");
+        }
         return response;
     }
 
@@ -162,6 +184,7 @@ public class AuthServiceImpl implements AuthService {
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole().getName());
         dto.setEmailVerified(user.isEmailVerified());
+        dto.setApproved(user.isApproved());
         return dto;
     }
 }

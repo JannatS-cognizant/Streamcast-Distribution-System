@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../core/auth/auth.service';
 import { Role } from '../core/models/user';
+import { NotificationBellComponent } from './notification-bell.component';
 
 interface NavItem { path: string; label: string; icon: string; roles: Role[]; }
 interface NavSection { title: string; items: NavItem[]; }
@@ -49,6 +50,10 @@ const SECTIONS: NavSection[] = [
     { path: '/usage', label: 'Usage', icon: 'insights',
       roles: ['ADMIN','COMPLIANCE_OFFICER','SCHEDULER'] }
   ]},
+  { title: 'Compliance', items: [
+    { path: '/compliance', label: 'Checks', icon: 'fact_check',
+      roles: ['ADMIN','COMPLIANCE_OFFICER','LEGAL_OFFICER'] }
+  ]},
   { title: 'Administration', items: [
     { path: '/users', label: 'Users', icon: 'group', roles: ['ADMIN'] },
     { path: '/roles', label: 'Roles', icon: 'badge', roles: ['ADMIN'] }
@@ -60,7 +65,8 @@ const SECTIONS: NavSection[] = [
   standalone: true,
   imports: [
     CommonModule, RouterLink, RouterLinkActive, RouterOutlet,
-    MatIconModule, MatMenuModule, MatTooltipModule
+    MatIconModule, MatMenuModule, MatTooltipModule,
+    NotificationBellComponent
   ],
   template: `
     <div class="min-h-screen flex bg-bg text-ink-100">
@@ -113,10 +119,18 @@ const SECTIONS: NavSection[] = [
           <div class="text-sm text-ink-300 hidden sm:flex items-center gap-2">
             <span class="text-ink-100 font-semibold">Streamcast</span>
             <span class="text-ink-500">/</span>
-            <span>Console</span>
+            <span>{{ isAdmin() ? 'Admin Console' : 'Console' }}</span>
+            <span *ngIf="isAdmin()"
+                  class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+                         bg-violet-500/15 border border-violet-500/30 text-violet-300
+                         text-[10px] uppercase tracking-wider font-medium">
+              <mat-icon class="!text-[12px] !w-3 !h-3">shield</mat-icon>
+              Admin
+            </span>
           </div>
 
           <div class="ml-auto flex items-center gap-2">
+            <sc-notification-bell *ngIf="canSeeNotifications()"></sc-notification-bell>
             <span class="sc-chip-brand hidden sm:inline-flex">
               <mat-icon class="!text-[14px] !w-3.5 !h-3.5">verified_user</mat-icon>
               {{ role() }}
@@ -184,6 +198,10 @@ export class ShellComponent {
 
   email = computed(() => this.auth.user()?.email ?? '');
   role  = computed(() => this.auth.role() ?? '');
+  isAdmin = computed(() => this.auth.role() === 'ADMIN');
+  canSeeNotifications = computed(() => this.auth.hasAnyRole([
+    'ADMIN', 'RIGHTS_MANAGER', 'SCHEDULER', 'COMPLIANCE_OFFICER'
+  ]));
 
   visibleSections = computed(() => {
     const r = this.auth.role();

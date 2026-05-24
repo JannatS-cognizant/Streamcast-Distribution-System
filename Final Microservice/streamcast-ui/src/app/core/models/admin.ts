@@ -9,6 +9,7 @@ export interface UserDef {
   email: string;
   role: RoleDef | null;
   emailVerified?: boolean;
+  approved?: boolean;
 }
 
 export interface UserCreate {

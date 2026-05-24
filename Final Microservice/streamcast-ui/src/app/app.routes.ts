@@ -9,6 +9,11 @@ export const routes: Routes = [
       import('./features/auth/login.component').then(m => m.LoginComponent)
   },
   {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('./features/auth/admin-login.component').then(m => m.AdminLoginComponent)
+  },
+  {
     path: 'register',
     loadComponent: () =>
       import('./features/auth/register.component').then(m => m.RegisterComponent)
@@ -120,6 +125,12 @@ export const routes: Routes = [
         canActivate: [roleGuard(['ADMIN', 'COMPLIANCE_OFFICER', 'SCHEDULER'])],
         loadComponent: () =>
           import('./features/usage/usage.component').then(m => m.UsageComponent)
+      },
+      {
+        path: 'compliance',
+        canActivate: [roleGuard(['ADMIN', 'COMPLIANCE_OFFICER', 'LEGAL_OFFICER'])],
+        loadComponent: () =>
+          import('./features/compliance/compliance.component').then(m => m.ComplianceComponent)
       },
       {
         path: 'users',

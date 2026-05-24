@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, Inject, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -65,9 +65,16 @@ export class UserFormDialog {
           <div class="sc-page-title mt-1">Users</div>
           <div class="sc-page-sub">Manage who can sign in to the console.</div>
         </div>
-        <button class="sc-btn-primary" (click)="openCreate()">
-          <mat-icon class="!text-[18px] !w-5 !h-5">add</mat-icon> New user
-        </button>
+        <div class="flex items-center gap-2">
+          <button class="sc-btn-ghost" (click)="filter.set(filter()==='PENDING' ? 'ALL' : 'PENDING')">
+            <mat-icon class="!text-[18px] !w-5 !h-5">{{ filter()==='PENDING' ? 'filter_alt_off' : 'pending_actions' }}</mat-icon>
+            {{ filter()==='PENDING' ? 'Show all' : 'Pending only' }}
+            <span *ngIf="pendingCount() > 0" class="ml-2 sc-chip-brand !text-[10px] !py-0">{{ pendingCount() }}</span>
+          </button>
+          <button class="sc-btn-primary" (click)="openCreate()">
+            <mat-icon class="!text-[18px] !w-5 !h-5">add</mat-icon> New user
+          </button>
+        </div>
       </div>
 
       <div class="sc-card overflow-hidden">
@@ -80,16 +87,36 @@ export class UserFormDialog {
                 <th class="px-5 py-3">Name</th>
                 <th class="px-5 py-3">Email</th>
                 <th class="px-5 py-3">Role</th>
+                <th class="px-5 py-3">Status</th>
                 <th class="px-5 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let r of rows()" class="border-b border-border hover:bg-surface-3 transition">
+              <tr *ngFor="let r of visibleRows()" class="border-b border-border hover:bg-surface-3 transition">
                 <td class="px-5 py-3 font-medium">{{ r.id }}</td>
                 <td class="px-5 py-3">{{ r.name }}</td>
                 <td class="px-5 py-3 text-ink-300">{{ r.email }}</td>
                 <td class="px-5 py-3"><span class="sc-chip-brand">{{ r.role?.name || '—' }}</span></td>
+                <td class="px-5 py-3">
+                  <span class="sc-chip"
+                        [class.sc-chip-success]="r.approved"
+                        [class.sc-chip-danger]="!r.approved">
+                    {{ r.approved ? 'Approved' : 'Pending' }}
+                  </span>
+                </td>
                 <td class="px-5 py-3 text-right">
+                  <button *ngIf="!r.approved"
+                          class="sc-btn-ghost !h-8 !px-2 !text-emerald-300 hover:!text-emerald-200"
+                          (click)="approve(r)" matTooltip="Approve user">
+                    <mat-icon class="!text-[16px] !w-4 !h-4">check_circle</mat-icon>
+                    Approve
+                  </button>
+                  <button *ngIf="r.approved"
+                          class="sc-btn-ghost !h-8 !px-2"
+                          (click)="reject(r)" matTooltip="Revoke approval">
+                    <mat-icon class="!text-[16px] !w-4 !h-4">block</mat-icon>
+                    Revoke
+                  </button>
                   <button class="sc-icon-btn hover:!text-brand-400" (click)="del(r)" matTooltip="Delete user">
                     <mat-icon class="!text-[18px]">delete_outline</mat-icon>
                   </button>
@@ -98,7 +125,9 @@ export class UserFormDialog {
             </tbody>
           </table>
         </div>
-        <div *ngIf="!loading() && rows().length === 0" class="py-10 text-center text-ink-300">No users.</div>
+        <div *ngIf="!loading() && visibleRows().length === 0" class="py-10 text-center text-ink-300">
+          {{ filter()==='PENDING' ? 'No users awaiting approval.' : 'No users.' }}
+        </div>
       </div>
     </div>
   `
@@ -111,6 +140,14 @@ export class UsersComponent {
   rows = signal<UserDef[]>([]);
   roles = signal<RoleDef[]>([]);
   loading = signal(false);
+  filter = signal<'ALL' | 'PENDING'>('ALL');
+
+  pendingCount = computed(() => this.rows().filter(u => u.approved === false).length);
+  visibleRows = computed(() =>
+    this.filter() === 'PENDING'
+      ? this.rows().filter(u => u.approved === false)
+      : this.rows()
+  );
 
   constructor() { this.refresh(); }
 
@@ -138,6 +175,21 @@ export class UsersComponent {
     this.admin.deleteUser(u.id).subscribe({
       next: () => { this.snack.open('User deleted', 'OK', { duration: 2500 }); this.refresh(); },
       error: () => this.snack.open('Delete failed', 'OK', { duration: 3000 })
+    });
+  }
+
+  approve(u: UserDef): void {
+    this.admin.approveUser(u.id).subscribe({
+      next: () => { this.snack.open(`Approved ${u.email}`, 'OK', { duration: 2500 }); this.refresh(); },
+      error: err => this.snack.open(err?.error?.message ?? 'Approve failed', 'OK', { duration: 3000 })
+    });
+  }
+
+  reject(u: UserDef): void {
+    if (!confirm(`Revoke access for "${u.email}"? They will not be able to sign in.`)) return;
+    this.admin.rejectUser(u.id).subscribe({
+      next: () => { this.snack.open(`Revoked ${u.email}`, 'OK', { duration: 2500 }); this.refresh(); },
+      error: err => this.snack.open(err?.error?.message ?? 'Revoke failed', 'OK', { duration: 3000 })
     });
   }
 }

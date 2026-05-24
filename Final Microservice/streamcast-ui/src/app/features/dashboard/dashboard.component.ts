@@ -36,6 +36,9 @@ const TILES: Tile[] = [
   { title: 'Usage',      description: 'Views and revenue insights',
     icon: 'insights',       link: '/usage',     accent: 'brand',
     roles: ['ADMIN','COMPLIANCE_OFFICER','SCHEDULER'] },
+  { title: 'Compliance', description: 'Schedule-vs-contract checks',
+    icon: 'fact_check',     link: '/compliance', accent: 'amber',
+    roles: ['ADMIN','COMPLIANCE_OFFICER','LEGAL_OFFICER'] },
   { title: 'Users',      description: 'Manage console access',
     icon: 'group',          link: '/users',     accent: 'accent',
     roles: ['ADMIN'] },
@@ -145,7 +148,7 @@ export class DashboardComponent {
   });
 
   stats = computed(() => [
-    { label: 'Services',  value: 9 },
+    { label: 'Services',  value: 10 },
     { label: 'Roles',     value: 8 },
     { label: 'Modules',   value: this.tiles().length },
     { label: 'Status',    value: 'OK' }

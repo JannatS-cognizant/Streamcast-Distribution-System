@@ -16,6 +16,12 @@ export class AdminService {
   deleteUser(id: number): Observable<string> {
     return this.http.delete(`${this.api}/users/${id}`, { responseType: 'text' });
   }
+  approveUser(id: number): Observable<UserDef> {
+    return this.http.patch<UserDef>(`${this.api}/users/${id}/approve`, {});
+  }
+  rejectUser(id: number): Observable<UserDef> {
+    return this.http.patch<UserDef>(`${this.api}/users/${id}/reject`, {});
+  }
 
   listRoles(): Observable<RoleDef[]>    { return this.http.get<RoleDef[]>(`${this.api}/roles`); }
   createRole(name: string): Observable<RoleDef> {
