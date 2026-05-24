@@ -3,19 +3,31 @@ import com.cts.identityauth.dto.request.LoginRequest;
 import com.cts.identityauth.dto.request.UserRequestDTO;
 import com.cts.identityauth.dto.response.LoginResponseDTO;
 import com.cts.identityauth.dto.response.UserResponseDTO;
+import com.cts.identityauth.entity.Role;
 import com.cts.identityauth.service.AuthService;
+import com.cts.identityauth.service.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
+    private final RoleService roleService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, RoleService roleService) {
         this.authService = authService;
+        this.roleService = roleService;
+    }
+
+    /** GET /auth/roles — public list of role names/ids for the registration form. */
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRolesForRegistration() {
+        return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     /** POST /auth/register */
@@ -28,6 +40,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    /** POST /auth/admin/login → returns JWT, ADMIN role required */
+    @PostMapping("/admin/login")
+    public ResponseEntity<LoginResponseDTO> adminLogin(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.adminLogin(request));
     }
 
     /** GET /auth/verify?token= */

@@ -19,7 +19,9 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private static final List<String> PUBLIC = List.of(
             "/auth/login",
+            "/auth/admin/login",
             "/auth/register",
+            "/auth/roles",
             "/auth/verify",
             "/auth/forgot-password",
             "/auth/reset-password",

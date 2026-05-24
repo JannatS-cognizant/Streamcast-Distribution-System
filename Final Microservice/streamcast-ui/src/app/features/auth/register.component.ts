@@ -131,8 +131,9 @@ export class RegisterComponent {
   }
 
   private loadRoles(): void {
-    // Roles endpoint is admin-only; we offer a fallback static list when not allowed.
-    this.http.get<RoleDef[]>(`${environment.apiBase}/roles`).subscribe({
+    // Public read-only role list scoped for the registration form. /roles (admin-only)
+    // would 401 here because the user isn't logged in yet.
+    this.http.get<RoleDef[]>(`${environment.apiBase}/auth/roles`).subscribe({
       next: list => this.roles.set(list),
       error: () => {
         this.rolesError.set('Could not load roles from server — using defaults.');
@@ -165,8 +166,10 @@ export class RegisterComponent {
     }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.success.set('Account created. Please check your email to verify before signing in.');
-        setTimeout(() => this.router.navigate(['/login']), 2500);
+        this.success.set(
+          'Account created. Verify your email, then wait for an administrator to approve your account before signing in.'
+        );
+        setTimeout(() => this.router.navigate(['/login']), 4000);
       },
       error: err => {
         this.loading.set(false);
