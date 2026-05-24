@@ -7,14 +7,17 @@ export interface UserDef {
   id: number;
   name: string;
   email: string;
-  role: RoleDef | null;
+  username:string;
+  role: string | null;
+  requestedRole: string | null;
   emailVerified?: boolean;
-  approved?: boolean;
+  pending: boolean;
 }
 
 export interface UserCreate {
   name: string;
   email: string;
+  username:string;
   password: string;
   roleId: number;
 }

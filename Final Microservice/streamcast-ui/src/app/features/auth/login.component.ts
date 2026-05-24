@@ -42,10 +42,10 @@ import { AuthService } from '../../core/auth/auth.service';
                 (submit)="$event.preventDefault()" novalidate class="space-y-4">
 
             <div class="sc-field">
-              <label for="email" class="sc-label">Email</label>
+              <label for="email" class="sc-label">Email or username</label>
               <input id="email" type="email" formControlName="email"
                      autocomplete="username"
-                     placeholder="you@company.com"
+                     placeholder="Email or username"
                      class="sc-input" />
             </div>
 
@@ -122,7 +122,7 @@ export class LoginComponent {
   error = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required]],
     password: ['', Validators.required]
   });
 

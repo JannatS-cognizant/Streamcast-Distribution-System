@@ -137,9 +137,9 @@ export class DashboardComponent {
   private auth = inject(AuthService);
 
   name = computed(() => {
-    const email = this.auth.user()?.email ?? '';
-    return email ? email.split('@')[0] : 'there';
-  });
+  const u = this.auth.user();
+  return u?.name || (u?.email ? u.email.split('@')[0] : 'there');
+});
   role = computed(() => this.auth.role());
 
   tiles = computed(() => {

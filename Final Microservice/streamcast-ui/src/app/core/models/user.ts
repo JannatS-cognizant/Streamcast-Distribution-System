@@ -26,16 +26,21 @@ export interface LoginRequest {
 export interface RegisterRequest {
   name: string;
   email: string;
+  username: string;
   password: string;
   roleId: number;
+  requestedRole: number;
 }
 
 export interface AuthUserDTO {
   id: number;
   name: string;
   email: string;
-  role: string;
+  username: string;
+  role: string | null;
+  requestedRole: string | null;
   emailVerified: boolean;
+  pending: boolean;
 }
 
 export interface LoginResponse {

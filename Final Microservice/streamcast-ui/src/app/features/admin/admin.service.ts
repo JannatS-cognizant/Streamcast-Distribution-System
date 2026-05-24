@@ -9,18 +9,21 @@ export class AdminService {
   private http = inject(HttpClient);
   private api = environment.apiBase;
 
-  listUsers(): Observable<UserDef[]>    { return this.http.get<UserDef[]>(`${this.api}/users`); }
+  listUsers(): Observable<UserDef[]>    { return this.http.get<UserDef[]>(`${this.api}/users/active`); }
   createUser(u: UserCreate): Observable<UserDef> {
     return this.http.post<UserDef>(`${this.api}/users`, u);
   }
   deleteUser(id: number): Observable<string> {
     return this.http.delete(`${this.api}/users/${id}`, { responseType: 'text' });
   }
+  listPendingUsers(): Observable<UserDef[]>{
+   return this.http.get<UserDef[]>(`${this.api}/users/pending`);
+  }
   approveUser(id: number): Observable<UserDef> {
-    return this.http.patch<UserDef>(`${this.api}/users/${id}/approve`, {});
+    return this.http.put<UserDef>(`${this.api}/users/${id}/approve`, {});
   }
   rejectUser(id: number): Observable<UserDef> {
-    return this.http.patch<UserDef>(`${this.api}/users/${id}/reject`, {});
+    return this.http.delete(`${this.api}/users/${id}/reject`, {responseType: 'text'});
   }
 
   listRoles(): Observable<RoleDef[]>    { return this.http.get<RoleDef[]>(`${this.api}/roles`); }

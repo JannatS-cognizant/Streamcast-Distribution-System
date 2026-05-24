@@ -21,6 +21,8 @@ import { AdminService } from './admin.service';
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="sc-field sm:col-span-2"><label class="sc-label">Full name</label>
             <input formControlName="name" class="sc-input" /></div>
+          <div class="sc-field"><label class="sc-label">Username</label>
+            <input formControlName="username" class="sc-input" /></div>
           <div class="sc-field"><label class="sc-label">Email</label>
             <input type="email" formControlName="email" class="sc-input" /></div>
           <div class="sc-field"><label class="sc-label">Temporary password</label>
@@ -46,6 +48,7 @@ export class UserFormDialog {
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    username: ['', Validators.required],
     password: ['', [Validators.required, Validators.minLength(6)]],
     roleId: [1, Validators.required]
   });
@@ -86,6 +89,9 @@ export class UserFormDialog {
                 <th class="px-5 py-3">ID</th>
                 <th class="px-5 py-3">Name</th>
                 <th class="px-5 py-3">Email</th>
+		<th class="px-5 py-3">Username</th>
+		<th class="px-5 py-3">Requested role</th>
+		<th class="px-5 py-3">Approved role</th>
                 <th class="px-5 py-3">Role</th>
                 <th class="px-5 py-3">Status</th>
                 <th class="px-5 py-3 text-right">Actions</th>
@@ -96,22 +102,25 @@ export class UserFormDialog {
                 <td class="px-5 py-3 font-medium">{{ r.id }}</td>
                 <td class="px-5 py-3">{{ r.name }}</td>
                 <td class="px-5 py-3 text-ink-300">{{ r.email }}</td>
-                <td class="px-5 py-3"><span class="sc-chip-brand">{{ r.role?.name || '—' }}</span></td>
+
+                <td class="px-5 py-3"><span class="sc-chip-brand">{{ r.username }}
+{{ r.requestedRole || '—' }}
+{{ r.role || '—' }}</span></td>
                 <td class="px-5 py-3">
                   <span class="sc-chip"
-                        [class.sc-chip-success]="r.approved"
-                        [class.sc-chip-danger]="!r.approved">
-                    {{ r.approved ? 'Approved' : 'Pending' }}
+                        [class.sc-chip-success]="!r.pending"
+                        [class.sc-chip-danger]="r.pending">
+                    {{ r.pending ? 'Pending' : 'Approved' }}
                   </span>
                 </td>
                 <td class="px-5 py-3 text-right">
-                  <button *ngIf="!r.approved"
+                  <button *ngIf="r.pending"
                           class="sc-btn-ghost !h-8 !px-2 !text-emerald-300 hover:!text-emerald-200"
                           (click)="approve(r)" matTooltip="Approve user">
                     <mat-icon class="!text-[16px] !w-4 !h-4">check_circle</mat-icon>
                     Approve
                   </button>
-                  <button *ngIf="r.approved"
+                  <button *ngIf="!r.pending"
                           class="sc-btn-ghost !h-8 !px-2"
                           (click)="reject(r)" matTooltip="Revoke approval">
                     <mat-icon class="!text-[16px] !w-4 !h-4">block</mat-icon>
@@ -145,19 +154,30 @@ export class UsersComponent {
   pendingCount = computed(() => this.rows().filter(u => u.approved === false).length);
   visibleRows = computed(() =>
     this.filter() === 'PENDING'
-      ? this.rows().filter(u => u.approved === false)
+      ? this.rows().filter(u => u.pending === true)
       : this.rows()
   );
 
   constructor() { this.refresh(); }
 
   refresh(): void {
-    this.loading.set(true);
-    forkJoin({ users: this.admin.listUsers(), roles: this.admin.listRoles() }).subscribe({
-      next: ({ users, roles }) => { this.rows.set(users); this.roles.set(roles); this.loading.set(false); },
-      error: () => { this.loading.set(false); this.snack.open('Failed to load users', 'OK', { duration: 3000 }); }
-    });
-  }
+  this.loading.set(true);
+  forkJoin({
+    active:  this.admin.listUsers(),
+    pending: this.admin.listPendingUsers(),
+    roles:   this.admin.listRoles()
+  }).subscribe({
+    next: ({ active, pending, roles }) => {
+      this.rows.set([...pending, ...active]);
+      this.roles.set(roles);
+      this.loading.set(false);
+    },
+    error: () => {
+      this.loading.set(false);
+      this.snack.open('Failed to load users', 'OK', { duration: 3000 });
+    }
+  });
+}
 
   openCreate(): void {
     this.dialog.open(UserFormDialog, { width: '640px', data: { roles: this.roles() } })
