@@ -28,8 +28,7 @@ export interface RegisterRequest {
   email: string;
   username: string;
   password: string;
-  roleId: number;
-  requestedRole: number;
+  requestedRoleId: number;
 }
 
 export interface AuthUserDTO {
@@ -38,7 +37,7 @@ export interface AuthUserDTO {
   email: string;
   username: string;
   role: string | null;
-  requestedRole: string | null;
+  requestedRoleId: number | null;
   emailVerified: boolean;
   pending: boolean;
 }

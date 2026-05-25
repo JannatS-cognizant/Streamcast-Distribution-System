@@ -151,7 +151,7 @@ export class UsersComponent {
   loading = signal(false);
   filter = signal<'ALL' | 'PENDING'>('ALL');
 
-  pendingCount = computed(() => this.rows().filter(u => u.approved === false).length);
+  pendingCount = computed(() => this.rows().filter(u => u.pending === true).length);
   visibleRows = computed(() =>
     this.filter() === 'PENDING'
       ? this.rows().filter(u => u.pending === true)
