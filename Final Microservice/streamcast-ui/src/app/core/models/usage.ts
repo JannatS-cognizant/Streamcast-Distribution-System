@@ -5,6 +5,7 @@ export interface UsageSummary {
 }
 
 export interface UsageDetails {
+  usageId: number;
   titleId: number;
   platform: string;
   date: string;
@@ -14,6 +15,14 @@ export interface UsageDetails {
 
 export interface UsageBreakdown {
   group: unknown;
+  views: number;
+  revenue: number;
+}
+
+export interface CreateUsage {
+  titleId: number;
+  platform: string;
+  date: string;
   views: number;
   revenue: number;
 }

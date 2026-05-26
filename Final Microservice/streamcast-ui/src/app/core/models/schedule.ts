@@ -7,7 +7,10 @@ export interface ScheduleApiResponse<T> {
 
 export interface CalendarSchedule {
   scheduleId: number;
+  titleId: number;
+  contractId: number;
   platform: string;
+  windowType: string;
   startDateTime: string;
   endDateTime: string;
   status: string;

@@ -34,6 +34,12 @@ export class AuthService {
       .pipe(tap(res => this.persist(res)));
   }
 
+  adminLogin(req: LoginRequest): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${environment.apiBase}/auth/admin/login`, req)
+      .pipe(tap(res => this.persist(res)));
+  }
+
   register(req: RegisterRequest): Observable<AuthUserDTO> {
     return this.http.post<AuthUserDTO>(`${environment.apiBase}/auth/register`, req);
   }

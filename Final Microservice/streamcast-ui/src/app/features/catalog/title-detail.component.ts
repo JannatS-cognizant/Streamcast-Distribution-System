@@ -15,7 +15,9 @@ import { TitlesService } from './titles.service';
 
 interface AssetDialogData { asset?: Asset; }
 interface MetadataDialogData { metadata?: Metadata; }
+interface TitleDialogData { title: Title; }
 
+// ─── Asset Form Dialog ────────────────────────────────────────────────────────
 @Component({
   selector: 'sc-asset-form',
   standalone: true,
@@ -69,25 +71,26 @@ export class AssetFormDialog {
   private fb = inject(FormBuilder);
   form = this.fb.nonNullable.group({
     assetType: ['VIDEO', Validators.required],
-    fileURI: ['', Validators.required],
-    checksum: ['', Validators.required],
-    duration: [60, [Validators.required, Validators.min(1)]],
-    status: ['ACTIVE', Validators.required]
+    fileURI:   ['', Validators.required],
+    checksum:  ['', Validators.required],
+    duration:  [60, [Validators.required, Validators.min(1)]],
+    status:    ['ACTIVE', Validators.required]
   });
   constructor(@Inject(MAT_DIALOG_DATA) public data: AssetDialogData) {
     if (data?.asset) {
       this.form.patchValue({
         assetType: data.asset.assetType,
-        fileURI: data.asset.fileURI,
-        checksum: data.asset.checksum,
-        duration: data.asset.duration,
-        status: data.asset.status
+        fileURI:   data.asset.fileURI,
+        checksum:  data.asset.checksum,
+        duration:  data.asset.duration,
+        status:    data.asset.status
       });
     }
   }
   save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
 }
 
+// ─── Metadata Form Dialog ─────────────────────────────────────────────────────
 @Component({
   selector: 'sc-metadata-form',
   standalone: true,
@@ -120,7 +123,7 @@ export class MetadataFormDialog {
   ref = inject(MatDialogRef<MetadataFormDialog>);
   private fb = inject(FormBuilder);
   form = this.fb.nonNullable.group({
-    key: ['', Validators.required],
+    key:   ['', Validators.required],
     value: ['', Validators.required]
   });
   constructor(@Inject(MAT_DIALOG_DATA) public data: MetadataDialogData) {
@@ -131,6 +134,76 @@ export class MetadataFormDialog {
   save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
 }
 
+// ─── Edit Title Dialog ────────────────────────────────────────────────────────
+@Component({
+  selector: 'sc-title-edit-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIconModule],
+  template: `
+    <h2 mat-dialog-title class="!text-ink-100 !text-lg !font-semibold !px-6 !pt-6 !pb-0">Edit title</h2>
+    <p class="text-sm text-ink-300 px-6 pt-1 pb-3">Update the details for this title.</p>
+    <form [formGroup]="form" (ngSubmit)="save()" (submit)="$event.preventDefault()" novalidate>
+      <mat-dialog-content class="!px-6 !pt-2 !pb-0">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sc-field sm:col-span-2">
+            <label class="sc-label">Name</label>
+            <input formControlName="name" class="sc-input" placeholder="Title name" />
+          </div>
+          <div class="sc-field">
+            <label class="sc-label">Release date</label>
+            <input type="date" formControlName="releaseDate" class="sc-input" />
+          </div>
+          <div class="sc-field">
+            <label class="sc-label">Language</label>
+            <input formControlName="language" class="sc-input" placeholder="English" />
+          </div>
+          <div class="sc-field">
+            <label class="sc-label">Genre</label>
+            <input formControlName="genre" class="sc-input" placeholder="Action" />
+          </div>
+          <div class="sc-field">
+            <label class="sc-label">Status</label>
+            <select formControlName="status" class="sc-input">
+              <option value="active">Active</option>
+              <option value="draft">Draft</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="!px-6 !pt-5 !pb-6 !justify-end !gap-2">
+        <button type="button" class="sc-btn-ghost" (click)="ref.close()">Cancel</button>
+        <button type="submit" class="sc-btn-primary" [disabled]="form.invalid">
+          <mat-icon class="!text-[18px] !w-5 !h-5">check</mat-icon> Save changes
+        </button>
+      </mat-dialog-actions>
+    </form>
+  `
+})
+export class TitleEditDialog {
+  ref = inject(MatDialogRef<TitleEditDialog>);
+  private fb = inject(FormBuilder);
+  form = this.fb.nonNullable.group({
+    name:        ['', Validators.required],
+    releaseDate: ['', Validators.required],
+    genre:       ['', Validators.required],
+    language:    ['', Validators.required],
+    status:      ['active', Validators.required]
+  });
+  constructor(@Inject(MAT_DIALOG_DATA) public data: TitleDialogData) {
+    const t = data.title;
+    this.form.patchValue({
+      name:        t.name,
+      releaseDate: t.releaseDate ? String(t.releaseDate).substring(0, 10) : '',
+      genre:       t.genre,
+      language:    t.language,
+      status:      t.status?.toLowerCase() ?? 'active'
+    });
+  }
+  save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
+}
+
+// ─── Title Detail Component ───────────────────────────────────────────────────
 @Component({
   selector: 'sc-title-detail',
   standalone: true,
@@ -153,7 +226,7 @@ export class MetadataFormDialog {
         <div class="relative p-6 sm:p-10 grid grid-cols-1 md:grid-cols-[180px_1fr] gap-6 items-end">
           <div class="aspect-[2/3] w-[180px] rounded-xl shadow-elev border border-border overflow-hidden hidden md:block"
                [style.background]="banner()"></div>
-          <div>
+          <div class="flex-1">
             <ng-container *ngIf="title() as t; else loadingT">
               <div class="text-xs uppercase tracking-widest text-ink-300">{{ t.genre }} · {{ t.language }}</div>
               <h1 class="mt-1 text-3xl sm:text-5xl font-semibold tracking-tight">{{ t.name }}</h1>
@@ -163,9 +236,16 @@ export class MetadataFormDialog {
                   {{ t.releaseDate | date:'mediumDate' }}
                 </span>
                 <span class="sc-chip"
-                      [class.sc-chip-success]="t.status === 'AVAILABLE'"
-                      [class.sc-chip-warn]="t.status === 'DRAFT'"
-                      [class.sc-chip-muted]="t.status === 'RETIRED'">{{ t.status }}</span>
+                      [class.sc-chip-success]="isActive(t.status)"
+                      [class.sc-chip-warn]="isDraft(t.status)"
+                      [class.sc-chip-muted]="isInactive(t.status)">
+                  {{ t.status | uppercase }}
+                </span>
+                <!-- Edit Title Button -->
+                <button *ngIf="canEdit()" class="sc-btn-ghost !h-8 !px-3 !text-xs ml-auto"
+                        (click)="editTitle(t)" matTooltip="Edit title details">
+                  <mat-icon class="!text-[16px] !w-4 !h-4 mr-1">edit</mat-icon> Edit title
+                </button>
               </div>
             </ng-container>
             <ng-template #loadingT>
@@ -177,12 +257,15 @@ export class MetadataFormDialog {
 
       <!-- Tabs -->
       <mat-tab-group animationDuration="200ms" class="sc-card">
+
+        <!-- ASSETS TAB -->
         <mat-tab label="Assets">
           <div class="p-4 flex justify-end" *ngIf="canEdit()">
             <button class="sc-btn-primary" (click)="addAsset()">
               <mat-icon class="!text-[18px] !w-5 !h-5">add</mat-icon> Add asset
             </button>
           </div>
+          <mat-progress-bar mode="indeterminate" *ngIf="loadingAssets()"></mat-progress-bar>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
@@ -196,14 +279,15 @@ export class MetadataFormDialog {
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let a of assets()"
-                    class="border-b border-border hover:bg-surface-3 transition">
+                <tr *ngFor="let a of assets()" class="border-b border-border hover:bg-surface-3 transition">
                   <td class="px-5 py-3 font-medium">{{ a.id }}</td>
                   <td class="px-5 py-3"><span class="sc-chip-info">{{ a.assetType }}</span></td>
                   <td class="px-5 py-3 max-w-xs truncate text-ink-300">{{ a.fileURI }}</td>
                   <td class="px-5 py-3 text-ink-300">{{ a.duration }}s</td>
                   <td class="px-5 py-3">
-                    <span class="sc-chip" [class.sc-chip-success]="a.status==='ACTIVE'" [class.sc-chip-muted]="a.status!=='ACTIVE'">{{ a.status }}</span>
+                    <span class="sc-chip"
+                          [class.sc-chip-success]="a.status==='ACTIVE'"
+                          [class.sc-chip-muted]="a.status!=='ACTIVE'">{{ a.status }}</span>
                   </td>
                   <td class="px-5 py-3 text-right whitespace-nowrap" *ngIf="canEdit() || canDelete()">
                     <button *ngIf="canEdit()" class="sc-icon-btn" (click)="editAsset(a)" matTooltip="Edit asset">
@@ -217,15 +301,18 @@ export class MetadataFormDialog {
               </tbody>
             </table>
           </div>
-          <div *ngIf="assets().length === 0" class="py-10 text-center text-ink-300">No assets yet.</div>
+          <div *ngIf="!loadingAssets() && assets().length === 0"
+               class="py-10 text-center text-ink-300">No assets for this title.</div>
         </mat-tab>
 
+        <!-- METADATA TAB -->
         <mat-tab label="Metadata">
           <div class="p-4 flex justify-end" *ngIf="canEdit()">
             <button class="sc-btn-primary" (click)="addMetadata()">
               <mat-icon class="!text-[18px] !w-5 !h-5">add</mat-icon> Add metadata
             </button>
           </div>
+          <mat-progress-bar mode="indeterminate" *ngIf="loadingMeta()"></mat-progress-bar>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
@@ -237,8 +324,7 @@ export class MetadataFormDialog {
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let m of metadata()"
-                    class="border-b border-border hover:bg-surface-3 transition">
+                <tr *ngFor="let m of metadata()" class="border-b border-border hover:bg-surface-3 transition">
                   <td class="px-5 py-3">{{ m.id }}</td>
                   <td class="px-5 py-3 font-medium">{{ m.key }}</td>
                   <td class="px-5 py-3 text-ink-300">{{ m.value }}</td>
@@ -254,8 +340,10 @@ export class MetadataFormDialog {
               </tbody>
             </table>
           </div>
-          <div *ngIf="metadata().length === 0" class="py-10 text-center text-ink-300">No metadata yet.</div>
+          <div *ngIf="!loadingMeta() && metadata().length === 0"
+               class="py-10 text-center text-ink-300">No metadata for this title.</div>
         </mat-tab>
+
       </mat-tab-group>
     </div>
   `
@@ -263,18 +351,25 @@ export class MetadataFormDialog {
 export class TitleDetailComponent implements OnInit {
   @Input({ required: true }) id!: number;
 
-  private titles = inject(TitlesService);
+  private titlesApi = inject(TitlesService);
   private assetsApi = inject(AssetsService);
-  private auth = inject(AuthService);
-  private dialog = inject(MatDialog);
-  private snack = inject(MatSnackBar);
+  private auth      = inject(AuthService);
+  private dialog    = inject(MatDialog);
+  private snack     = inject(MatSnackBar);
 
-  title = signal<Title | null>(null);
-  assets = signal<Asset[]>([]);
-  metadata = signal<Metadata[]>([]);
+  title         = signal<Title | null>(null);
+  assets        = signal<Asset[]>([]);
+  metadata      = signal<Metadata[]>([]);
+  loadingAssets = signal(false);
+  loadingMeta   = signal(false);
 
-  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN', 'CONTENT_OWNER']));
+  canEdit   = computed(() => this.auth.hasAnyRole(['ADMIN', 'CONTENT_OWNER']));
   canDelete = computed(() => this.auth.hasAnyRole(['ADMIN']));
+
+  isActive   = (s?: string) => s?.toLowerCase() === 'active'   || s === 'AVAILABLE';
+  isDraft    = (s?: string) => s?.toLowerCase() === 'draft'    || s === 'DRAFT';
+  isInactive = (s?: string) => s?.toLowerCase() === 'inactive' || s === 'RETIRED';
+
   banner = computed(() => {
     const t = this.title();
     if (!t) return 'linear-gradient(140deg, #1c1e29, #0f1015)';
@@ -288,16 +383,33 @@ export class TitleDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const tid = Number(this.id);
-    this.titles.get(tid).subscribe(t => this.title.set(t));
+    this.titlesApi.get(tid).subscribe(t => this.title.set(t));
     this.refreshAssets(tid);
     this.refreshMetadata(tid);
   }
 
-  private refreshAssets(tid: number): void {
-    this.assetsApi.listAssets(tid).subscribe(a => this.assets.set(a));
+  // ── Edit Title ──────────────────────────────────────────────────────────────
+  editTitle(t: Title): void {
+    this.dialog.open(TitleEditDialog, { width: '600px', panelClass: 'sc-dialog', data: { title: t } })
+      .afterClosed().subscribe((v: Partial<Title> | undefined) => {
+        if (!v) return;
+        this.titlesApi.update(Number(this.id), { ...t, ...v }).subscribe({
+          next: updated => {
+            this.title.set(updated);
+            this.snack.open('Title updated', 'OK', { duration: 2500 });
+          },
+          error: err => this.snack.open(err?.error?.message ?? 'Update failed', 'OK', { duration: 3000 })
+        });
+      });
   }
-  private refreshMetadata(tid: number): void {
-    this.assetsApi.listMetadata(tid).subscribe(m => this.metadata.set(m));
+
+  // ── Assets ──────────────────────────────────────────────────────────────────
+  private refreshAssets(tid: number): void {
+    this.loadingAssets.set(true);
+    this.assetsApi.listAssets(tid).subscribe({
+      next: a => { this.assets.set(a); this.loadingAssets.set(false); },
+      error: () => { this.loadingAssets.set(false); }
+    });
   }
 
   addAsset(): void {
@@ -329,6 +441,15 @@ export class TitleDetailComponent implements OnInit {
     this.assetsApi.deleteAsset(a.id).subscribe({
       next: () => { this.snack.open('Asset deleted', 'OK', { duration: 2500 }); this.refreshAssets(Number(this.id)); },
       error: err => this.snack.open(err?.error?.message ?? 'Delete failed', 'OK', { duration: 3000 })
+    });
+  }
+
+  // ── Metadata ────────────────────────────────────────────────────────────────
+  private refreshMetadata(tid: number): void {
+    this.loadingMeta.set(true);
+    this.assetsApi.listMetadata(tid).subscribe({
+      next: m => { this.metadata.set(m); this.loadingMeta.set(false); },
+      error: () => { this.loadingMeta.set(false); }
     });
   }
 

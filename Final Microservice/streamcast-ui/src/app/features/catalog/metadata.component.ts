@@ -28,13 +28,26 @@ import { AssetsService, MetadataWrite } from './assets.service';
       <div class="sc-card p-4 flex items-end gap-3 flex-wrap">
         <div class="sc-field" style="min-width:180px">
           <label class="sc-label">Title ID</label>
-          <input type="number" min="1" [(ngModel)]="titleIdInput" class="sc-input"
-                 (keydown.enter)="load()" placeholder="e.g. 1" />
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="titleIdInput"
+            class="sc-input"
+            [class.!border-red-500]="titleIdInput !== null && titleIdInput < 1"
+            (keydown.enter)="load()"
+            placeholder="e.g. 1"
+          />
+          <span *ngIf="titleIdInput !== null && titleIdInput < 1"
+                class="text-xs text-red-400 mt-1 block">
+            Title ID must be a positive number.
+          </span>
         </div>
-        <button class="sc-btn-primary !h-11" (click)="load()" [disabled]="!titleIdInput">
+        <button class="sc-btn-primary !h-11" (click)="load()"
+                [disabled]="!titleIdInput || titleIdInput < 1">
           <mat-icon class="!text-[18px] !w-5 !h-5">search</mat-icon> Load
         </button>
-        <button class="sc-btn-primary !h-11 ml-auto" *ngIf="canEdit() && titleId()" (click)="add()">
+        <button class="sc-btn-primary !h-11 ml-auto"
+                *ngIf="canEdit() && titleId()" (click)="add()">
           <mat-icon class="!text-[18px] !w-5 !h-5">add</mat-icon> Add metadata
         </button>
       </div>
@@ -56,7 +69,8 @@ import { AssetsService, MetadataWrite } from './assets.service';
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let m of rows()" class="border-b border-border hover:bg-surface-3 transition">
+              <tr *ngFor="let m of rows()"
+                  class="border-b border-border hover:bg-surface-3 transition">
                 <td class="px-5 py-3">{{ m.id }}</td>
                 <td class="px-5 py-3 font-medium">{{ m.key }}</td>
                 <td class="px-5 py-3 text-ink-300">{{ m.value }}</td>
@@ -72,7 +86,8 @@ import { AssetsService, MetadataWrite } from './assets.service';
             </tbody>
           </table>
         </div>
-        <div *ngIf="!loading() && rows().length === 0" class="py-10 text-center text-ink-300">No metadata for this title.</div>
+        <div *ngIf="!loading() && rows().length === 0"
+             class="py-10 text-center text-ink-300">No metadata for this title.</div>
       </div>
 
       <div *ngIf="!titleId()" class="sc-card p-10 text-center text-ink-300">
@@ -96,7 +111,7 @@ export class MetadataComponent {
   canDelete = computed(() => this.auth.hasAnyRole(['ADMIN']));
 
   load(): void {
-    if (!this.titleIdInput) return;
+    if (!this.titleIdInput || this.titleIdInput < 1) return;
     const tid = Number(this.titleIdInput);
     this.titleId.set(tid);
     this.refresh();

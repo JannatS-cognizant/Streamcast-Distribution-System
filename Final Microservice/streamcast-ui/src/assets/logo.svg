@@ -1,10 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#5d87ff"/>
-      <stop offset="1" stop-color="#2236b3"/>
+    <linearGradient id="sc-bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#be123c"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <path d="M20 22c0-3.3 2.7-6 6-6h12a6 6 0 016 6v3a3 3 0 01-3 3H26a3 3 0 00-3 3v0a3 3 0 003 3h11a8 8 0 110 16H24a6 6 0 01-6-6v-1h6v1c0 .8.7 1.5 1.5 1.5h12.5a3 3 0 100-6H26a8 8 0 01-8-8v-1z" fill="#fff"/>
+  <!-- Rounded badge background -->
+  <rect width="64" height="64" rx="14" fill="url(#sc-bg)"/>
+  <!-- Play triangle (streaming) -->
+  <path d="M22 18 L22 46 L44 32 Z"
+        fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Broadcast arcs (casting) -->
+  <g stroke="#fff" stroke-linecap="round" fill="none">
+    <path d="M48 24 Q53 32 48 40" stroke-width="3"/>
+    <path d="M54 18 Q60 32 54 46" stroke-width="3" opacity="0.6"/>
+  </g>
 </svg>

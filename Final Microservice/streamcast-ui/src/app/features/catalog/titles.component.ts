@@ -39,9 +39,9 @@ import { TitlesService } from './titles.service';
           <div class="sc-field">
             <label class="sc-label">Status</label>
             <select formControlName="status" class="sc-input">
-              <option value="AVAILABLE">Available</option>
-              <option value="DRAFT">Draft</option>
-              <option value="RETIRED">Retired</option>
+              <option value="active">Active</option>
+              <option value="draft">Draft</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
         </div>
@@ -63,7 +63,7 @@ export class TitleFormDialog {
     releaseDate: ['', Validators.required],
     genre: ['', Validators.required],
     language: ['', Validators.required],
-    status: ['AVAILABLE', Validators.required]
+    status: ['active', Validators.required]
   });
   save(): void { if (this.form.valid) this.ref.close(this.form.getRawValue()); }
 }
@@ -106,9 +106,11 @@ export class TitleFormDialog {
                  [style.background]="poster(t)"></div>
             <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-surface-1/95 to-transparent"></div>
             <span class="absolute top-2 right-2 sc-chip"
-                  [class.sc-chip-success]="t.status === 'AVAILABLE'"
-                  [class.sc-chip-warn]="t.status === 'DRAFT'"
-                  [class.sc-chip-muted]="t.status === 'RETIRED'">{{ t.status }}</span>
+                  [class.sc-chip-success]="isActive(t.status)"
+                  [class.sc-chip-warn]="isDraft(t.status)"
+                  [class.sc-chip-muted]="isInactive(t.status)">
+              {{ t.status | uppercase }}
+            </span>
             <div class="absolute inset-x-0 bottom-0 p-3">
               <div class="text-sm font-semibold text-white truncate">{{ t.name }}</div>
               <div class="text-[11px] text-ink-300 mt-0.5 truncate">
@@ -118,7 +120,10 @@ export class TitleFormDialog {
           </div>
           <!-- Footer -->
           <div class="flex items-center justify-between px-3 py-2.5">
-            <span class="text-xs text-ink-300">{{ t.releaseDate | date:'mediumDate' }}</span>
+            <div class="flex flex-col">
+              <span class="text-xs text-ink-300">{{ t.releaseDate | date:'mediumDate' }}</span>
+              <span class="text-[11px] text-ink-500 font-mono">ID: {{ t.id }}</span>
+            </div>
             <mat-icon class="!text-[18px] text-ink-500 group-hover:text-brand-400 transition">play_circle</mat-icon>
           </div>
         </button>
@@ -142,7 +147,7 @@ export class TitlesComponent {
   rows = signal<Title[]>([]);
   loading = signal(false);
   query = signal('');
-  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN','CONTENT_OWNER']));
+  canEdit = computed(() => this.auth.hasAnyRole(['ADMIN', 'CONTENT_OWNER']));
 
   filtered = computed(() => {
     const q = this.query().trim().toLowerCase();
@@ -173,19 +178,26 @@ export class TitlesComponent {
       });
   }
 
-  open(t: Title): void { if (t.id != null) this.router.navigate(['/titles', t.id]); }
+  open(t: Title): void {
+    if (t.id != null) this.router.navigate(['/titles', t.id]);
+  }
+
   trackId = (_: number, t: Title) => t.id ?? t.name;
   toStr = (e: Event) => (e.target as HTMLInputElement).value;
 
-  /** Deterministic gradient poster per title. */
+  // Status helpers — handles both lowercase (db) and uppercase (legacy)
+  isActive   = (s?: string) => s?.toLowerCase() === 'active'   || s === 'AVAILABLE';
+  isDraft    = (s?: string) => s?.toLowerCase() === 'draft'    || s === 'DRAFT';
+  isInactive = (s?: string) => s?.toLowerCase() === 'inactive' || s === 'RETIRED';
+
   poster(t: Title): string {
     const palettes = [
-      ['#7f1d3a','#1c1e29'],
-      ['#0c4a6e','#0f1015'],
-      ['#581c87','#0f1015'],
-      ['#065f46','#0f1015'],
-      ['#9a3412','#0f1015'],
-      ['#1e1b4b','#15161e']
+      ['#7f1d3a', '#1c1e29'],
+      ['#0c4a6e', '#0f1015'],
+      ['#581c87', '#0f1015'],
+      ['#065f46', '#0f1015'],
+      ['#9a3412', '#0f1015'],
+      ['#1e1b4b', '#15161e']
     ];
     const seed = (t.id ?? t.name?.length ?? 0) % palettes.length;
     const [a, b] = palettes[seed];

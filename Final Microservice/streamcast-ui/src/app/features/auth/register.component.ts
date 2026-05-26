@@ -41,11 +41,6 @@ import { RoleDef } from '../../core/models/admin';
               <input type="text" formControlName="name"
                      placeholder="Jane Doe" class="sc-input" />
             </div>
-            
-            <div class="sc-field">
-              <label class="sc-label">Username</label>
-              <input type="text" formControlName="username" placeholder="Choose a username" class="sc-input" />
-            </div>
 
             <div class="sc-field">
               <label class="sc-label">Email</label>
@@ -69,7 +64,7 @@ import { RoleDef } from '../../core/models/admin';
 
             <div class="sc-field">
               <label class="sc-label">Role</label>
-              <select formControlName="requestedRoleId" class="sc-input">
+              <select formControlName="roleId" class="sc-input">
                 <option [ngValue]="null" disabled>Select a role…</option>
                 <option *ngFor="let r of roles()" [ngValue]="r.id">{{ r.name }}</option>
               </select>
@@ -127,9 +122,8 @@ export class RegisterComponent {
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    username: ['', Validators.required],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    requestedRoleId: [null as number | null, Validators.required]
+    roleId: [null as number | null, Validators.required]
   });
 
   constructor() {
@@ -139,12 +133,12 @@ export class RegisterComponent {
   private loadRoles(): void {
     // Public read-only role list scoped for the registration form. /roles (admin-only)
     // would 401 here because the user isn't logged in yet.
-    this.http.get<RoleDef[]>(`${environment.apiBase}/roles`).subscribe({
-      next: list => this.roles.set(list),
+    // ADMIN is filtered out — self-registration must never grant admin privileges.
+    this.http.get<RoleDef[]>(`${environment.apiBase}/auth/roles`).subscribe({
+      next: list => this.roles.set(list.filter(r => !this.isAdminRole(r))),
       error: () => {
         this.rolesError.set('Could not load roles from server — using defaults.');
         this.roles.set([
-          { id: 1, name: 'ADMIN' },
           { id: 2, name: 'CONTENT_OWNER' },
           { id: 3, name: 'RIGHTS_MANAGER' },
           { id: 4, name: 'SCHEDULER' },
@@ -157,6 +151,10 @@ export class RegisterComponent {
     });
   }
 
+  private isAdminRole(r: RoleDef): boolean {
+    return (r.name ?? '').trim().toUpperCase().replace(/\s+/g, '_') === 'ADMIN';
+  }
+
   submit(): void {
     if (this.form.invalid || this.loading()) return;
     this.loading.set(true);
@@ -167,9 +165,8 @@ export class RegisterComponent {
     this.auth.register({
       name: v.name,
       email: v.email,
-      username: v.username,
       password: v.password,
-      requestedRoleId: v.requestedRoleId as number
+      requestedRoleId: v.roleId as number
     }).subscribe({
       next: () => {
         this.loading.set(false);

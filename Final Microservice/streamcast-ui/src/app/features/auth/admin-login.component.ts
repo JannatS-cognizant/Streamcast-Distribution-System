@@ -121,7 +121,7 @@ export class AdminLoginComponent {
     this.loading.set(true);
     this.error.set(null);
 
-    this.auth.login(this.form.getRawValue()).subscribe({
+    this.auth.adminLogin(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigate(['/dashboard']);
