@@ -85,6 +85,14 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO setApproved(Long id, boolean approved) {
         User user = findOrThrow(id);
         user.setApproved(approved);
+        // Admin approval implies the email is trusted — bypass the email-verification
+        // gate so the user can log in immediately after approval, even if they never
+        // clicked the verification link.
+        if (approved) {
+            user.setEmailVerified(true);
+            user.setEmailVerificationToken(null);
+            user.setTokenExpiry(null);
+        }
         return toResponse(userRepo.save(user));
     }
 
